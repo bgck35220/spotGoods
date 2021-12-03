@@ -8,7 +8,8 @@ if(isset($_POST['account'])||isset($_POST['password'])){
    
   
 }else{
-    die("錯誤");
+    header("location:adminLogin.php");
+    exit();
 }
 
 $sqlAdmin="SELECT * FROM admin WHERE account=? AND password=?";

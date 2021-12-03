@@ -114,7 +114,7 @@ if(isset($_SESSION["user"])){
           <div>
             <div class="title">LOGIN</div>
             <h1 class="form-text">商家後台管理</h1>
-            <form action="do-login.php" method="POST">
+            <form action="doLogin.php" method="POST">
               <div class="form-floating mb-3 form-input">
                 <input type="" class="form-control" id="floatingInput" placeholder="name@example.com"
                   name="account" required>

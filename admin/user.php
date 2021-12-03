@@ -4,39 +4,19 @@ require_once("../pdo-connect.php");
 if (!isset($_SESSION["user"])) {
     header("location:adminLogin.php");
 }
+if(isset($_GET['id'])){
+    $id = $_GET['id'];
+}else{
+    header("location:admin.php");
+}
 
-$sqlUser = "SELECT * FROM users ";
+$sqlUser = "SELECT * FROM users WHERE id = ?";
 $stmtUser = $db_host->prepare($sqlUser);
 
 try {
-    $stmtUser->execute();
-    // $rowUser=$stmtUser->fetch();
-
+    $stmtUser->execute([$id]);
+    $rowUser=$stmtUser->fetch();
     $userExist = $stmtUser->rowCount();
-
-    // if($userExist>0){
-    //     $rowAdmin=$stmtAdmin->fetch();
-    //     $user=[
-    //         "id"=>$rowAdmin['id'],
-    //         "name"=>$rowAdmin['name'],
-    //         "account"=>$rowAdmin['account'],
-    //         "password"=>$rowAdmin['email']
-    //     ];
-    //     $_SESSION["user"]=$user;
-    //     header("location: admin.php");
-    //     unset($_SESSION["error_times"]);
-    //     unset($_SESSION["error_msg"]);
-    //     echo $user;
-    // }
-    // else{
-    //     $_SESSION['error_msg']="帳號或密碼輸入錯誤";
-    //     if(isset($_SESSION["error_times"])){
-    //         $_SESSION["error_times"]=$_SESSION["error_times"]+1;
-    //     }else{
-    //         $_SESSION["error_times"]=1;
-    //     }
-    //     header("location: adminLogin.php");
-    // }
 
 } catch (PDOException $e) {
     echo $e->getMessage();
@@ -53,10 +33,50 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
 </head>
 <style>
-  
+    :root {
+        --green: #66806A;
+        --lightgreen: #7baa81;
+        --yellow: #ffc107;
+    }
+
+    .nav-bar-title {
+        background-color: var(--green);
+        box-shadow: 0rem .1rem .5rem #aaa;
+    }
+
+    .nav-text {
+        /* font-size: 1.1rem; */
+        font-weight: 450;
+        margin: 0 10px;
+    }
+
+    .title-regis {
+        /* font-size: 1.1rem; */
+        padding: 8px;
+    }
+
+    .customer-message {
+        position: fixed;
+        bottom: 25px;
+        right: 5px;
+        width: 120px;
+        background-color: white;
+    }
+
+    .customer-message-span {
+        background-color: var(--lightgreen);
+        color: white;
+    }
+
+    /* .dropdown-item:focus {
+  background-color: #66806A;
+  color: white;
+} */
+    .dropdown-item {
+        font-size: .9rem;
+    }
 </style>
 
 <body>
@@ -133,47 +153,71 @@ try {
 
     <!-- 主要內容 -->
     <main>
-        <div class="container pt-5 ">
-            <div>
-                <h2 class="fs-3">會員管理</h2>
+        <div class="container pt-5 col-4">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h2 class="fs-3">會員詳細資料</h2>
+                </div>
+                <div class="d-flex ">
+                    <div class="me-2">
+                        <a href="./user-update.php?id=<?=$rowUser['id']?>" class="btn btn btn-secondary" type="submit">
+                            編輯資訊
+                        </a>
+                    </div>
+                    <div>
+                    <a href="./admin.php" class="btn btn-light" type="submit">
+                        首頁
+                    </a>
+                    </div>
+                </div>
             </div>
-            <div>
-                <p>共 <?= $userExist ?> 位會員</p>
-            </div>
-            <table class="table  table-striped ">
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>姓名</th>
-                        <th>帳號</th>
-                        <th>信箱</th>
-                        <th>註冊時間</th>
-                        <th>狀態</th>
-                        <th></th>
-                    </tr>
 
-                <tbody>
-                    <?php while ($rowUser = $stmtUser->fetch()) : ?>
+            <?php if($userExist>0):?>
+            <table class="table table-bordered ">
+                <tr>
+                    <th>id</th>
+                    <td><?=$rowUser['id']?></td>
+                </tr>
+                <tr>
+                    <th>姓名</th>
+                    <td><?=$rowUser['name']?></td>
+                </tr>
+                <tr>
+                    <th>帳號</th>
+                    <td><?=$rowUser['account']?></td>
+                </tr>
+                <tr>
+                    <th>信箱</th>
+                    <td><?=$rowUser['email']?></td>
+                </tr>
+                <tr>
+                    <th>地址</th>
+                    <td><?=$rowUser['address']?></td>
+                </tr>
+                <tr>
+                    <th>手機號碼</th>
+                    <td>還沒新增</td>
+                </tr>
+                <tr>
+                    <th>註冊時間</th>
+                    <td><?=$rowUser['created_at']?></td>
+                </tr>
+                <tr>
+                    <th>帳號狀態</th>
+                    <td><?php 
+                        if($rowUser['valid'] == 1) echo "啟用";
+                        if($rowUser['valid'] == 0) echo "停用";  
+                        ?>
+                    </td>
+                </tr>
+                <input type="hidden" >
+            <?php endif; ?>
 
-                        <tr>
-                            <td><?= $rowUser['id'] ?></td>
-                            <td><?= $rowUser['name'] ?></td>
-                            <td><?= $rowUser['account'] ?></td>
-                            <td><?= $rowUser['email'] ?></td>
-                            <td><?= $rowUser['created_at'] ?></td>
-                            <td><?php if($rowUser['valid'] == 1) echo "啟用";
-                                      if($rowUser['valid'] == 0) echo "停用";  ?></td>
-                            <td class="">
-                                <a href="user.php?id=<?=$rowUser['id']?>"class="btn btn-outline-success" type="submit">詳細資訊</a>
-                                <a href="" class="btn btn-outline-secondary">編輯資訊</a>
-                                <button class="btn btn-outline-danger">停用</button>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
 
-                </tbody>
-                </thead>
+
+
             </table>
+
         </div>
     </main>
 

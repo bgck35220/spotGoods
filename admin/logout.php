@@ -1,4 +1,4 @@
 <?php
 session_start();
 unset($_SESSION["user"]);
-header("location: adminLogin.php");
+header("location: admin-Login.php");
