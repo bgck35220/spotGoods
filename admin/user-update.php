@@ -4,20 +4,19 @@ require_once("../pdo-connect.php");
 if (!isset($_SESSION["user"])) {
     header("location:adminLogin.php");
 }
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
     $id = $_GET['id'];
-}else{
-    header("location:admin.php");
 }
+
+
 
 $sqlUser = "SELECT * FROM users WHERE id = ?";
 $stmtUser = $db_host->prepare($sqlUser);
 
 try {
     $stmtUser->execute([$id]);
-    $rowUser=$stmtUser->fetch();
+    $rowUser = $stmtUser->fetch();
     $userExist = $stmtUser->rowCount();
-
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -33,51 +32,10 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css" >
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <style>
-    :root {
-        --green: #66806A;
-        --lightgreen: #7baa81;
-        --yellow: #ffc107;
-    }
 
-    .nav-bar-title {
-        background-color: var(--green);
-        box-shadow: 0rem .1rem .5rem #aaa;
-    }
-
-    .nav-text {
-        /* font-size: 1.1rem; */
-        font-weight: 450;
-        margin: 0 10px;
-    }
-
-    .title-regis {
-        /* font-size: 1.1rem; */
-        padding: 8px;
-    }
-
-    .customer-message {
-        position: fixed;
-        bottom: 25px;
-        right: 5px;
-        width: 120px;
-        background-color: white;
-    }
-
-    .customer-message-span {
-        background-color: var(--lightgreen);
-        color: white;
-    }
-/* 
-    .dropdown-item:focus {
-  background-color: #66806A;
-  color: white;
-} */
-    .dropdown-item {
-        font-size: .9rem;
-    }
 </style>
 
 <body>
@@ -161,68 +119,110 @@ try {
                 </div>
                 <div class="d-flex ">
                     <div class="me-2">
-                        <a href="./user.php?id=<?=$rowUser['id']?>" class="btn btn btn-secondary" type="submit">
+                        <a href="./user.php?id=<?= $rowUser['id'] ?>" class="btn btn btn-secondary" type="submit">
                             詳細資訊
                         </a>
                     </div>
                     <div>
-                    <a href="./admin.php" class="btn btn-light" type="submit">
-                        首頁
-                    </a>
+                        <a href="./admin.php" class="btn btn-light" type="submit">
+                            首頁
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <?php if($userExist>0):?>
-            <form action="doUpdate.php" method="POST">
-            <table class="table table-bordered  updateTable ">
-                <tr class="">
-                    <th>id</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['id']?>" class="form-control p-2 m-0"  placeholder="id" name="id" disabled ></td>
-                </tr>
-                <tr>
-                    <th>姓名</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['name']?>" class="form-control p-2 m-0"  placeholder="name" name="name"  ></td>
-                </tr>
-                <tr>
-                    <th>帳號</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['account']?>" class="form-control p-2 m-0"  placeholder="account" name="account"  disabled></td>
-                </tr>
-                <tr>
-                    <th>信箱</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['email']?>" class="form-control p-2 m-0"  placeholder="email" name="email"  ></td>
-                </tr>
-                <tr>
-                    <th>地址</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['address']?>" class="form-control p-2 m-0"  placeholder="address" name="address"  ></td>
-                </tr>
-                <tr>
-                    <th>手機號碼</th>
-                    <td>待新增</td>
-                </tr>
-                <tr>
-                    <th>註冊時間</th>
-                    <td class="p-1"> <input type="text" value="<?=$rowUser['created_at']?>" class="form-control p-2 m-0"  placeholder="created_at" name="created_at"  disabled></td>
-                </tr>
-                <tr>
-                    <th>帳號狀態</th>
-                    <td class="user-switch"><?php if($rowUser['valid'] == 1){?>
-                        啟用
-                        <a class="btn btn-outline-danger " type="submit">停用</a>
-                        
-                        <?php }else if($rowUser['valid'] == 0){ ?>
-                        停用
-                        <a class="btn btn-outline-primary" type="submit">啟用</a>
-                        <?php }; ?>
-                    </td>
+            <?php if ($userExist > 0) : ?>
+                <form action="doUpdate.php " method="POST" class="updateForm">
+                    <table class="table table-bordered  updateTable ">
+                        <tr class="">
+                            <th>id</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['id'] ?>" class="form-control p-2 m-0" placeholder="id" name="id" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>姓名</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['name'] ?>" class="form-control p-2 m-0" placeholder="name" name="name"></td>
+                        </tr>
+                        <tr>
+                            <th>帳號</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['account'] ?>" class="form-control p-2 m-0" placeholder="account" name="account" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>信箱</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['email'] ?>" class="form-control p-2 m-0" placeholder="email" name="email"></td>
+                        </tr>
+                        <tr>
+                            <th>地址</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['address'] ?>" class="form-control p-2 m-0" placeholder="address" name="address"></td>
+                        </tr>
+                        <tr>
+                            <th>手機號碼</th>
+                            <td>待新增</td>
+                        </tr>
+                        <tr>
+                            <th>註冊時間</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['created_at'] ?>" class="form-control p-2 m-0" placeholder="created_at" name="created_at" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>帳號狀態</th>
+                            <td class="user-switch">
+                                <?php if ($rowUser['valid'] == 0) { ?>
+                                    <p class="m-0">啟用</p>
+                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
 
-                </tr>
-         
-                   <?php endif; ?>
+                                        <div class="colseblcok ">
+                                            <div class="full-screen">
+                                                <div class="close">
+                                                    <div class="d-flex justify-content-end">
+                                                        <a class=" btn closeX" id="closeX" href="./user-update.php?id=<?= $_GET['id'] ?>">X</a>
+                                                    </div>
+                                                    <div class="closeText">確定要停用帳號嗎?</div>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a type="submit" href="updateUserDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
 
-            </table>
-            <a type="submit" href="./"class="btn btn-outline-dark w-100">送出</a>
-            </form>
+                                    <a class="btn btn-outline-danger " href="user-update.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
+
+                                <?php } else if ($rowUser['valid'] == 1) { ?>
+                                    <p class="m-0">停用</p>
+                            
+                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
+
+                                        <div class="colseblcok ">
+                                            <div class="full-screen">
+                                                <div class="close">
+                                                    <div class="d-flex justify-content-end">
+                                                        <a class=" btn closeX" id="closeX" href="./user-update.php?id=<?= $_GET['id'] ?>">X</a>
+                                                    </div>
+                                                    <div class="closeText">確定要啟用帳號嗎?</div>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a type="submit" href="updateUserOpen.php?id=<?= $_GET['id'] ?>" class="btn btn-primary closeCheck">確定</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <a class="btn btn-outline-primary " href="user-update.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 啟用</a>
+                                <?php }; ?>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <input type="hidden" name="id" value="<?= $rowUser['id'] ?>">
+                    <!-- <?php if (isset($_SESSION['update_msg'])) : ?>
+                    <p class="updateMsg text-center"><?= $_SESSION['update_msg'] ?></p>
+                    <?php
+                                unset($_SESSION["update_msg"]);
+                            endif; ?> -->
+                    <button type="submit" class="btn btn-outline-dark w-100">送出</button>
+                </form>
+
+            <?php endif; ?>
         </div>
     </main>
 

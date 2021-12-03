@@ -33,52 +33,8 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<style>
-    :root {
-        --green: #66806A;
-        --lightgreen: #7baa81;
-        --yellow: #ffc107;
-    }
-
-    .nav-bar-title {
-        background-color: var(--green);
-        box-shadow: 0rem .1rem .5rem #aaa;
-    }
-
-    .nav-text {
-        /* font-size: 1.1rem; */
-        font-weight: 450;
-        margin: 0 10px;
-    }
-
-    .title-regis {
-        /* font-size: 1.1rem; */
-        padding: 8px;
-    }
-
-    .customer-message {
-        position: fixed;
-        bottom: 25px;
-        right: 5px;
-        width: 120px;
-        background-color: white;
-    }
-
-    .customer-message-span {
-        background-color: var(--lightgreen);
-        color: white;
-    }
-
-    /* .dropdown-item:focus {
-  background-color: #66806A;
-  color: white;
-} */
-    .dropdown-item {
-        font-size: .9rem;
-    }
-</style>
-
 <body>
 
 
@@ -210,14 +166,18 @@ try {
                         ?>
                     </td>
                 </tr>
-                <input type="hidden" >
+              
             <?php endif; ?>
 
 
 
 
             </table>
-
+     <?php if(isset($_SESSION['update_msg'])) :?>
+                    <p class="updateMsg text-center"><?=$_SESSION['update_msg']?></p>
+                    <?php
+                    unset($_SESSION["update_msg"]);
+                    endif; ?>
         </div>
     </main>
 

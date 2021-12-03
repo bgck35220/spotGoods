@@ -55,9 +55,6 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<style>
-  
-</style>
 
 <body>
 
@@ -132,13 +129,16 @@ try {
 
 
     <!-- 主要內容 -->
+
     <main>
+        <?php $validone = 0; ?>
         <div class="container pt-5 ">
             <div>
                 <h2 class="fs-3">會員管理</h2>
             </div>
-            <div>
+            <div class="d-flex">
                 <p>共 <?= $userExist ?> 位會員</p>
+   
             </div>
             <table class="table  table-striped ">
                 <thead>
@@ -153,7 +153,9 @@ try {
                     </tr>
 
                 <tbody>
-                    <?php while ($rowUser = $stmtUser->fetch()) : ?>
+                    <?php while ($rowUser = $stmtUser->fetch()) :
+                    ?>
+
 
                         <tr>
                             <td><?= $rowUser['id'] ?></td>
@@ -161,19 +163,105 @@ try {
                             <td><?= $rowUser['account'] ?></td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
-                            <td><?php if($rowUser['valid'] == 1) echo "啟用";
-                                      if($rowUser['valid'] == 0) echo "停用";  ?></td>
+                            <td><?php if ($rowUser['valid'] == 1) echo "啟用";
+                                if ($rowUser['valid'] == 0) echo "停用";  ?></td>
                             <td class="">
-                                <a href="user.php?id=<?=$rowUser['id']?>"class="btn btn-outline-success" type="submit">詳細資訊</a>
-                                <a href="" class="btn btn-outline-secondary">編輯資訊</a>
-                                <button class="btn btn-outline-danger">停用</button>
+                                <a href="user.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-success" type="submit">詳細資訊</a>
+                                <a href="./user-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯資訊</a>
+
+
+                                <?php if ($rowUser['valid'] == 1) :
+                                    $validone += 1;
+                                ?>
+                                    <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
+                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
+                                        <div class="colseblcok  ">
+                                      
+                                            <div class="full-screen ">
+                                                <div class="close">
+                                                    <div class="d-flex justify-content-end">
+                                                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
+                                                    </div>
+                                                    <div class="closeText ">確定要停用帳號嗎?</div>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                <?php elseif (($rowUser['valid'] == 0)) : ?>
+
+
+                                    <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
+                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
+                                    <div class="openblcok">
+
+                                     
+                                            <div class="full-screen openFullScreen ">
+                                                <div class="close">
+                                                    <div class="d-flex justify-content-end ">
+                                                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
+                                                    </div>
+                                                    <div class="closeText">確定要啟用帳號嗎?</div>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a href="userOpen.php?id=<?= $_GET['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
                             </td>
                         </tr>
-                    <?php endwhile; ?>
 
-                </tbody>
-                </thead>
-            </table>
+                    <?php endwhile; ?>
+                    <p><?= $validone ?> 位正式會員</p>
+        </div>
+
+
+
+        <!-- 
+        <div class="colseblcok">
+            <div class="full-screen ">
+                <div class="close">
+                    <div class="d-flex justify-content-end">
+                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
+                    </div>
+                    <div class="closeText">確定要停用帳號嗎?</div>
+                    <div class="d-flex justify-content-center">
+                        <a type="submit" href="doDelete.php?id=<?= $rowUser['id'] ?>" class="btn btn-danger closeCheck">確定</a>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="openblcok">
+            <div class="full-screen openFullScreen d-none">
+                <div class="close">
+                    <div class="d-flex justify-content-end">
+                        <div class=" btn closeX" id="closeX">X</div>
+                    </div>
+                    <div class="closeText">確定要啟用帳號嗎?</div>
+                    <div class="d-flex justify-content-center">
+                        <a href="admin.php?id=<?= $rowUser['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- 
+                    <div class="colseblcok d-none">
+                                <div class="full-screen ">
+                                    <div class="close">
+                                        <h2 class="text">確定要關閉帳號嗎?</h2>
+                                        <button class="btn-close border border-danger"></button>
+                                    </div>
+                                </div>
+                            </div> -->
+        </tbody>
+        </thead>
+        </table>
         </div>
     </main>
 
@@ -194,6 +282,10 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-</body>
+    <script src="./app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    </script>
 
 </html>
