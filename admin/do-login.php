@@ -1,6 +1,6 @@
 <?php
 
-require("./pdo-connect.php");
+require("../pdo-connect.php");
 
 if(isset($_POST['account'])||isset($_POST['password'])){
     $account=$_POST['account'];
