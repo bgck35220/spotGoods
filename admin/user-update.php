@@ -165,48 +165,17 @@ try {
                         <tr>
                             <th>帳號狀態</th>
                             <td class="user-switch">
-                                <?php if ($rowUser['valid'] == 0) { ?>
-                                    <p class="m-0">啟用</p>
-                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
 
-                                        <div class="colseblcok ">
-                                            <div class="full-screen">
-                                                <div class="close">
-                                                    <div class="d-flex justify-content-end">
-                                                        <a class=" btn closeX" id="closeX" href="./user-update.php?id=<?= $_GET['id'] ?>">X</a>
-                                                    </div>
-                                                    <div class="closeText">確定要停用帳號嗎?</div>
-                                                    <div class="d-flex justify-content-center">
-                                                        <a type="submit" href="updateUserDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
+                                <?php if ($rowUser['valid'] == 1) { ?>
+                                    <!-- <p class="m-0 text-primary">啟用</p> -->
+                                    <a class="btn btn-outline-primary"  id="btn-open"  > 啟用</a>
+                                    <a class="btn btn-outline-danger d-none" id="btn-close"  > 停用</a>
+                                    <input type="hidden" name="valid" id="validswich"value="">
 
-                                    <a class="btn btn-outline-danger " href="user-update.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
-
-                                <?php } else if ($rowUser['valid'] == 1) { ?>
-                                    <p class="m-0">停用</p>
-                            
-                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
-
-                                        <div class="colseblcok ">
-                                            <div class="full-screen">
-                                                <div class="close">
-                                                    <div class="d-flex justify-content-end">
-                                                        <a class=" btn closeX" id="closeX" href="./user-update.php?id=<?= $_GET['id'] ?>">X</a>
-                                                    </div>
-                                                    <div class="closeText">確定要啟用帳號嗎?</div>
-                                                    <div class="d-flex justify-content-center">
-                                                        <a type="submit" href="updateUserOpen.php?id=<?= $_GET['id'] ?>" class="btn btn-primary closeCheck">確定</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <a class="btn btn-outline-primary " href="user-update.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 啟用</a>
+                                <?php } else if ($rowUser['valid'] == 0) { ?>
+                                    <a class="btn btn-outline-danger" id="btn-close"  > 停用</a>
+                                    <a class="btn btn-outline-primary d-none"  id="btn-open"> 啟用</a>
+                                    <input type="hidden" name="valid" id="validswich"value="">    
                                 <?php }; ?>
                             </td>
                         </tr>
@@ -214,11 +183,6 @@ try {
 
                     </table>
                     <input type="hidden" name="id" value="<?= $rowUser['id'] ?>">
-                    <!-- <?php if (isset($_SESSION['update_msg'])) : ?>
-                    <p class="updateMsg text-center"><?= $_SESSION['update_msg'] ?></p>
-                    <?php
-                                unset($_SESSION["update_msg"]);
-                            endif; ?> -->
                     <button type="submit" class="btn btn-outline-dark w-100">送出</button>
                 </form>
 
@@ -243,6 +207,7 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="./app.js"></script>
 </body>
 
 </html>

@@ -138,7 +138,7 @@ try {
             </div>
             <div class="d-flex">
                 <p>共 <?= $userExist ?> 位會員</p>
-   
+
             </div>
             <table class="table  table-striped ">
                 <thead>
@@ -163,8 +163,15 @@ try {
                             <td><?= $rowUser['account'] ?></td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
-                            <td><?php if ($rowUser['valid'] == 1) echo "啟用";
-                                if ($rowUser['valid'] == 0) echo "停用";  ?></td>
+                            <td>
+
+                                <?php if ($rowUser['valid'] == 1) : ?>
+                                    <p class="m-0 text-primary">啟用</p>
+                                <?php endif; ?>
+                                <?php if ($rowUser['valid'] == 0) : ?>
+                                    <p class="m-0 text-danger">停用</p>
+                                <?php endif; ?>
+                            </td>
                             <td class="">
                                 <a href="user.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-success" type="submit">詳細資訊</a>
                                 <a href="./user-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯資訊</a>
@@ -176,7 +183,7 @@ try {
                                     <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
                                     <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
                                         <div class="colseblcok  ">
-                                      
+
                                             <div class="full-screen ">
                                                 <div class="close">
                                                     <div class="d-flex justify-content-end">
@@ -196,9 +203,9 @@ try {
 
                                     <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
                                     <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
-                                    <div class="openblcok">
+                                        <div class="openblcok">
 
-                                     
+
                                             <div class="full-screen openFullScreen ">
                                                 <div class="close">
                                                     <div class="d-flex justify-content-end ">
@@ -211,8 +218,8 @@ try {
                                                 </div>
                                             </div>
                                         <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
                             </td>
                         </tr>
 
