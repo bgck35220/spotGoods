@@ -1,9 +1,11 @@
 <?php
 require_once("../pdo-connect.php");
-
+if (!isset($_SESSION["user"])) {
+    header("location:adminLogin.php");
+};
 //總筆數
 $sqlTotal = "SELECT * FROM users";
-$stmtTotal =$db_host->prepare($sqlTotal);
+$stmtTotal = $db_host->prepare($sqlTotal);
 
 try {
     $stmtTotal->execute();
@@ -12,14 +14,25 @@ try {
     echo $e->getMessage();
 }
 
+if (isset($_GET['usertable'])) {
+    $id = $_GET['usertable'];
+    $sqlUsreTable = "SELECT * FROM users WHERE id = ?";
+    $stmtUserTable = $db_host->prepare($sqlUsreTable);
+
+    try {
+        $stmtUserTable->execute([$id]);
+        $rowUserUserTable = $stmtUserTable->fetch();
+        $userExistUserTable = $stmtUserTable->rowCount();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+};
 
 
-if (!isset($_SESSION["user"])) {
-    header("location:adminLogin.php");
-} else if (isset($_GET['search'])) {
+if (isset($_GET['search'])) {
     //搜尋會員帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM users WHERE account and email LIKE '%$search%'";
+    $sqlUser = "SELECT * FROM users WHERE id AND account AND email LIKE '%$search%'";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -34,19 +47,17 @@ if (!isset($_SESSION["user"])) {
     $pageR = $totalUsersCount % $pageItems; // 總筆數除一頁顯示數量 如果有餘數代表他是下一頁
     $starNo = ($p) * $pageItems - 9;
     $starEnd = $pageItems * ($p);
-if ($pageR !== 0) {
-    $pageConet = ceil($pageConet); //總頁數餘數不為0 讓他無條件進位
+    if ($pageR !== 0) {
+        $pageConet = ceil($pageConet); //總頁數餘數不為0 讓他無條件進位
 
-    if ($pageConet == $p) {
-        $starEnd = $starEnd - ($pageItems - $pageR);
+        if ($pageConet == $p) {
+            $starEnd = $starEnd - ($pageItems - $pageR);
+        }
     }
-}
     $sqlUser = "SELECT * FROM users  ORDER BY id LIMIT $startItem,$pageItems";
+
+    $stmtUser = $db_host->prepare($sqlUser);
 }
-
-
-
-
 
 
 $stmtUser = $db_host->prepare($sqlUser);
@@ -57,6 +68,7 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
+
 
 
 
@@ -153,7 +165,7 @@ try {
     <main>
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
-      
+
             <table class="table  table-striped ttbb">
                 <thead>
                     <tr class="">
@@ -162,11 +174,11 @@ try {
                         <th>帳號</th>
                         <th>信箱</th>
                         <th>註冊時間</th>
-                        <th>狀態</th>
+                        <th>帳號狀態</th>
                         <th>
                             <form action="./admin.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋會員帳號或信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value>
+                                    <input type="search" class="form-control" placeholder="搜尋會員帳號或信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
@@ -181,10 +193,17 @@ try {
                         <tr class="table-text-all">
                             <td><?= $rowUser['id'] ?></td>
                             <td><?= $rowUser['name'] ?></td>
-                            <td><?= $rowUser['account'] ?></td>
+                            <td >
+                                <a class="text-decoration-none text-dark"href="./admin.php?usertable=<?= $rowUser['id'] ?><?php
+                                if(isset($p)) echo "&p=$p";
+                                if(isset($search)) echo "&search=$search";
+                                ?>" type="submit">
+                                    <?= $rowUser['account'] ?>
+                                </a>
+                            </td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
-                            <td>
+                            <td >
 
                                 <?php if ($rowUser['valid'] == 1) : ?>
                                     <p class="m-0 text-primary">啟用</p>
@@ -194,8 +213,8 @@ try {
                                 <?php endif; ?>
                             </td>
                             <td class="">
-                                <a href="user.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-success" type="submit">詳細資訊</a>
-                                <a href="./user-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯資訊</a>
+                                <a href="user.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary" type="submit">詳細資訊</a>
+                                <a href="./user-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯</a>
 
 
                                 <?php if ($rowUser['valid'] == 1) :
@@ -203,8 +222,8 @@ try {
                                 ?>
                                     <?php if (isset($search)) : ?>
                                         <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&search=<?= $search ?>" id="user-close"> 停用</a>
-                                        <?php elseif(isset($p)) : ?>
-                                        <a class="btn btn-outline-danger" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p?>">停用</a>
+                                    <?php elseif (isset($p)) : ?>
+                                        <a class="btn btn-outline-danger" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p ?>">停用</a>
                                     <?php else : ?>
                                         <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
                                     <?php endif; ?>
@@ -217,8 +236,8 @@ try {
                                     <?php if (isset($search)) : ?>
 
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>&search=<?= $search ?>">啟用</a>
-                                    <?php elseif(isset($p)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&p=<?= $p?>">啟用</a>
+                                    <?php elseif (isset($p)) : ?>
+                                        <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&p=<?= $p ?>">啟用</a>
                                     <?php else : ?>
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
                                     <?php endif; ?>
@@ -234,67 +253,137 @@ try {
 <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
     <div class="colseblcok  ">
 
+        <!-- 停用確認 -->
         <div class="full-screen full-close">
             <div class="close">
                 <div class="d-flex justify-content-end">
-                    <a class=" btn closeX" id="closeX" href="admin.php<?php 
+                    <a class=" btn closeX" id="closeX" href="admin.php
+                    <?php
                     if (isset($search)) echo "?search=$search";
-                    if (isset($p)) echo "?p=$p";?>">X</a>
+                    if (isset($p)) echo "?p=$p"; ?>">X
+                    </a>
                 </div>
                 <div class="closeText ">確定要停用帳號嗎?</div>
                 <div class="d-flex justify-content-center">
-                    <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
+                    <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?><?php
+                                                                                if (isset($p)) {
+                                                                                    echo "&p=$p";
+                                                                                } else if (isset($search)) {
+                                                                                    echo "&search=$search";
+                                                                                };
+                                                                                ?>" class="btn btn-danger closeCheck">確定</a>
                 </div>
             </div>
         </div>
     </div>
 <?php endif; ?>
-
+<!-- 啟用確認 -->
 <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
     <div class="openblcok">
-
         <div class="full-screen openFullScreen ">
             <div class="close">
                 <div class="d-flex justify-content-end ">
-                    <a class=" btn closeX" id="closeX" href="admin.php<?php 
-                    if (isset($search)) echo "?search=$search";
-                    if (isset($p)) echo "?p=$p";?>">X</a>
+                    <a class=" btn closeX" id="closeX" href="admin.php
+                    <?php if (isset($search)) echo "?search=$search";
+                    if (isset($p)) echo "?p=$p"; ?>">X</a>
                 </div>
                 <div class="closeText">確定要啟用帳號嗎?</div>
                 <div class="d-flex justify-content-center">
-                    <a href="userOpen.php?id=<?= $_GET['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
+                    <a href="userOpen.php?id=<?= $_GET['id'] ?><?php
+                                                                if (isset($p)) {
+                                                                    echo "&p=$p";
+                                                                } else if (isset($search)) {
+                                                                    echo "&search=$search";
+                                                                };  ?>
+                    " type="submit" class="btn btn-primary closeCheck">確定</a>
                 </div>
             </div>
         </div>
     <?php endif; ?>
+
+
+    <!-- table 標題 -->
     <div>
-                <h2 class="fs-3">會員管理</h2>
-            </div>
-            <div class="d-flex">
-                <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
-            </div>
+        <h2 class="fs-3">會員管理</h2>
+    </div>
+    <div class="d-flex">
+        <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
+    </div>
     <?php if (isset($p)) : ?>
         <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-     <?php endif; ?> 
-    </div>
-    </tbody>
-    </thead>
-    </table>
-
-    <?php if (isset($p)) : ?>
-        <nav aria-label="Page navigation example ">
-            <ul class="pagination  justify-content-center">
-                <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
+        <?php endif; ?>
+        </div>
+        </tbody>
+        </thead>
+        </table>
+        <!-- 頁數 -->
+        <?php if (isset($p)) : ?>
+            <nav aria-label="Page navigation example ">
+                <ul class="pagination  justify-content-center">
+                    <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
                         <li class="page-item <?php if ($p == $i) echo 'active' ?>">
                             <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
                             </a>
                         </li>
                     <?php endfor; ?>
-            </ul>
-        </nav>
-    <?php endif ?>
+                </ul>
+            </nav>
+        <?php endif ?>
     </div>
 
+    <!-- 點帳號直接顯示詳細資訊                   -->
+    <?php if (isset($_GET['usertable']) && $userExistUserTable > 0) : ?>
+        <div class="col-3 user-table ">
+            <table class="table table-bordered  m-auto user-table-text  ">
+                <tr>
+                    <th>id</th>
+                    <td>123
+                        <a class="user-table-btn-close" href="./admin.php?<?php
+                                if(isset($p)) echo "&p=$p";
+                                if(isset($search)) echo "&search=$search";
+                                ?>">X
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>姓名</th>
+                    <td><?= $rowUserUserTable['name'] ?></td>
+                </tr>
+                <tr>
+                    <th>帳號</th>
+                    <td><?= $rowUserUserTable['account'] ?></td>
+                </tr>
+                <tr>
+                    <th>信箱</th>
+                    <td><?= $rowUserUserTable['email'] ?></td>
+                </tr>
+                <tr>
+                    <th>地址</th>
+                    <td><?= $rowUserUserTable['address'] ?></td>
+                </tr>
+                <tr>
+                    <th>手機號碼</th>
+                    <td>還沒新增</td>
+                </tr>
+                <tr>
+                    <th>註冊時間</th>
+                    <td><?= $rowUserUserTable['created_at'] ?></td>
+                </tr>
+                <tr>
+                    <th>帳號狀態</th>
+                    <td><?php if( $rowUserUserTable['valid'] ==1){
+                                echo "啟用";
+                            }else{
+                                echo "停用";
+                            }
+
+                        ?></td>
+
+                </tr>
+
+            </table>
+        </div>
+    <?php endif ?>
     </main>
 
 
@@ -314,7 +403,7 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-  
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 

@@ -20,6 +20,9 @@ try{
     if(isset($_GET['search'])){
         $search=$_GET['search'];
         header("location: admin.php?search=$search");
+    }else if((isset($_GET['p']))) {
+        $p=$_GET['p'];
+        header("location: admin.php?p=$p");
     }else{
         header("location: admin.php");
     }
