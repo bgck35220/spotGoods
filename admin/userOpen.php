@@ -4,6 +4,7 @@ require_once("../pdo-connect.php");
 
 if(isset($_GET['id'])){
     $id=$_GET['id'];
+   
 }else {
     die("資料錯誤");
 };
@@ -17,7 +18,13 @@ try{
     $stmt->execute([$id]);
     $userExist=$stmt->rowCount();
    
-    header("location: admin.php");
+    if(isset($_GET['search'])){
+        $search=$_GET['search'];
+        header("location: admin.php?search=$search");
+    }else{
+        header("location: admin.php");
+    }
+
  
 }catch(PDOException $e){
     echo $e->getMessage();

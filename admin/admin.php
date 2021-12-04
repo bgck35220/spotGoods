@@ -1,46 +1,66 @@
 <?php
 require_once("../pdo-connect.php");
 
-if (!isset($_SESSION["user"])) {
-    header("location:adminLogin.php");
-}
-
-$sqlUser = "SELECT * FROM users ";
-$stmtUser = $db_host->prepare($sqlUser);
+//總筆數
+$sqlTotal = "SELECT * FROM users";
+$stmtTotal =$db_host->prepare($sqlTotal);
 
 try {
-    $stmtUser->execute();
-    // $rowUser=$stmtUser->fetch();
-
-    $userExist = $stmtUser->rowCount();
-
-    // if($userExist>0){
-    //     $rowAdmin=$stmtAdmin->fetch();
-    //     $user=[
-    //         "id"=>$rowAdmin['id'],
-    //         "name"=>$rowAdmin['name'],
-    //         "account"=>$rowAdmin['account'],
-    //         "password"=>$rowAdmin['email']
-    //     ];
-    //     $_SESSION["user"]=$user;
-    //     header("location: admin.php");
-    //     unset($_SESSION["error_times"]);
-    //     unset($_SESSION["error_msg"]);
-    //     echo $user;
-    // }
-    // else{
-    //     $_SESSION['error_msg']="帳號或密碼輸入錯誤";
-    //     if(isset($_SESSION["error_times"])){
-    //         $_SESSION["error_times"]=$_SESSION["error_times"]+1;
-    //     }else{
-    //         $_SESSION["error_times"]=1;
-    //     }
-    //     header("location: adminLogin.php");
-    // }
-
+    $stmtTotal->execute();
+    $totalUsersCount = $stmtTotal->rowCount();
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
+
+
+
+if (!isset($_SESSION["user"])) {
+    header("location:adminLogin.php");
+} else if (isset($_GET['search'])) {
+    //搜尋會員帳號和電子信箱功能
+    $search = $_GET['search'];
+    $sqlUser = "SELECT * FROM users WHERE account and email LIKE '%$search%'";
+} else {
+    //分頁功能
+    if (isset($_GET['p'])) {
+        $p = $_GET['p'];
+    } else {
+        $p = 1;
+    }
+
+    $pageItems = 10; //一頁6個
+    $startItem = ($p - 1) * $pageItems; //求出LIMIT第一個數字
+    $pageConet = $totalUsersCount / $pageItems; //總筆數除一頁10個 = 總頁數
+    $pageR = $totalUsersCount % $pageItems; // 總筆數除一頁顯示數量 如果有餘數代表他是下一頁
+    $starNo = ($p) * $pageItems - 9;
+    $starEnd = $pageItems * ($p);
+if ($pageR !== 0) {
+    $pageConet = ceil($pageConet); //總頁數餘數不為0 讓他無條件進位
+
+    if ($pageConet == $p) {
+        $starEnd = $starEnd - ($pageItems - $pageR);
+    }
+}
+    $sqlUser = "SELECT * FROM users  ORDER BY id LIMIT $startItem,$pageItems";
+}
+
+
+
+
+
+
+$stmtUser = $db_host->prepare($sqlUser);
+try {
+    $stmtUser->execute();
+    // $rowUser=$stmtUser->fetch();
+    $userExist = $stmtUser->rowCount();
+} catch (PDOException $e) {
+    echo $e->getMessage();
+}
+
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -60,7 +80,7 @@ try {
 
 
 
-    <header class="container-fluid nav-bar-title py-2 sticky-top">
+    <header class="container-fluid nav-bar-title py-2 sticky-top header-nav">
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
@@ -133,31 +153,32 @@ try {
     <main>
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
-            <div>
-                <h2 class="fs-3">會員管理</h2>
-            </div>
-            <div class="d-flex">
-                <p>共 <?= $userExist ?> 位會員</p>
-
-            </div>
-            <table class="table  table-striped ">
+      
+            <table class="table  table-striped ttbb">
                 <thead>
-                    <tr>
+                    <tr class="">
                         <th>id</th>
                         <th>姓名</th>
                         <th>帳號</th>
                         <th>信箱</th>
                         <th>註冊時間</th>
                         <th>狀態</th>
-                        <th></th>
+                        <th>
+                            <form action="./admin.php" method="GET">
+                                <div class="input-group  search-user">
+                                    <input type="search" class="form-control" placeholder="搜尋會員帳號或信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value>
+                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
+                                </div>
+                            </form>
+                        </th>
                     </tr>
 
-                <tbody>
+                <tbody class="">
                     <?php while ($rowUser = $stmtUser->fetch()) :
                     ?>
 
 
-                        <tr>
+                        <tr class="table-text-all">
                             <td><?= $rowUser['id'] ?></td>
                             <td><?= $rowUser['name'] ?></td>
                             <td><?= $rowUser['account'] ?></td>
@@ -180,96 +201,100 @@ try {
                                 <?php if ($rowUser['valid'] == 1) :
                                     $validone += 1;
                                 ?>
-                                    <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
-                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
-                                        <div class="colseblcok  ">
-
-                                            <div class="full-screen ">
-                                                <div class="close">
-                                                    <div class="d-flex justify-content-end">
-                                                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
-                                                    </div>
-                                                    <div class="closeText ">確定要停用帳號嗎?</div>
-                                                    <div class="d-flex justify-content-center">
-                                                        <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <?php if (isset($search)) : ?>
+                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&search=<?= $search ?>" id="user-close"> 停用</a>
+                                        <?php elseif(isset($p)) : ?>
+                                        <a class="btn btn-outline-danger" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p?>">停用</a>
+                                    <?php else : ?>
+                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
                                     <?php endif; ?>
+
+
+
 
                                 <?php elseif (($rowUser['valid'] == 0)) : ?>
 
+                                    <?php if (isset($search)) : ?>
 
-                                    <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
-                                    <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
-                                        <div class="openblcok">
-
-
-                                            <div class="full-screen openFullScreen ">
-                                                <div class="close">
-                                                    <div class="d-flex justify-content-end ">
-                                                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
-                                                    </div>
-                                                    <div class="closeText">確定要啟用帳號嗎?</div>
-                                                    <div class="d-flex justify-content-center">
-                                                        <a href="userOpen.php?id=<?= $_GET['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-                                        </div>
+                                        <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>&search=<?= $search ?>">啟用</a>
+                                    <?php elseif(isset($p)) : ?>
+                                        <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&p=<?= $p?>">啟用</a>
+                                    <?php else : ?>
+                                        <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
                                     <?php endif; ?>
-                            </td>
-                        </tr>
-
-                    <?php endwhile; ?>
-                    <p><?= $validone ?> 位正式會員</p>
         </div>
+    <?php endif; ?>
+    </td>
+    </tr>
+
+<?php endwhile; ?>
 
 
+<!-- 跳出視窗區塊 -->
+<?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
+    <div class="colseblcok  ">
 
-        <!-- 
-        <div class="colseblcok">
-            <div class="full-screen ">
-                <div class="close">
-                    <div class="d-flex justify-content-end">
-                        <a class=" btn closeX" id="closeX" href="admin.php">X</a>
-                    </div>
-                    <div class="closeText">確定要停用帳號嗎?</div>
-                    <div class="d-flex justify-content-center">
-                        <a type="submit" href="doDelete.php?id=<?= $rowUser['id'] ?>" class="btn btn-danger closeCheck">確定</a>
-                    </div>
+        <div class="full-screen full-close">
+            <div class="close">
+                <div class="d-flex justify-content-end">
+                    <a class=" btn closeX" id="closeX" href="admin.php<?php 
+                    if (isset($search)) echo "?search=$search";
+                    if (isset($p)) echo "?p=$p";?>">X</a>
+                </div>
+                <div class="closeText ">確定要停用帳號嗎?</div>
+                <div class="d-flex justify-content-center">
+                    <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?>" class="btn btn-danger closeCheck">確定</a>
                 </div>
             </div>
-        </div> -->
+        </div>
+    </div>
+<?php endif; ?>
 
-        <!-- <div class="openblcok">
-            <div class="full-screen openFullScreen d-none">
-                <div class="close">
-                    <div class="d-flex justify-content-end">
-                        <div class=" btn closeX" id="closeX">X</div>
-                    </div>
-                    <div class="closeText">確定要啟用帳號嗎?</div>
-                    <div class="d-flex justify-content-center">
-                        <a href="admin.php?id=<?= $rowUser['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
-                    </div>
+<?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
+    <div class="openblcok">
+
+        <div class="full-screen openFullScreen ">
+            <div class="close">
+                <div class="d-flex justify-content-end ">
+                    <a class=" btn closeX" id="closeX" href="admin.php<?php 
+                    if (isset($search)) echo "?search=$search";
+                    if (isset($p)) echo "?p=$p";?>">X</a>
+                </div>
+                <div class="closeText">確定要啟用帳號嗎?</div>
+                <div class="d-flex justify-content-center">
+                    <a href="userOpen.php?id=<?= $_GET['id'] ?>" type="submit" class="btn btn-primary closeCheck">確定</a>
                 </div>
             </div>
-        </div> -->
-        <!-- 
-                    <div class="colseblcok d-none">
-                                <div class="full-screen ">
-                                    <div class="close">
-                                        <h2 class="text">確定要關閉帳號嗎?</h2>
-                                        <button class="btn-close border border-danger"></button>
-                                    </div>
-                                </div>
-                            </div> -->
-        </tbody>
-        </thead>
-        </table>
         </div>
+    <?php endif; ?>
+    <div>
+                <h2 class="fs-3">會員管理</h2>
+            </div>
+            <div class="d-flex">
+                <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
+            </div>
+    <?php if (isset($p)) : ?>
+        <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
+     <?php endif; ?> 
+    </div>
+    </tbody>
+    </thead>
+    </table>
+
+    <?php if (isset($p)) : ?>
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination  justify-content-center">
+                <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
+                        <li class="page-item <?php if ($p == $i) echo 'active' ?>">
+                            <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+            </ul>
+        </nav>
+    <?php endif ?>
+    </div>
+
     </main>
 
 
@@ -289,7 +314,7 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <script src="./app.js"></script>
+  
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 

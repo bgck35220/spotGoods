@@ -17,7 +17,12 @@ try{
     $stmt->execute([$id]);
     $userExist=$stmt->rowCount();
    
-    header("location: admin.php");
+    if(isset($_GET['search'])){
+        $search=$_GET['search'];
+        header("location: admin.php?search=$search");
+    }else{
+        header("location: admin.php");
+    }
  
 }catch(PDOException $e){
     echo $e->getMessage();
