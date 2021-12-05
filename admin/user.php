@@ -10,13 +10,13 @@ if(isset($_GET['id'])){
     header("location:sellers.php");
 }
 
-$sqlseller = "SELECT * FROM users WHERE id = ?";
-$stmtseller = $db_host->prepare($sqlseller);
+$sqluser = "SELECT * FROM users WHERE id = ?";
+$stmtuser = $db_host->prepare($sqluser);
 
 try {
-    $stmtseller->execute([$id]);
-    $rowUser=$stmtseller->fetch();
-    $userExist = $stmtseller->rowCount();
+    $stmtuser->execute([$id]);
+    $rowUser=$stmtuser->fetch();
+    $userExist = $stmtuser->rowCount();
 
 } catch (PDOException $e) {
     echo $e->getMessage();
