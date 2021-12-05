@@ -5,7 +5,7 @@ if (!isset($_SESSION["user"])) {
 };
 
 //總筆數
-$sqlTotal = "SELECT * FROM sellers";
+$sqlTotal = "SELECT * FROM sellers WHERE valid = 1 OR valid = 0";
 $stmtTotal = $db_host->prepare($sqlTotal);
 
 try {
@@ -33,7 +33,7 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE id like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
+    $sqlUser = "SELECT * FROM sellers WHERE id  like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -55,7 +55,7 @@ if (isset($_GET['search'])) {
             $starEnd = $starEnd - ($pageItems - $pageR);
         }
     }
-    $sqlUser = "SELECT * FROM sellers  ORDER BY id LIMIT $startItem,$pageItems";
+    $sqlUser = "SELECT * FROM sellers WHERE valid=1 or valid = 0 ORDER BY id LIMIT $startItem,$pageItems";
 
     $stmtUser = $db_host->prepare($sqlUser);
 }
