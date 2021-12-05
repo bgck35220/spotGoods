@@ -33,7 +33,7 @@ if (isset($_GET['usertable'])) {
 if (isset($_GET['search'])) {
     //搜尋會員帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM users WHERE id AND account AND email LIKE '%$search%'";
+    $sqlUser = "SELECT * FROM sellers WHERE id like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -117,7 +117,7 @@ try {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">店家申請</a></li>
-                                    <li><a class="dropdown-item" href="./login.php">店家總覽</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
                                 </ul>
@@ -179,7 +179,7 @@ try {
                         <th>
                             <form action="./admin.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋會員帳號或信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋會員帳號、信箱、ID" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
