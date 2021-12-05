@@ -123,7 +123,7 @@ try {
                     </div>
                     <div>
                         <a href="./admin.php" class="btn btn-light" type="submit">
-                            首頁
+                            會員首頁
                         </a>
                     </div>
                 </div>
