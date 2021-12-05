@@ -7,21 +7,22 @@ if (!isset($_SESSION["user"])) {
 if(isset($_GET['id'])){
     $id = $_GET['id'];
 }else{
-    header("location:admin.php");
+    header("location:sellers.php");
 }
 
-$sqlUser = "SELECT * FROM users WHERE id = ?";
-$stmtUser = $db_host->prepare($sqlUser);
+$sqlseller = "SELECT * FROM users WHERE id = ?";
+$stmtseller = $db_host->prepare($sqlseller);
 
 try {
-    $stmtUser->execute([$id]);
-    $rowUser=$stmtUser->fetch();
-    $userExist = $stmtUser->rowCount();
+    $stmtseller->execute([$id]);
+    $rowUser=$stmtseller->fetch();
+    $userExist = $stmtseller->rowCount();
 
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -122,7 +123,7 @@ try {
                     </div>
                     <div>
                     <a href="./admin.php" class="btn btn-light" type="submit">
-                        首頁
+                        會員首頁
                     </a>
                     </div>
                 </div>
