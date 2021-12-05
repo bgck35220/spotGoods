@@ -7,7 +7,7 @@ if (!isset($_SESSION["user"])) {
 if(isset($_GET['id'])){
     $id = $_GET['id'];
 }else{
-    header("location:sellers.php");
+    header("location:admin.php");
 }
 
 $sqluser = "SELECT * FROM users WHERE id = ?";
@@ -64,7 +64,7 @@ try {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">店家申請</a></li>
-                                    <li><a class="dropdown-item" href="./login.php">店家總覽</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
                                 </ul>

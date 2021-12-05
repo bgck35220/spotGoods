@@ -1,5 +1,5 @@
 <?php
-require_once("../pdo-connect.php");
+require_once("../../pdo-connect.php");
 
 if (!isset($_SESSION["user"])) {
     header("location:admin-Login.php");
@@ -8,13 +8,13 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 }
 
-$sqlUser = "SELECT * FROM users WHERE id = ?";
-$stmtUser = $db_host->prepare($sqlUser);
+$sqlSeller = "SELECT * FROM sellers WHERE id = ?";
+$stmSeller = $db_host->prepare($sqlSeller);
 
 try {
-    $stmtUser->execute([$id]);
-    $rowUser = $stmtUser->fetch();
-    $userExist = $stmtUser->rowCount();
+    $stmSeller->execute([$id]);
+    $rowUser = $stmSeller->fetch();
+    $userExist = $stmSeller->rowCount();
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -23,14 +23,14 @@ try {
 <html lang="en">
 
 <head>
-    <title>管理員後台</title>
+    <title>管理員後台-店家編輯資料</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <style>
 
@@ -44,7 +44,7 @@ try {
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand fs-5 text-light ms-3 me-5" href="./admin.php">TEAM 1 管理員後台</a>
+                    <a class="navbar-brand fs-5 text-light ms-3 me-5" href="../admin.php">TEAM 1 管理員後台</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -55,7 +55,7 @@ try {
                                     會員管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item " href="./admin.php">會員總覽</a></li>
+                                    <li><a class="dropdown-item " href="../admin.php">會員總覽</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
@@ -64,7 +64,7 @@ try {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">店家申請</a></li>
-                                    <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
+                                    <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
                                 </ul>
@@ -113,31 +113,35 @@ try {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">會員資料編輯</h2>
+                    <h2 class="fs-3">店家資料編輯</h2>
                 </div>
                 <div class="d-flex ">
                     <div class="me-2">
-                        <a href="./user.php?id=<?= $rowUser['id'] ?>" class="btn btn btn-secondary" type="submit">
+                        <a href="./seller.php?id=<?= $rowUser['id'] ?>" class="btn btn btn-secondary" type="submit">
                             詳細資訊
                         </a>
                     </div>
                     <div>
-                        <a href="./admin.php" class="btn btn-light" type="submit">
-                            會員首頁
+                        <a href="./sellers.php" class="btn btn-light" type="submit">
+                            店家首頁
                         </a>
                     </div>
                 </div>
             </div>
 
             <?php if ($userExist > 0) : ?>
-                <form action="doUpdate.php " method="POST" class="updateForm">
+                <form action="sellerDoUpdate.php " method="POST" class="updateForm">
                     <table class="table table-bordered  updateTable ">
                         <tr class="">
                             <th>id</th>
                             <td class="p-1"> <input type="text" value="<?= $rowUser['id'] ?>" class="form-control p-2 m-0" placeholder="id" name="id" disabled></td>
                         </tr>
                         <tr>
-                            <th>姓名</th>
+                            <th>logo</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['Logo'] ?>" class="form-control p-2 m-0" placeholder="name" name="Logo"></td>
+                        </tr>
+                        <tr>
+                            <th>店家名稱</th>
                             <td class="p-1"> <input type="text" value="<?= $rowUser['name'] ?>" class="form-control p-2 m-0" placeholder="name" name="name"></td>
                         </tr>
                         <tr>
@@ -147,10 +151,6 @@ try {
                         <tr>
                             <th>信箱</th>
                             <td class="p-1"> <input type="text" value="<?= $rowUser['email'] ?>" class="form-control p-2 m-0" placeholder="email" name="email"></td>
-                        </tr>
-                        <tr>
-                            <th>地址</th>
-                            <td class="p-1"> <input type="text" value="<?= $rowUser['address'] ?>" class="form-control p-2 m-0" placeholder="address" name="address"></td>
                         </tr>
                         <tr>
                             <th>手機號碼</th>
@@ -205,7 +205,7 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <script src="./app.js"></script>
+    <script src="../app.js"></script>
 </body>
 
 </html>

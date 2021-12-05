@@ -190,3 +190,7 @@ border-bottom: none;
     right:10px;
     color: white;
 }
+
+.page-nav{
+  z-index: 0;
+}
