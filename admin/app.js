@@ -3,7 +3,7 @@
     function userSwitch(){
         let btnOpen=document.querySelector("#btn-open")
         let btnClose=document.querySelector("#btn-close")
-        let btnCloseClass=document.getElementsByClassName("d-none")
+
         let validswich =document.querySelector("#validswich")
         let validNum=0
 
@@ -31,3 +31,5 @@
     })
     }
     userSwitch()
+
+

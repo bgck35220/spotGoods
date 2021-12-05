@@ -1,8 +1,9 @@
 <?php
 require_once("../pdo-connect.php");
 if (!isset($_SESSION["user"])) {
-    header("location:adminLogin.php");
+    header("location:admin-Login.php");
 };
+
 //總筆數
 $sqlTotal = "SELECT * FROM users";
 $stmtTotal = $db_host->prepare($sqlTotal);
@@ -13,7 +14,7 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
-
+//會員資料彈跳式窗
 if (isset($_GET['usertable'])) {
     $id = $_GET['usertable'];
     $sqlUsreTable = "SELECT * FROM users WHERE id = ?";
@@ -193,18 +194,18 @@ try {
                         <tr class="table-text-all">
                             <td><?= $rowUser['id'] ?></td>
                             <td><?= $rowUser['name'] ?></td>
-                            <td >
-                                <a class="text-decoration-none text-dark"href="./admin.php?usertable=<?= $rowUser['id'] ?><?php
-                                if(isset($p)) echo "&p=$p";
-                                if(isset($search)) echo "&search=$search";
+                            <td class="">
+                                <a class="text-decoration-none text-dark d-flex" href="./admin.php?usertable=<?= $rowUser['id'] ?><?php
+                                if (isset($p)) echo "&p=$p";
+                                if (isset($search)) echo "&search=$search";
                                 ?>" type="submit">
                                     <?= $rowUser['account'] ?>
+                                    <img class="magnifier-img" src="./img/search-solid.svg" alt="">
                                 </a>
                             </td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
-                            <td >
-
+                            <td>
                                 <?php if ($rowUser['valid'] == 1) : ?>
                                     <p class="m-0 text-primary">啟用</p>
                                 <?php endif; ?>
@@ -228,13 +229,9 @@ try {
                                         <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
                                     <?php endif; ?>
 
-
-
-
                                 <?php elseif (($rowUser['valid'] == 0)) : ?>
 
                                     <?php if (isset($search)) : ?>
-
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>&search=<?= $search ?>">啟用</a>
                                     <?php elseif (isset($p)) : ?>
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&p=<?= $p ?>">啟用</a>
@@ -254,7 +251,7 @@ try {
     <div class="colseblcok  ">
 
         <!-- 停用確認 -->
-        <div class="full-screen full-close">
+        <div class="full-screen full-close " id="user-switch-close">
             <div class="close">
                 <div class="d-flex justify-content-end">
                     <a class=" btn closeX" id="closeX" href="admin.php
@@ -266,12 +263,12 @@ try {
                 <div class="closeText ">確定要停用帳號嗎?</div>
                 <div class="d-flex justify-content-center">
                     <a type="submit" href="userDelete.php?id=<?= $_GET['id'] ?><?php
-                                                                                if (isset($p)) {
-                                                                                    echo "&p=$p";
-                                                                                } else if (isset($search)) {
-                                                                                    echo "&search=$search";
-                                                                                };
-                                                                                ?>" class="btn btn-danger closeCheck">確定</a>
+                    if (isset($p)) {
+                    echo "&p=$p";
+                    } else if (isset($search)) {
+                    echo "&search=$search";
+                    };
+                    ?>" class="btn btn-danger closeCheck">確定</a>
                 </div>
             </div>
         </div>
@@ -280,7 +277,7 @@ try {
 <!-- 啟用確認 -->
 <?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
     <div class="openblcok">
-        <div class="full-screen openFullScreen ">
+        <div class="full-screen openFullScreen" id="user-switch-open">
             <div class="close">
                 <div class="d-flex justify-content-end ">
                     <a class=" btn closeX" id="closeX" href="admin.php
@@ -299,36 +296,37 @@ try {
                 </div>
             </div>
         </div>
+    </div>
+<?php endif; ?>
+
+
+<!-- table 標題 -->
+<div>
+    <h2 class="fs-3">會員管理</h2>
+</div>
+<div class="d-flex">
+    <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
+</div>
+<?php if (isset($p)) : ?>
+    <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
     <?php endif; ?>
-
-
-    <!-- table 標題 -->
-    <div>
-        <h2 class="fs-3">會員管理</h2>
     </div>
-    <div class="d-flex">
-        <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
-    </div>
+    </tbody>
+    </thead>
+    </table>
+    <!-- 頁數 -->
     <?php if (isset($p)) : ?>
-        <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-        <?php endif; ?>
-        </div>
-        </tbody>
-        </thead>
-        </table>
-        <!-- 頁數 -->
-        <?php if (isset($p)) : ?>
-            <nav aria-label="Page navigation example ">
-                <ul class="pagination  justify-content-center">
-                    <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
-                        <li class="page-item <?php if ($p == $i) echo 'active' ?>">
-                            <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
-                            </a>
-                        </li>
-                    <?php endfor; ?>
-                </ul>
-            </nav>
-        <?php endif ?>
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination  justify-content-center">
+                <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
+                    <li class="page-item <?php if ($p == $i) echo 'active' ?>">
+                        <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    <?php endif ?>
     </div>
 
     <!-- 點帳號直接顯示詳細資訊                   -->
@@ -339,9 +337,9 @@ try {
                     <th>id</th>
                     <td>123
                         <a class="user-table-btn-close" href="./admin.php?<?php
-                                if(isset($p)) echo "&p=$p";
-                                if(isset($search)) echo "&search=$search";
-                                ?>">X
+                                                                            if (isset($p)) echo "&p=$p";
+                                                                            if (isset($search)) echo "&search=$search";
+                                                                            ?>">X
                         </a>
                     </td>
                 </tr>
@@ -371,11 +369,11 @@ try {
                 </tr>
                 <tr>
                     <th>帳號狀態</th>
-                    <td><?php if( $rowUserUserTable['valid'] ==1){
-                                echo "啟用";
-                            }else{
-                                echo "停用";
-                            }
+                    <td><?php if ($rowUserUserTable['valid'] == 1) {
+                            echo "啟用";
+                        } else {
+                            echo "停用";
+                        }
 
                         ?></td>
 
@@ -403,10 +401,15 @@ try {
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
 
+    <script>
+        let userTable = document.querySelector(".user-table")
+        userTable.addEventListener("click", (e) => {
+            if (e.target.nodeName === "DIV") {
+                userTable.classList.toggle("d-none")
+            }
+        })
     </script>
 
 </html>

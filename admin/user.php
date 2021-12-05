@@ -2,7 +2,7 @@
 require_once("../pdo-connect.php");
 
 if (!isset($_SESSION["user"])) {
-    header("location:adminLogin.php");
+    header("location:admin-Login.php");
 }
 if(isset($_GET['id'])){
     $id = $_GET['id'];
