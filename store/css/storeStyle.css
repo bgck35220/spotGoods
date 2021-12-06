@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    list-style-type: none;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #0984e3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 9%;
+}
+
+.header .logo {
+    font-size: 2.5rem;
+    color: #fff;
+    font-weight: bolder;
+    text-decoration: none;
+
+}
+
+.header .logo i {
+    color: gold;
+}
+
+.header .logo-map {
+    font-size: 2.5rem;
+    color: #fff;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+.header .logo-map i {
+    color: red;
+}
+
+.header .search-form {
+    border-radius: 5rem;
+    height: 5rem;
+    width: 60rem;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    background: #fff;
+}
+
+.header .search-form input {
+    width: 100%;
+    padding-right: 1rem;
+    font-size: 1.7rem;
+    text-transform: none;
+    color: #666;
+}
+
+.header .search-form label {
+    font-size: 2rem;
+    color: #666;
+    cursor: pointer;
+}
+
+.header .search-form label:hover {
+    color: #0984e3;
+}
+
+.header .icons a,
+.header .icons div {
+    font-size: 2.5rem;
+    margin-left: 2rem;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.header .icons a:hover,
+.header .icons div:hover {
+    color: gold;
+}
+
+#search-btn {
+    display: none;
+}
+
+.badge {
+    padding-left: 9px;
+    padding-right: 9px;
+    border-radius: 9px;
+}
+
+.lblCartCount {
+    font-size: 12px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px;
+}
+
+.commodity-sort-img-size {
+    position: relative;
+    height: 60px;
+    width: 60px;
+}
+
+.commodity-sort-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.h-20 {
+    height: 20px;
+}
+
+.commodity-sort-text {
+    font-size: 14px;
+    text-align: center;
+}
+
+.commodity-sort-a {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: fit-content;
+    min-width: 85px;
+    align-items: center;
+    text-decoration: none;
+
+}
+
+.commodity-sort-ul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* 可能用不到先放著 測試排版用 */
+/* .commodity-sort-nav {
+    display: flex;
+    justify-content: center;
+} */
+
+/* 可能用不到先放著 測試排版用*/
+/* .commodity-sort {
+    min-width: 0px;
+    grid-column: 1 / -1;
+} */
+
+.btn {
+    margin-top: 1rem;
+    display: inline-block;
+    border-radius: .5rem;
+    padding: 1rem 3rem;
+    font-size: 1.7rem;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    background: #0984e3;
+}
+
+.btn:hover {
+    background: #333;
+    color: #fff;
+}
+
+section {
+    padding: 3rem 9%;
+}
+
+.home .slide {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    min-height: 40rem;
+    padding: 3rem 9%;
+}
+
+.home .slide .image {
+    flex: 1 1 42rem;
+    text-align: center;
+}
+
+.home .slide .image img {
+    height: 30rem;
+}
+
+.home .slide .content {
+    flex: 1 1 42rem;
+}
+
+.home .slide .content span {
+    font-size: 2rem;
+    color: #0984e3;
+}
+
+.home .slide .content h3 {
+    padding-top: .5rem;
+    color: #333;
+    font-size: 3rem;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 3rem;
+    color: #333;
+}
+
+/* @media (max-width: 1300px) {
+    html {
+      font-size: 55%;
+    }
+  
+    .header {
+      padding: 2rem;
+    }
+  
+    section {
+      padding: 3rem ;
+    }
+  } */
