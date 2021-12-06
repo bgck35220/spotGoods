@@ -7,18 +7,35 @@ if (!isset($_SESSION["user"])) {
 if(isset($_GET['id'])){
     $id = $_GET['id'];
 }else{
-    header("location:sellers.php");
+    header("location:seller-product-list.php");
 }
 
-$sqlseller = "SELECT * FROM sellers WHERE id = ?";
-$stmtseller = $db_host->prepare($sqlseller);
+$sqlProduct = "SELECT * FROM products WHERE id = ?";
+$stmtProduct = $db_host->prepare($sqlProduct);
 
 try {
-    $stmtseller->execute([$id]);
-    $rowUser=$stmtseller->fetch();
-    $userExist = $stmtseller->rowCount();
+    $stmtProduct->execute([$id]);
+    $rowUser=$stmtProduct->fetch();
+    $userExist = $stmtProduct->rowCount();
 
 } catch (PDOException $e) {
+    echo $e->getMessage();
+}
+
+$sqlSellers="SELECT * FROM sellers ";
+$stmtSellers= $db_host->prepare($sqlSellers);
+try{
+    $stmtSellers->execute();
+  
+    $userExist=$stmtSellers->rowCount();
+    $selleraname="";
+    while(  $rowSellers = $stmtSellers->fetch()){
+        if($rowSellers['id']===$_GET['id']){
+            $selleraname=$rowSellers['name'];
+        }
+    }
+
+}catch(PDOException $e){
     echo $e->getMessage();
 }
 ?>
@@ -27,7 +44,7 @@ try {
 <html lang="en">
 
 <head>
-    <title>管理員後台-店家詳細資料</title>
+    <title>管理員後台-店家商品詳細資料</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -113,18 +130,17 @@ try {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">店家詳細資料</h2>
+                    <h2 class="fs-3">店家商品詳細資料</h2>
                 </div>
                 <div class="d-flex ">
                     <div class="me-2">
-                    <a class="btn btn-secondary" href="./seller-product-list.php?userid=<?=$rowUser['id']?>">上架商品查看</a>
-                        <a href="./seller-update.php?id=<?=$rowUser['id']?>" class="btn btn btn-secondary" type="submit">
-                            編輯資訊
+                        <a href="seller-product-update.php?id=<?=$rowUser['id']?>" class="btn btn btn-secondary" type="submit">
+                            編輯商品資訊
                         </a>
                     </div>
                     <div>
                     <a href="./sellers.php" class="btn btn-light" type="submit">
-                        店家首頁
+                        回店家商品
                     </a>
                     </div>
                 </div>
@@ -133,43 +149,34 @@ try {
             <?php if($userExist>0):?>
             <table class="table table-bordered ">
                 <tr>
-                    <th>id</th>
+                    <th>商品編號</th>
                     <td><?=$rowUser['id']?></td>
                 </tr>
                 <tr>
-                    <th>Logo</th>
-                    <td><?=$rowUser['Logo']?></td>
+                    <th>上架商家</th>
+                    <td><?=$selleraname?></td>
                 </tr>
                 <tr>
-                    <th>店家名稱</th>
+                    <th>商品名稱</th>
                     <td><?=$rowUser['name']?></td>
                 </tr>
                 <tr>
-                    <th>帳號</th>
-                    <td><?=$rowUser['account']?></td>
+                    <th>商品價格</th>
+                    <td>$<?=$rowUser['price']?></td>
                 </tr>
                 <tr>
-                    <th>信箱</th>
-                    <td><?=$rowUser['email']?></td>
-                </tr>
-       
-                <tr>
-                    <th>手機號碼</th>
-                    <td>還沒新增</td>
-                </tr>
-                <tr>
-                    <th>註冊時間</th>
+                    <th>上架時間</th>
                     <td><?=$rowUser['created_at']?></td>
                 </tr>
                 <tr>
-                    <th>帳號狀態</th>
+                    <th>商品狀態</th>
                     <td><?php 
-                        if($rowUser['valid'] == 1) echo "啟用";
-                        if($rowUser['valid'] == 0) echo "停用";  
+                        if($rowUser['valid'] == 1) echo "上架中";
+                        if($rowUser['valid'] == 0) echo "已下架";  
                         ?>
                     </td>
                 </tr>
-          
+
             <?php endif; ?>
 
 
