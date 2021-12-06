@@ -5,14 +5,14 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
     header("location: sign-in.php");
 }
 
-$sql="SELECT * FROM users WHERE id=? AND valid=1";
-$stmt=$db_host->prepare($sql);
-try{
+$sql = "SELECT * FROM users WHERE id=? AND valid=1";
+$stmt = $db_host->prepare($sql);
+try {
     $stmt->execute([$_SESSION["user"]["id"]]);
-    $userExist=$stmt->rowCount();
+    $userExist = $stmt->rowCount();
 //    echo $userExist."<br>";
 //    exit();
-}catch(PDOException $e){
+} catch (PDOException $e) {
     echo $e->getMessage();
 }
 
@@ -30,18 +30,21 @@ try{
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        :root{
+        :root {
             --dark: #555;
             --light: #aaa;
         }
+
         .cover-fit {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .menu{
+
+        .menu {
             height: 580px;
         }
+
         .headshot {
             width: 60px;
             height: 60px;
@@ -50,15 +53,18 @@ try{
             border: 1px solid var(--light);
             display: block;
         }
-        .myList{
+
+        .myList {
             list-style: none;
             padding: 10px 0;
         }
-        .myList a{
+
+        .myList a {
             text-decoration: none;
             color: var(--dark);
         }
-        .headshot-big{
+
+        .headshot-big {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -67,7 +73,8 @@ try{
             display: block;
             margin: 0 auto;
         }
-        .border-left{
+
+        .border-left {
             border-left: 1px solid var(--light);
         }
     </style>
@@ -97,7 +104,8 @@ try{
             <div class="p-5 bg-light menu">
                 <figure class="d-flex align-items-center">
                     <a class="headshot" href="dashboard.php">
-                        <img class="cover-fit" src="./images/<?= $_SESSION["user"]["headshots"] ?>" alt="">
+                        <img class="cover-fit" src="./upload/<?= $_SESSION["user"]["headshots"] ?>"
+                             alt="<?= $_SESSION["user"]["headshots"] ?>">
                     </a>
                     <p class="mb-0 ms-3 text-secondary"><?= $_SESSION["user"]["name"] ?></p>
                 </figure>
@@ -112,44 +120,48 @@ try{
             <div class="p-5 bg-light menu">
                 修改個人資訊
                 <hr>
-                <?php if($userExist===0): ?>
+                <?php if ($userExist === 0): ?>
                     使用者不存在
                 <?php else:
-                $row=$stmt->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <div class="row gt-3">
-                    <div class="col-lg-7 pe-5">
-                            <form action="doUpdate.php" method="post" class="mt-3">
-                                <input type="hidden" name="id" value="<?=$row["id"]?>"> <!--隱藏-->
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <form action="doUpdate.php" method="post" class="mt-3" enctype="multipart/form-data">
+                        <div class="row gt-3">
+                            <div class="col-lg-7 pe-5 mt-3">
+                                <input type="hidden" name="id" value="<?= $row["id"] ?>"> <!--隱藏-->
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="account" class="me-4 col-sm-2">使用者帳號</label>
-                                    <input id="account" type="text" name="account" class="form-control-plaintext" value="<?=$row["account"]?>" readonly>
+                                    <input id="account" type="text" name="account" class="form-control-plaintext"
+                                           value="<?= $row["account"] ?>" readonly>
                                     <!--只讀取不能更動-->
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="name" class="me-4 col-sm-2">姓名</label>
-                                    <input id="name" type="text" name="name" class="form-control" value="<?=$row["name"]?>">
+                                    <input id="name" type="text" name="name" class="form-control"
+                                           value="<?= $row["name"] ?>">
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="email" class="me-4 col-sm-2">Email</label>
-                                    <input id="email" type="text" name="email" class="form-control" value="<?=$row["email"]?>">
+                                    <input id="email" type="text" name="email" class="form-control"
+                                           value="<?= $row["email"] ?>">
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="phone" class="me-4 col-sm-2">手機號碼</label>
-                                    <input id="phone" type="text" name="phone" class="form-control" value="0<?=$row["phone"]?>">
+                                    <input id="phone" type="text" name="phone" class="form-control"
+                                           value="0<?= $row["phone"] ?>">
                                 </div>
                                 <button class="btn btn-secondary" type="submit">儲存</button>
-                            </form>
-                    </div>
-                    <div class="col-lg-5 px-5 mt-4 border-left">
-                        <div class="headshot-big d-block">
-                            <img class="cover-fit" src="./images/<?=$row["headshots"]?>" alt="">
+                            </div>
+                            <div class="col-lg-5 px-5 mt-4 border-left">
+                                <div class="headshot-big d-block">
+                                    <img class="cover-fit" src="./upload/<?= $row["headshots"] ?>" alt="<?= $row["headshots"] ?>">
+                                </div>
+                                <input class="mt-3 form-control form-control-sm" type="file" name="myFile" accept=".jpg,.jpeg,.png">
+                                <div class="text-muted mt-3">檔案大小: 最大 1 MB</div>
+                                <div class="text-muted">檔案限制: .JPG .JPEG, .PNG</div>
+                            </div>
                         </div>
-                        <input class="mt-3 form-control form-control-sm" type="file" accept=".jpg,.jpeg,.png" name="myFile">
-                        <div class="text-muted mt-3">檔案大小: 最大 1 MB</div>
-                        <div class="text-muted">檔案限制: .JPG .JPEG, .PNG</div>
-                    </div>
-                </div>
+                    </form>
                 <?php endif; ?>
             </div>
         </div>
@@ -158,8 +170,12 @@ try{
 
 
 <!-- Bootstrap JavaScript Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
 
 
 </body>
