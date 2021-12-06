@@ -33,7 +33,7 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE id  like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
+    $sqlUser = "SELECT * FROM sellers WHERE id like '%$search%' AND valid <= 1 OR account LIKE  ' %$search%' AND valid <= 1 OR  name LIKE '%$search%' AND valid <= 1";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -116,7 +116,7 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
@@ -335,7 +335,7 @@ try {
             <table class="table table-bordered  m-auto user-table-text  ">
                 <tr>
                     <th>id</th>
-                    <td>123
+                    <td><?= $rowUserUserTable['id'] ?>
                         <a class="user-table-btn-close" href="./sellers.php?<?php
                         if (isset($p)) echo "&p=$p";
                         if (isset($search)) echo "&search=$search";

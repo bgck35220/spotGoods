@@ -27,7 +27,7 @@ try {
 <html lang="en">
 
 <head>
-    <title>管理員後台-店家詳細資料</title>
+    <title>管理員後台-店家申請資料</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -63,7 +63,7 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 

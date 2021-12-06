@@ -194,3 +194,27 @@ border-bottom: none;
 .page-nav{
   z-index: 0;
 }
+
+/* sellers-check.php */
+.review{
+  text-decoration: none;
+  transition: .2s;
+  color: black;
+}
+.review:hover{
+  color: var(--green);
+}
+
+.review-switch{
+  border: 1px solid black;
+  padding: 7px;
+  
+  margin: 4px 5px;
+}
+
+.review-switch-active{
+  border: 1px solid black;
+  background-color: rgb(5, 15, 0);
+  padding: 7px;
+  margin: 4px 5px;
+}

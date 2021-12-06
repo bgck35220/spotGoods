@@ -5,7 +5,7 @@ if (!isset($_SESSION["user"])) {
 };
 
 //總筆數
-$sqlTotal = "SELECT * FROM sellers WHERE valid = 2 or valid = 3";
+$sqlTotal = "SELECT * FROM sellers WHERE valid = 2 ";
 $stmtTotal = $db_host->prepare($sqlTotal);
 
 try {
@@ -17,7 +17,7 @@ try {
 //店家資料彈跳式窗
 if (isset($_GET['sellertable'])) {
     $id = $_GET['sellertable'];
-    $sqlUsreTable = "SELECT * FROM sellers WHERE id = ? AND valid = 2";
+    $sqlUsreTable = "SELECT * FROM sellers WHERE id = ?  ";
     $stmtUserTable = $db_host->prepare($sqlUsreTable);
 
     try {
@@ -30,10 +30,19 @@ if (isset($_GET['sellertable'])) {
 };
 
 
-if (isset($_GET['search'])) {
+if (!empty($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE id  like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
+    $sqlUser = "SELECT * FROM sellers WHERE id like '%$search%' AND valid >= 2 OR account LIKE  ' %$search%' AND valid >= 2 OR  name LIKE '%$search%' AND valid >= 2";
+}else if (isset($_GET['order'])) {
+    //審查 駁回 篩選
+    $order = $_GET['order'];
+    if ($order === 'refuse') {
+        $sqlUser = "SELECT * FROM sellers WHERE valid=3 ORDER BY id ";
+    }
+    if ($order === 'wait') {
+        $sqlUser = "SELECT * FROM sellers WHERE valid=2  ORDER BY id";
+    }
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -42,20 +51,20 @@ if (isset($_GET['search'])) {
         $p = 1;
     }
 
-    $pageItems = 10; //一頁10個
-    $startItem = ($p - 1) * $pageItems; //求出LIMIT第一個數字
-    $pageConet = $totalUsersCount / $pageItems; //總筆數除一頁10個 = 總頁數
-    $pageR = $totalUsersCount % $pageItems; // 總筆數除一頁顯示數量 如果有餘數代表他是下一頁
+    $pageItems = 10;
+    $startItem = ($p - 1) * $pageItems; 
+    $pageConet = $totalUsersCount / $pageItems; 
+    $pageR = $totalUsersCount % $pageItems; 
     $starNo = ($p) * $pageItems - 9;
     $starEnd = $pageItems * ($p);
     if ($pageR !== 0) {
-        $pageConet = ceil($pageConet); //總頁數餘數不為0 讓他無條件進位
+        $pageConet = ceil($pageConet); 
 
         if ($pageConet == $p) {
             $starEnd = $starEnd - ($pageItems - $pageR);
         }
     }
-    $sqlUser = "SELECT * FROM sellers WHERE valid= 2 OR valid = 3  ORDER BY id LIMIT $startItem,$pageItems";
+    $sqlUser = "SELECT * FROM sellers WHERE valid= 2 ORDER BY id LIMIT $startItem,$pageItems";
 
     $stmtUser = $db_host->prepare($sqlUser);
 }
@@ -116,7 +125,7 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
@@ -173,20 +182,46 @@ try {
                 <div>
                     <h2 class="fs-3">店家申請</h2>
                 </div>
-                <div class="d-flex">
+                <!-- <div class="d-flex">
                     <p>共 <?= $totalUsersCount ?> 筆申請資料</p>
-                </div>
+                </div> -->
+
+
+
                 <?php if (isset($p)) : ?>
-                <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-                <?php endif; ?>
+                        <div class="py-2">
+                            共<?= $totalUsersCount ?>筆
+                        </div>
+                        <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
+                    <?php else : ?>
+                        <div class="py-2">
+                            共<?= $userExist ?>筆
+                        </div>
+                    <?php endif; ?>
+
+
                 </div>
                 <div class="d-flex mt-3">
-                    <form action="sellersCheckbox" methor="POST" class="">
- 
-                        <input class="mt-1 me-1"type="radio" class=""name="gender" id="male" value="male" checked> <label for="male">已駁回</label>
-                        <input class=" mt-1 ms-3 me-1" type="radio" name="gender" id="female" value="female"> <label for="female">待審查</label>
-                    </form>
-            
+                        <a href="sellers-check.php?order=refuse" class="d-flex me-3 review">
+                            <p class="<?php
+                            if($order === 'refuse'){
+                                echo "review-switch-active";
+                            }else{
+                                echo "review-switch";
+                            }?>"></p>    
+                            已駁回
+                           
+                        </a>
+                        <a href="sellers-check.php?order=wait" class="d-flex review">
+                            <p class="<?php
+                            if($order === 'wait'){
+                                echo "review-switch-active";
+                            }else{
+                                echo "review-switch";
+                            }?>" ></p>
+                            待審查
+                        </a>
+                 
                 </div>
                     <tr class="">
                         <th>申請編號</th>
@@ -196,7 +231,7 @@ try {
                         <th>申請時間</th>
                         <th>申請狀態</th>
                         <th>
-                            <form action="./sellers.php" method="GET">
+                            <form action="./sellers-check.php" method="GET">
                                 <div class="input-group  search-user">
                                     <input type="search" class="form-control" placeholder="搜尋店家名稱、帳號、ID" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
@@ -215,6 +250,7 @@ try {
                                 <a class="text-decoration-none text-dark d-flex" href="./sellers-check.php?sellertable=<?= $rowUser['id'] ?><?php
                                 if (isset($p)) echo "&p=$p";
                                 if (isset($search)) echo "&search=$search";
+                                if (isset($order)) echo "&order=$order";
                                 ?>" type="submit">
                                <?= $rowUser['id'] ?>
                                 <img class="magnifier-img" src="../img/search-solid.svg" alt=""></td>
@@ -230,101 +266,18 @@ try {
                                 <?php if ($rowUser['valid'] == 3) : ?>
                                     <p class="m-0 text-danger">已駁回</p>
                                 <?php endif; ?>
-                                <?php if ($rowUser['valid'] == 0) : ?>
+                                <!-- <?php if ($rowUser['valid'] == 0) : ?>
                                     <p class="m-0 text-danger">停用</p>
-                                <?php endif; ?>
+                                <?php endif; ?> -->
                               
                             </td>
                             <td class="">
                                 <a href="sellers-check-seller.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary" type="submit">詳細資訊</a>
-                                <!-- <a href="./seller-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯</a> -->
-
-
-                                <?php if ($rowUser['valid'] == 1) :
-                                    $validone += 1;
-                                ?>
-                                    <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-danger" href="sellers.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&search=<?= $search ?>" id="user-close"> 停用</a>
-                                    <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-danger" id="user-open" href="sellers.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p ?>">停用</a>
-                                    <?php else : ?>
-                                        <a class="btn btn-outline-danger" href="sellers.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
-                                    <?php endif; ?>
-
-                                <?php elseif (($rowUser['valid'] == 0)) : ?>
-
-                                    <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="sellers.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>&search=<?= $search ?>">啟用</a>
-                                    <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="sellers.php?id=<?= $rowUser['id'] ?>&p=<?= $p ?>">啟用</a>
-                                    <?php else : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="sellers.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
-                                    <?php endif; ?>
-        </div>
-    <?php endif; ?>
-    </td>
-    </tr>
-
-<?php endwhile; ?>
-
-
-<!-- 跳出視窗區塊 -->
-<?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "1") : ?>
-    <div class="colseblcok  ">
-
-        <!-- 停用確認 -->
-        <div class="full-screen full-close " id="user-switch">
-            <div class="close">
-                <div class="d-flex justify-content-end">
-                    <a class=" btn closeX" id="closeX" href="sellers.php
-                    <?php
-                    if (isset($search)) echo "?search=$search";
-                    if (isset($p)) echo "?p=$p"; ?>">X
-                    </a>
-                </div>
-                <div class="closeText ">確定要停用帳號嗎?</div>
-                <div class="d-flex justify-content-center">
-                    <a type="submit" href="sellerDelete.php?id=<?= $_GET['id'] ?><?php
-                    if (isset($p)) {
-                    echo "&p=$p";
-                    } else if (isset($search)) {
-                    echo "&search=$search";
-                    };
-                    ?>" class="btn btn-danger closeCheck">確定</a>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-<!-- 啟用確認 -->
-<?php if (isset($_GET['id']) && (isset($_GET['valid'])) == "0") : ?>
-    <div class="openblcok">
-        <div class="full-screen openFullScreen" id="user-switch">
-            <div class="close">
-                <div class="d-flex justify-content-end ">
-                    <a class=" btn closeX" id="closeX" href="sellers.php
-                    <?php if (isset($search)) echo "?search=$search";
-                    if (isset($p)) echo "?p=$p"; ?>">X</a>
-                </div>
-                <div class="closeText">確定要啟用帳號嗎?</div>
-                <div class="d-flex justify-content-center">
-                    <a href="sellerOpen.php?id=<?= $_GET['id'] ?><?php
-                                                                if (isset($p)) {
-                                                                    echo "&p=$p";
-                                                                } else if (isset($search)) {
-                                                                    echo "&search=$search";
-                                                                };  ?>
-                    " type="submit" class="btn btn-primary closeCheck">確定</a>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-
-
-
-    </tbody>
-    </thead>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </thead>
     </table>
     <!-- 頁數 -->
      <?php if (isset($p)) : ?>
@@ -332,7 +285,7 @@ try {
             <ul class="pagination  justify-content-center">
                 <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
                     <li class="page-item page-nav <?php if ($p == $i) echo 'active' ?>">
-                        <a class="page-link" href="http://localhost/spotGoods/admin/sellers/sellers.php?p=<?= $i ?>"><?= $i ?>
+                        <a class="page-link" href="http://localhost/spotGoods/admin/sellers/sellers-check.php?p=<?= $i ?>"><?= $i ?>
                         </a>
                     </li>
                 <?php endfor; ?>
@@ -347,7 +300,7 @@ try {
             <table class="table table-bordered  m-auto user-table-text  ">
                 <tr>
                     <th>id</th>
-                    <td>123
+                    <td><?= $rowUserUserTable['id'] ?>
                         <a class="user-table-btn-close" href="./sellers.php?<?php
                         if (isset($p)) echo "&p=$p";
                         if (isset($search)) echo "&search=$search";

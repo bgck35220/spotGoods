@@ -116,7 +116,7 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
                                     <li><a class="dropdown-item" href="#">新增店家資料</a></li>
 
@@ -336,11 +336,12 @@ try {
             <table class="table table-bordered  m-auto user-table-text  ">
                 <tr>
                     <th>id</th>
-                    <td>123
-                        <a class="user-table-btn-close" href="./admin.php?<?php
-                                                                            if (isset($p)) echo "&p=$p";
-                                                                            if (isset($search)) echo "&search=$search";
-                                                                            ?>">X
+                    <td><?= $rowUserUserTable['id'] ?>
+                        <a class="user-table-btn-close" 
+                        href="./admin.php?<?php
+                        if (isset($p)) echo "&p=$p";
+                        if (isset($search)) echo "&search=$search";
+                        ?>">X
                         </a>
                     </td>
                 </tr>
