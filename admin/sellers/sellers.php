@@ -118,7 +118,7 @@ try {
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="#">新增店家資料</a></li>
+                                    <li><a class="dropdown-item" href="./seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
@@ -168,7 +168,20 @@ try {
         <div class="container pt-5 ">
 
             <table class="table  table-striped ttbb">
+                                  
                 <thead>
+              
+                     <div>
+                        <h2 class="fs-3">店家總覽</h2>
+                    </div>
+                    <div class="">
+                        <p>共 <?= $totalUsersCount ?> 位店家, <?= $validone ?> 位有效店家</p>
+                    </div>
+                    <?php if (isset($p)) : ?>
+                        <div class="">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
+                     <?php endif; ?>
+                        </div>
+
                     <tr class="">
                         <th>id</th>
                         <th>店家名稱</th>
@@ -300,17 +313,7 @@ try {
 <?php endif; ?>
 
 
-<!-- table 標題 -->
-<div>
-    <h2 class="fs-3">店家總覽</h2>
-</div>
-<div class="d-flex">
-    <p>共 <?= $totalUsersCount ?> 位店家, <?= $validone ?> 位有效店家</p>
-</div>
-<?php if (isset($p)) : ?>
-    <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-    <?php endif; ?>
-    </div>
+
     </tbody>
     </thead>
     </table>

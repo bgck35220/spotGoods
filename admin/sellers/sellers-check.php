@@ -127,7 +127,7 @@ try {
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="#">新增店家資料</a></li>
+                                    <li><a class="dropdown-item" href="./seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
@@ -182,12 +182,7 @@ try {
                 <div>
                     <h2 class="fs-3">店家申請</h2>
                 </div>
-                <!-- <div class="d-flex">
-                    <p>共 <?= $totalUsersCount ?> 筆申請資料</p>
-                </div> -->
-
-
-
+        
                 <?php if (isset($p)) : ?>
                         <div class="py-2">
                             共<?= $totalUsersCount ?>筆
@@ -281,7 +276,7 @@ try {
     </table>
     <!-- 頁數 -->
      <?php if (isset($p)) : ?>
-        <nav aria-label="Page navigation example p" class="">
+        <nav aria-label="Page navigation example p">
             <ul class="pagination  justify-content-center">
                 <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
                     <li class="page-item page-nav <?php if ($p == $i) echo 'active' ?>">

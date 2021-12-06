@@ -63,9 +63,9 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="#">新增店家資料</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
