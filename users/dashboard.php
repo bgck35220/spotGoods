@@ -104,8 +104,12 @@ try {
             <div class="p-5 bg-light menu">
                 <figure class="d-flex align-items-center">
                     <a class="headshot" href="dashboard.php">
+                        <?php if($_SESSION["user"]["headshots"]==NULL):?>
+                        <img class="cover-fit" src="./upload/user.png" alt="user.png">
+                        <?php else:?>
                         <img class="cover-fit" src="./upload/<?= $_SESSION["user"]["headshots"] ?>"
                              alt="<?= $_SESSION["user"]["headshots"] ?>">
+                        <?php endif; ?>
                     </a>
                     <p class="mb-0 ms-3 text-secondary"><?= $_SESSION["user"]["name"] ?></p>
                 </figure>
@@ -154,7 +158,11 @@ try {
                             </div>
                             <div class="col-lg-5 px-5 mt-4 border-left">
                                 <div class="headshot-big d-block">
+                                    <?php if($row["headshots"]==NULL):?>
+                                    <img class="cover-fit" src="./upload/user.png" alt="user.png">
+                                    <?php else: ?>
                                     <img class="cover-fit" src="./upload/<?= $row["headshots"] ?>" alt="<?= $row["headshots"] ?>">
+                                    <?php endif; ?>
                                 </div>
                                 <input class="mt-3 form-control form-control-sm" type="file" name="myFile" accept=".jpg,.jpeg,.png">
                                 <div class="text-muted mt-3">檔案大小: 最大 1 MB</div>
