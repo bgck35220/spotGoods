@@ -118,7 +118,7 @@ try {
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="./sellers/sellers-check.php">店家申請</a></li>
                                     <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="#">新增店家資料</a></li>
+                                    <li><a class="dropdown-item" href="./sellers/seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
@@ -320,7 +320,7 @@ try {
         <nav aria-label="Page navigation example ">
             <ul class="pagination  justify-content-center">
                 <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
-                    <li class="page-item <?php if ($p == $i) echo 'active' ?>">
+                    <li class="page-item page-nav <?php if ($p == $i) echo 'active' ?>">
                         <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
                         </a>
                     </li>

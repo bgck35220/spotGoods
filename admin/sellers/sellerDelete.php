@@ -8,7 +8,7 @@ if(isset($_GET['id'])){
     die("資料錯誤");
 };
 
-echo $id;
+
 
 $sql = "UPDATE sellers SET valid=0 WHERE id=?";
 
