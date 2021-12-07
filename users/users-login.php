@@ -88,8 +88,8 @@ if(isset($_SESSION["user"])){
                         <h1 class="loginTitle pt-4 mb-3 mt-5 fs-5 fw-normal text-muted">會員登入</h1>
 
                         <div class="form-floating input-up">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required>
-                            <label for="floatingInput">電子信箱 Email address</label>
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Account" name="account" required>
+                            <label for="floatingInput">帳號 Account</label>
                         </div>
                         <div class="form-floating input-bottom mb-3">
                             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>

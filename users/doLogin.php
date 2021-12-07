@@ -2,8 +2,8 @@
 require_once ("pdo-connect.php");  //裡面已經有session start
 
 //先確保存取得到值
-if(isset($_POST["email"])){
-    $email=$_POST["email"];
+if(isset($_POST["account"])){
+    $account=$_POST["account"];
     $password=$_POST["password"];
 //    echo $email."<br>";
 //    echo $password."<br>";
@@ -14,10 +14,10 @@ if(isset($_POST["email"])){
 
 $password=md5($password); //資料庫裡存的是加密過後的
 
-$sql="SELECT * FROM users WHERE email=? AND password=? AND valid=1";
+$sql="SELECT * FROM users WHERE account=? AND password=? AND valid=1";
 $stmt=$db_host->prepare($sql);
 try{
-    $stmt->execute([$email, $password]);
+    $stmt->execute([$account, $password]);
     $userExist=$stmt->rowCount();
 //    echo $userExist;  //0沒有資料 1一筆資料
     if($userExist>0){
