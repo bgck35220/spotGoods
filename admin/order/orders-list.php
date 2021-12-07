@@ -136,7 +136,7 @@ if ($pageR !== 0) {
         JOIN users as b on a.users_id = b.id
         JOIN sellers as c on a.sellers_id = c.id
         JOIN products as d on a.products_id = d.id
-        ORDER BY id";
+        ORDER BY id LIMIT $startItem,$pageItems";
 
 
 
@@ -166,24 +166,6 @@ try{
 
 
 
-
-// $sqlUser="SELECT * FROM users ";
-// $stmtUser= $db_host->prepare($sqlUser);
-// try{ 
-//     $stmtUser->execute();
-  
-// }catch(PDOException $e){
-//     echo $e->getMessage();
-// }
-
-// $sqlProducts="SELECT * FROM products ";
-// $stmtProducts= $db_host->prepare($sqlUser);
-// try{ 
-//     $stmtUser->execute();
-  
-// }catch(PDOException $e){
-//     echo $e->getMessage();
-// }
 
 
 ?>
@@ -438,7 +420,7 @@ try{
             <ul class="pagination  justify-content-center">
                 <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
                     <li class="page-item page-nav <?php if ($p == $i) echo 'active' ?>">
-                        <a class="page-link" href="http://localhost/spotGoods/admin/admin.php?p=<?= $i ?>"><?= $i ?>
+                        <a class="page-link" href="http://localhost/spotGoods/admin/order/orders-list.php?p=<?= $i ?>"><?= $i ?>
                         </a>
                     </li>
                 <?php endfor; ?>
