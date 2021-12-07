@@ -259,13 +259,13 @@ try{
 
     <main>
         <div class="container pt-5 "> 
-                <h1>訂單總覽</h1>
+                <h2>訂單總覽</h2>
                 <table class="table  table-striped ttbb">
                 <?php if (isset($p)) : ?>
-                        <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
+                        <div class="py-2">   共<?= $totalUsersCount ?>筆訂單 
                         <br>
                         <br>
-                        共<?= $totalUsersCount ?>筆訂單 </div>
+                        此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆</div>
                     <?php else : ?>
                         <div class="py-2">
                             共<?= $totalUsersCount ?>筆訂單

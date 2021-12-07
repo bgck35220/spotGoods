@@ -64,8 +64,8 @@ if (isset($_GET['search'])) {
 $stmtUser = $db_host->prepare($sqlUser);
 try {
     $stmtUser->execute();
-    // $rowUser=$stmtUser->fetch();
-    $userExist = $stmtUser->rowCount();
+    // $totalUsersCount=$stmtUser->fetch();
+    $totalUsersCounta = $stmtUser->rowCount();
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -146,7 +146,6 @@ try {
                 </div>
             </nav>
             <div>
-
                 <div class="title-regis">
                     <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center">
@@ -162,11 +161,22 @@ try {
 
 
     <!-- 主要內容 -->
-
     <main>
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
-
+<div>
+    <h2 class="fs-3">會員管理</h2>
+</div>
+     <?php if (isset($p)) : ?>
+                        <div class="py-2">共<?= $totalUsersCount ?>位會員
+                        <br>
+                        <br>
+                        此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆 </div>
+                    <?php else : ?>
+                        <div class="py-2">
+                            共<?= $totalUsersCounta ?>筆資料
+                        </div>
+                    <?php endif; ?>
             <table class="table  table-striped ttbb">
                 <thead>
                     <tr class="">
@@ -187,21 +197,23 @@ try {
                     </tr>
 
                 <tbody class="">
-                    <?php while ($rowUser = $stmtUser->fetch()) :
-                    ?>
-
-
+                    <?php while ($rowUser = $stmtUser->fetch()) :?>
                         <tr class="table-text-all">
-                            <td><?= $rowUser['id'] ?></td>
+                            <td>
+                                <!-- 放大鏡詳細內容 -->
+                                <a class="text-decoration-none text-dark d-flex" href="./admin.php?usertable=<?= $rowUser['id'] ?><?php
+                                    if (isset($p)) echo "&p=$p";
+                                    if (isset($search)) echo "&search=$search";
+                                    ?>" type="submit">
+                                <?= $rowUser['id'] ?>
+                                <img class="magnifier-img" src="./img/search-solid.svg" alt="">
+                                </a>
+                            </td>
                             <td><?= $rowUser['name'] ?></td>
                             <td class="">
-                                <a class="text-decoration-none text-dark d-flex" href="./admin.php?usertable=<?= $rowUser['id'] ?><?php
-                                if (isset($p)) echo "&p=$p";
-                                if (isset($search)) echo "&search=$search";
-                                ?>" type="submit">
+                           
                                     <?= $rowUser['account'] ?>
-                                    <img class="magnifier-img" src="./img/search-solid.svg" alt="">
-                                </a>
+                                   
                             </td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
@@ -302,16 +314,7 @@ try {
 
 
 <!-- table 標題 -->
-<div>
-    <h2 class="fs-3">會員管理</h2>
-</div>
-<div class="d-flex">
-    <p>共 <?= $totalUsersCount ?> 位會員,<?= $validone ?> 位有效會員</p>
-</div>
-<?php if (isset($p)) : ?>
-    <div class="py-2">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-    <?php endif; ?>
-    </div>
+
     </tbody>
     </thead>
     </table>

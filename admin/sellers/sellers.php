@@ -65,7 +65,7 @@ $stmtUser = $db_host->prepare($sqlUser);
 try {
     $stmtUser->execute();
     // $rowUser=$stmtUser->fetch();
-    $userExist = $stmtUser->rowCount();
+    $totalUsersCounta = $stmtUser->rowCount();
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -127,7 +127,7 @@ try {
                                     訂單管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./login.php">訂單總覽</a></li>
+                                    <li><a class="dropdown-item" href="../order/orders-list.php">訂單總覽</a></li>
 
                                 </ul>
                             </li>
@@ -174,13 +174,16 @@ try {
                      <div>
                         <h2 class="fs-3">店家總覽</h2>
                     </div>
-                    <div class="">
-                        <p>共 <?= $totalUsersCount ?> 位店家, <?= $validone ?> 位有效店家</p>
-                    </div>
                     <?php if (isset($p)) : ?>
-                        <div class="">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-                     <?php endif; ?>
+                        <div class="py-2">共<?= $totalUsersCount ?>位店家
+                        <br>
+                        <br>
+                        此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆 </div>
+                    <?php else : ?>
+                        <div class="py-2">
+                            共<?= $totalUsersCounta ?>筆資料
                         </div>
+                    <?php endif; ?>
 
                     <tr class="">
                         <th>id</th>
@@ -205,16 +208,20 @@ try {
 
 
                         <tr class="table-text-all">
-                            <td><?= $rowUser['id'] ?></td>
-                            <td><?= $rowUser['name'] ?></td>
-                            <td class="">
-                                <a class="text-decoration-none text-dark d-flex" href="./sellers.php?sellertable=<?= $rowUser['id'] ?><?php
+                            <td>
+                            <a class="text-decoration-none text-dark d-flex" href="./sellers.php?sellertable=<?= $rowUser['id'] ?><?php
                                 if (isset($p)) echo "&p=$p";
                                 if (isset($search)) echo "&search=$search";
                                 ?>" type="submit">
-                                    <?= $rowUser['account'] ?>
-                                    <img class="magnifier-img" src="../img/search-solid.svg" alt="">
+                                <?= $rowUser['id'] ?>
+                                <img class="magnifier-img" src="../img/search-solid.svg" alt="">
                                 </a>
+                            </td>
+                            <td><?= $rowUser['name'] ?></td>
+                            <td class="">
+                               
+                                    <?= $rowUser['account'] ?>
+                                   
                             </td>
                             <td><?= $rowUser['email'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>

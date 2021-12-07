@@ -4,18 +4,20 @@ if (!isset($_SESSION["user"])) {
     header("location:admin-Login.php");
 };
 
-
-$sqlSellers="SELECT * FROM sellers ";
+$userid=$_GET['userid'];
+$sqlSellers="SELECT * FROM sellers WHERE id = $userid ";
 $stmtSellers= $db_host->prepare($sqlSellers);
 try{
     $stmtSellers->execute();
-  
-    $userExist=$stmtSellers->rowCount();
+
+
     $sellersname="";
     while(  $rowSellers = $stmtSellers->fetch()){
         if($rowSellers['id']===$_GET['userid']){
             $selleraname=$rowSellers['name'];
             $sellerid=$rowSellers['id'];
+            $userExist=$stmtSellers->rowCount();
+            
         }
     }
 
@@ -25,17 +27,17 @@ try{
 
 
 //總筆數
-$sqlTotal = "SELECT * FROM products WHERE id=?";
+$sqlTotal = "SELECT * FROM products WHERE sellers_id=?";
 $stmtTotal = $db_host->prepare($sqlTotal);
-
 try {
     $stmtTotal->execute([$sellerid]);
-
     $totalUsersCount = $stmtTotal->rowCount();
-   
+
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
+
+
 //店家資料彈跳式窗
 if (isset($_GET['sellertable'])) {
     $id = $_GET['sellertable'];
@@ -55,7 +57,9 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM products WHERE name=$search";
+    $userid=$_GET['userid'];
+
+    $sqlProducts="SELECT * FROM products WHERE id like '%$search%' OR name like '%$search%'";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -77,17 +81,17 @@ if (isset($_GET['search'])) {
             $starEnd = $starEnd - ($pageItems - $pageR);
         }
     }
-    $sqlUser = "SELECT * FROM products  ORDER BY id LIMIT $startItem,$pageItems";
+    $sqlProducts = "SELECT * FROM products  ORDER BY id LIMIT $startItem,$pageItems";
 
-    $stmtUser = $db_host->prepare($sqlUser);
+  
 }
 
-$sqlProducts="SELECT * FROM products ";
+
 
 $stmtProducts= $db_host->prepare($sqlProducts);
-
 try{
     $stmtProducts->execute();
+    $totalUsersCount = $stmtTotal->rowCount();
 }catch(PDOException $e){
     echo $e->getMessage();
 }
@@ -196,13 +200,16 @@ try{
                      <div>
                         <h2 class="fs-3">店家上架商品總覽</h2>
                     </div>
-                    <div class="">
-                        <p>共 <?= $sellerid ?> 個商品
-                    </div>
                     <?php if (isset($p)) : ?>
-                        <div class="">此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆
-                     <?php endif; ?>
+                        <div class="py-2">共<?= $totalUsersCount ?>樣訂單 
+                        <br>
+                        <br>
+                        此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆</div>
+                    <?php else : ?>
+                        <div class="py-2">
+                            共<?= $totalUsersCount ?>樣商品
                         </div>
+                    <?php endif; ?>
 
                     <tr class="">
                         <th>商品編號</th>
@@ -254,22 +261,22 @@ try{
                                     $validone += 1;
                                 ?>
                                     <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-danger" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']; ?>&search=<?= $search ?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
+                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']; ?>&search=<?= $search ?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
                                         
                                     <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-danger" id="user-open" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&p=<?= $p ?>&userid=<?=$sellerid?>">下架</a>
+                                        <a class="btn btn-outline-danger" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&p=<?= $p ?>&userid=<?=$sellerid?>">下架</a>
                                     <?php else : ?>
-                                        <a class="btn btn-outline-danger" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
+                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
                                     <?php endif; ?>
 
                                 <?php elseif (($rowProducts['valid'] == 0)) : ?>
 
                                     <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&valid<?= $rowProducts['valid']; ?>&search=<?= $search ?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?= $rowProducts['valid']; ?>&search=<?= $search ?>">上架</a>
                                     <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&p=<?= $p?>&userid=<?=$sellerid?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&p=<?= $p?>&userid=<?=$sellerid?>">上架</a>
                                     <?php else : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?id=<?= $rowProducts['id'] ?>&valid<?=$rowProducts['valid']?>&userid=<?=$sellerid?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?=$rowProducts['valid']?>&userid=<?=$sellerid?>">上架</a>
                                     <?php endif; ?>
                     </div>
                 <?php endif; ?>
