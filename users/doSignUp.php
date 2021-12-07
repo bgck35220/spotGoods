@@ -6,6 +6,9 @@ $account = $_POST["account"];
 $email = $_POST["email"];
 $password = $_POST["password"];
 $repassword = $_POST["repassword"];
+$phone=$_POST["phone"];
+$address=$_POST["address"];
+
 if ($password !== $repassword) {  //檢查輸入密碼
     echo "密碼不一致";
     exit();
@@ -34,10 +37,10 @@ if ($userExist > 0) {
 }
 
 $now = date("Y-m-d H:i:s");
-$sql = "INSERT INTO users(account, name, email, password, created_at, valid) VALUES(?, ?, ?, ?, ?, 1)";
+$sql = "INSERT INTO users(account, name, email, password, phone, address, created_at, valid) VALUES(?, ?, ?, ?, ?, ?, ?, 1)";
 $stmt= $db_host->prepare($sql);
 try {
-    $stmt->execute([$account, $name, $email, $crPassword, $now]);
+    $stmt->execute([$account, $name, $email, $crPassword, $phone, $address, $now]);
     echo "新增資料完成";
 //    $id = $db_host->lastInsertId();  //取得新增的資料id
 //    echo "id: $id";
