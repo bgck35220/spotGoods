@@ -19,11 +19,25 @@ if(isset($_SESSION["user"])){
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-
+        body{
+            /*background: #ddd;*/
+        }
+        .wrapper{
+            /*background: #f8f9fa;*/
+            width: 380px;
+            height: 400px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            top: 60px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            /*box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.15);*/
+        }
         .login-pantel {
             width: 300px;
         }
-
         .form-control{
             position: relative;
         }
@@ -62,43 +76,42 @@ if(isset($_SESSION["user"])){
 </header>
 
 <!-- 會員登入 -->
-<div class="d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center position-relative">
     <?php $maxErrorTimes=6; ?>
-    <div class="login-pantel text-center">
-        <form action="doLogin.php" method="post">
-            <div class="">
-                <?php if(isset($_SESSION["error_times"]) && $_SESSION["error_times"]>=$maxErrorTimes): ?>
-                    <h3 class="mt-3">登入錯誤次數太多<br>請稍後再嘗試</h3>
-                <?php else: ?>
-                    <h1 class="loginTitle h2 pt-4 mb-3 mt-5">會員登入</h1>
+    <div class="wrapper">
+        <div class="login-pantel text-center">
+            <form action="doLogin.php" method="post">
+                <div class="">
+                    <?php if(isset($_SESSION["error_times"]) && $_SESSION["error_times"]>=$maxErrorTimes): ?>
+                        <h3 class="mt-3">登入錯誤次數太多<br>請稍後再嘗試</h3>
+                    <?php else: ?>
+                        <h1 class="loginTitle pt-4 mb-3 mt-5 fs-5 fw-normal text-muted">會員登入</h1>
 
-                    <div class="form-floating input-up">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required>
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating input-bottom">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
-                        <label for="floatingPassword">Password</label>
-                    </div>
-                    <?php if(isset($_SESSION["error_msg"])): ?>
-                        <div class="text-danger"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
-                            $canError=$maxErrorTimes-$_SESSION["error_times"];
-                            echo $canError;
-                            ?> 次</div>
-                        <?php
-                        unset($_SESSION["error_msg"]);
-                    endif;
-                    ?>
-                    <div class="d-grid gap-2 my-3">
-                        <button class="btn btn-info text-white" type="submit">登入</button>
-                    </div>
-
-                    <div class="text-muted">還不是會員嗎? 請點此 <a href="sign-up.php" class="text-info">註冊</a></div>
-                <?php endif;?>
-
-
-            </div>
-        </form>
+                        <div class="form-floating input-up">
+                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required>
+                            <label for="floatingInput">電子信箱 Email address</label>
+                        </div>
+                        <div class="form-floating input-bottom mb-3">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
+                            <label for="floatingPassword">密碼 Password</label>
+                        </div>
+                        <?php if(isset($_SESSION["error_msg"])): ?>
+                            <div class="alert alert-danger" role="alert"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
+                                $canError=$maxErrorTimes-$_SESSION["error_times"];
+                                echo $canError;
+                                ?> 次</div>
+                            <?php
+                            unset($_SESSION["error_msg"]);
+                        endif;
+                        ?>
+                        <div class="d-grid gap-2 my-3">
+                            <button class="btn btn-info text-white" type="submit">登入</button>
+                        </div>
+                        <div class="text-muted">還不是會員嗎? 請點此 <a href="sign-up.php" class="text-info">註冊</a></div>
+                    <?php endif;?>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
