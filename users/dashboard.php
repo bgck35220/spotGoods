@@ -32,7 +32,7 @@ try {
     <style>
         :root {
             --dark: #555;
-            --light: #aaa;
+            --light: #ccc;
         }
 
         .cover-fit {
@@ -43,6 +43,14 @@ try {
 
         .menu {
             height: 580px;
+        }
+        .headshot-sm{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--light);
+            display: block;
         }
 
         .headshot {
@@ -89,7 +97,15 @@ try {
                 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
                     <a class="navbar-brand" href="index.php">team01</a>
                     <div class="d-flex justify-content-end align-items-center">
-                        hi, <?= $_SESSION["user"]["name"] ?> <a href="logOut.php" class="btn btn-info text-white ms-4">登出</a>
+                        <a class="headshot-sm me-2" href="dashboard.php">
+                            <?php if($_SESSION["user"]["headshots"]==NULL):?>
+                                <img class="cover-fit" src="./upload/user.png" alt="user.png">
+                            <?php else:?>
+                                <img class="cover-fit" src="./upload/<?= $_SESSION["user"]["headshots"] ?>"
+                                     alt="<?= $_SESSION["user"]["headshots"] ?>">
+                            <?php endif; ?>
+                        </a>
+                        <?= $_SESSION["user"]["account"] ?> <a href="logOut.php" class="btn btn-info text-white ms-4">登出</a>
                     </div>
                 </div>
             </div>
@@ -111,7 +127,7 @@ try {
                              alt="<?= $_SESSION["user"]["headshots"] ?>">
                         <?php endif; ?>
                     </a>
-                    <p class="mb-0 ms-3 text-secondary"><?= $_SESSION["user"]["name"] ?></p>
+                    <p class="mb-0 ms-3 text-secondary"><?= $_SESSION["user"]["account"] ?></p>
                 </figure>
                 <ul class="p-0 mt-4">
                     <li class="myList"><a href="dashboard.php">修改個人資訊</a></li>
