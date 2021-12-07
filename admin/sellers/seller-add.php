@@ -72,7 +72,7 @@ if (!isset($_SESSION["user"])) {
                                     訂單管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./login.php">訂單總覽</a></li>
+                                    <li><a class="dropdown-item" href="../order/orders-list.php">訂單總覽</a></li>
 
                                 </ul>
                             </li>
