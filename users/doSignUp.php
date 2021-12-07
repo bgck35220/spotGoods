@@ -5,14 +5,14 @@ $name = $_POST["name"];
 $account = $_POST["account"];
 $email = $_POST["email"];
 $password = $_POST["password"];
-$repassword = $_POST["repassword"];
+//$repassword = $_POST["repassword"];
 $phone=$_POST["phone"];
 $address=$_POST["address"];
 
-if ($password !== $repassword) {  //檢查輸入密碼
-    echo "密碼不一致";
-    exit();
-}
+//if ($password !== $repassword) {  //檢查輸入密碼
+//    echo "密碼不一致";
+//    exit();
+//}
 $crPassword = md5($password);  //密碼加密，加密完約32個字元大小
 //echo "$crPassword<br>";
 

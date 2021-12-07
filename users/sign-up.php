@@ -14,65 +14,87 @@
             font-size: 14px;
             opacity: 1; /* Firefox */
         }
+        .error{
+            font-size: 14px;
+        }
+        .show-password{
+            font-size: 14px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-<header class="bg-light">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                    <a class="navbar-brand" href="index.php">team01</a>
+    <header class="bg-light">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <a class="navbar-brand" href="index.php">team01</a>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </div>
-</header>
+            </nav>
+        </div>
+    </header>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-4">
-            <form action="doSignUp.php" method="post">
-                <h1 class="loginTitle mb-3 mt-3 fs-5 fw-normal text-muted">會員註冊</h1>
-                <div class="mb-3">
-                    <label for="name">姓名</label>
-                    <input id="name" type="text" name="name" required class="form-control" placeholder="中/英文姓名">
-                    <div class="error text-danger text-end"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="email">電子信箱</label>
-                    <input id="email" type="email" name="email" required class="form-control"
-                           placeholder="name@example.com">
-                    <div class="error text-danger text-end"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="account">帳號</label>
-                    <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號">
-                </div>
-                <div class="mb-3">
-                    <label for="password">密碼</label>
-                    <input id="password" type="password" name="password" required class="form-control"
-                           placeholder="設定您的密碼">
-                </div>
-                <div class="mb-3">
-                    <label for="repassword">確認密碼</label>
-                    <input id="repassword" type="password" name="repassword" required class="form-control"
-                           placeholder="請再次輸入密碼">
-                </div>
-                <div class="mb-3">
-                    <label for="phone">手機號碼</label>
-                    <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx">
-                    <div class="error text-danger text-end"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="address">地址</label>
-                    <input id="address" type="text" name="address" required class="form-control">
-                </div>
-                <button class="btn btn-secondary" type="submit">註冊</button>
-            </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <form action="doSignUp.php" method="post">
+                    <h1 class="loginTitle mb-3 mt-3 fs-5 fw-normal text-muted">會員註冊</h1>
+                    <div class="mb-3">
+                        <label for="name">姓名</label>
+                        <input id="name" type="text" name="name" required class="form-control" placeholder="中文 / 英文姓名">
+                        <div class="error text-danger text-end"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">電子信箱</label>
+                        <input id="email" type="email" name="email" required class="form-control"
+                               placeholder="name@example.com">
+                        <div class="error text-danger text-end"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="account">帳號</label>
+                        <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號">
+                        <div class="error text-danger text-end"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password">密碼</label>
+                        <input id="password" type="password" name="password" required class="form-control"
+                               placeholder="設定您的密碼">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center p-1">
+                                <input type="checkbox" id="showPassword"><span class="show-password ms-2">顯示密碼</span>
+                            </div>
+                            <div id="passwordError" class="error text-danger text-end d-float"></div>
+                        </div>
+
+                    </div>
+<!--                    <div class="mb-3">-->
+<!--                        <label for="repassword">確認密碼</label>-->
+<!--                        <input id="repassword" type="password" name="repassword" required class="form-control"-->
+<!--                               placeholder="請再次輸入密碼">-->
+<!--                        <div class="d-flex align-items-center justify-content-between">-->
+<!--                            <div class="d-flex align-items-center p-1">-->
+<!--                                <input type="checkbox" id="showPassword"><span class="show-password ms-2">顯示密碼</span>-->
+<!--                            </div>-->
+<!--                            <div id="repasswordError" class="error text-danger text-end d-float"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="mb-3">
+                        <label for="phone">手機號碼</label>
+                        <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx">
+                        <div class="error text-danger text-end"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address">地址</label>
+                        <input id="address" type="text" name="address" required class="form-control">
+                        <div class="error text-danger text-end"></div>
+                    </div>
+                    <button class="btn btn-secondary" type="submit">註冊</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
 <!-- Optional JavaScript -->
@@ -80,13 +102,40 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-
 <script>
 
-    // const reName = /^%&',;=?$x22]+/;
+    // 顯示密碼
+    // $("#showPassword").mousedown(function(){
+    //     $("#password").attr("type", "text");
+    // });
+    // $("#showPassword").mouseup(function(){
+    //     $("#password").attr("type", "password");
+    // });
+    $(":checkbox").click(function(){
+        if($(this).is(":checked")==true){
+            $("#password").attr("type", "text");
+        }else{
+            $("#password").attr("type", "password");
+        }
+    });
+
+
+    //姓名驗證: 只能全中文/英文
+    const reName = /^[\u4e00-\u9fa5]+$|^[a-zA-Z\s]+$/;
+    $("#name").blur(function () {
+        if (reName.test($("#name").val())) {
+            $(this).next(".error").text("");
+            $(this).removeClass("border-danger");
+        } else {
+            $(this).next(".error").text("輸入格式有誤");
+            $(this).addClass("border-danger");
+        }
+    });
+
 
     //電子信箱格式檢查
-    const reEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    // const reEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const reEmail = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     $("#email").blur(function () {
         if (reEmail.test($("#email").val())) {
             $(this).next(".error").text("");
@@ -96,6 +145,38 @@
             $(this).addClass("border-danger");
         }
     });
+
+
+    //密碼檢查
+    // const rePassword=/^[a-zA-Z]\w{5,}$/;  // 字母開頭，允許6-14位元組，允許字母數字下劃線
+    // const rePassword=/^(?=.*[^a-zA-Z0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+    // 高強度密碼，6位數以上，並且至少包含 大寫字母、小寫字母、數字、符號 各一
+    const rePassword=/^(?=.*[^a-zA-Z0-9])(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
+
+    // const rePassword=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,10}$/;
+    // 包含大小寫字母和數字的組合，不能使用特殊字元，長度在6-10之間
+
+    $("#password").blur(function () {
+        if (rePassword.test($("#password").val())) {
+            $("#passwordError").text("");
+            $(this).removeClass("border-danger");
+        } else {
+            $("#passwordError").text("輸入格式有誤");
+            $(this).addClass("border-danger");
+        }
+    });
+
+    //二次輸入密碼檢查
+    // $("#repassword").blur(function () {
+    //     if (rePassword.test($("#repassword").val())) {
+    //         $("#repasswordError").text("");
+    //         $(this).removeClass("border-danger");
+    //     } else {
+    //         $("#repasswordError").text("輸入格式有誤");
+    //         $(this).addClass("border-danger");
+    //     }
+    // });
+
 
     //手機號碼格式檢查
     const rePhone = /^09\d{8}$/;  //09開頭，數字{8次}，$代表字元結尾
