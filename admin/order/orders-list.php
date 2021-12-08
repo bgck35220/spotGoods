@@ -29,7 +29,7 @@ JOIN products as d on a.products_id = d.id
 $stmtTotal = $db_host->prepare($sqlTotal);
 try {
     $stmtTotal->execute();
-    $totalUsersCount = $stmtTotal->rowCount();
+    $totalUsersCounta = $stmtTotal->rowCount();
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -104,8 +104,8 @@ if (isset($_GET['search'])) {
 
 $pageItems = 10; 
 $startItem = ($p - 1) * $pageItems; 
-$pageConet = $totalUsersCount / $pageItems; 
-$pageR = $totalUsersCount % $pageItems; 
+$pageConet = $totalUsersCounta / $pageItems; 
+$pageR = $totalUsersCounta % $pageItems; 
 $starNo = ($p) * $pageItems - 9;
 $starEnd = $pageItems * ($p);
 if ($pageR !== 0) {
@@ -259,7 +259,7 @@ try{
                 <h2>訂單總覽</h2>
                 <table class="table  table-striped ttbb">
                 <?php if (isset($p)) : ?>
-                        <div class="py-2">   共<?= $totalUsersCount ?>筆訂單 
+                        <div class="py-2">   共<?= $totalUsersCounta ?>筆訂單 
                         <br>
                         <br>
                         此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆</div>

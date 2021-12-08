@@ -180,6 +180,9 @@ try{
                                     兌換券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
+                                </ul>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="./login.php">新增兌換券</a></li>
 
                                 </ul>
