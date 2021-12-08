@@ -94,8 +94,6 @@ if (isset($_GET['search'])) {
     JOIN sellers as c on a.sellers_id = c.id
     JOIN products as d on a.products_id = d.id
     WHERE a.id like '%$search%' OR b.name like '%$search%' OR c.name like '%$search%' ";
-
-
 } else{
  //分頁功能
  if (isset($_GET['p'])) {
@@ -104,15 +102,14 @@ if (isset($_GET['search'])) {
     $p = 1;
 }
 
-$pageItems = 10; //一頁6個
-$startItem = ($p - 1) * $pageItems; //求出LIMIT第一個數字
-$pageConet = $totalUsersCount / $pageItems; //總筆數除一頁10個 = 總頁數
-$pageR = $totalUsersCount % $pageItems; // 總筆數除一頁顯示數量 如果有餘數代表他是下一頁
+$pageItems = 10; 
+$startItem = ($p - 1) * $pageItems; 
+$pageConet = $totalUsersCount / $pageItems; 
+$pageR = $totalUsersCount % $pageItems; 
 $starNo = ($p) * $pageItems - 9;
 $starEnd = $pageItems * ($p);
 if ($pageR !== 0) {
-    $pageConet = ceil($pageConet); //總頁數餘數不為0 讓他無條件進位
-
+    $pageConet = ceil($pageConet);
     if ($pageConet == $p) {
         $starEnd = $starEnd - ($pageItems - $pageR);
     }
