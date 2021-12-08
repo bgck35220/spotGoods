@@ -125,8 +125,8 @@ try {
                                     兌換券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./login.php">新增兌換券</a></li>
-
+                                    <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon/coupon-add.php">新增兌換券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -138,7 +138,7 @@ try {
                     <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center">
                             <p class="nav-link m-0 me-4 text-light d-block" aria-current="page" href="#">管理員:<?= $_SESSION['user']['name'] ?></p>
-                            <a href="logOut.php" type="button" class="btn btn-warning">登出</a>
+                            <a href="../logOut.php" type="button" class="btn btn-warning">登出</a>
                         </li>
                     </ul>
                 </div>
