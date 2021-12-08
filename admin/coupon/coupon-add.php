@@ -5,13 +5,12 @@ if (!isset($_SESSION["user"])) {
     header("location:admin-Login.php");
 }
 
-
 ?>
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>管理員後台-新增店家資料</title>
+    <title>管理員後台-兌換券新增</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -51,9 +50,9 @@ if (!isset($_SESSION["user"])) {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./sellers-check.php">店家申請</a></li>
-                                    <li><a class="dropdown-item" href="./sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="./seller-add.php">新增店家</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/sellers-check.php">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/sellers.php">店家總覽</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
@@ -72,8 +71,8 @@ if (!isset($_SESSION["user"])) {
                                     兌換券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增兌換券</a></li>
+                                     <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -86,7 +85,7 @@ if (!isset($_SESSION["user"])) {
                     <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center">
                             <p class="nav-link m-0 me-4 text-light d-block" aria-current="page" href="#">管理員:<?= $_SESSION['user']['name'] ?></p>
-                            <a href="logout.php" type="button" class="btn btn-warning">登出</a>
+                            <a href="../logOut.php" type="button" class="btn btn-warning">登出</a>
                         </li>
                     </ul>
                 </div>
@@ -101,60 +100,62 @@ if (!isset($_SESSION["user"])) {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">新增店家資料</h2>
+                    <h2 class="fs-3">新增兌換券</h2>
                 </div>
                 <div class="d-flex ">
-                    <!-- <div class="me-2">
-                        <a href="./seller.php?id=<?= $rowUser['id'] ?>" class="btn btn btn-secondary" type="submit">
-                            詳細資訊
-                        </a>
-                    </div> -->
                     <div>
-                        <a href="./sellers.php" class="btn btn-light" type="submit">
-                            店家首頁
+                        <a href="./coupon.php" class="btn btn-light" type="submit">
+                            回兌換券清單
                         </a>
                     </div>
                 </div>
             </div>
 
           
-                <form action="addSeller.php" method="POST" class="updateForm">
+                <form action="couponAdd.php" method="POST" class="updateForm">
                     <table class="table table-bordered  updateTable ">
+                        <tr class="">
+                            <th>id</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="id" name="id" disabled></td>
+                        </tr>
+                        <tr>
+                            <th>折扣項目</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="" name="text"></td>
+                        </tr>
+                        <tr>
+                            <th>折扣金額</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="" name="amount" ></td>
+                        </tr>
+                        <tr>
+                            <th>數量</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="" name="quantity"></td>
+                        </tr>
+                        <!-- <tr>
+                            <th>兌換券狀態</th>
+                            <td class="user-switch">
 
-                        <tr>
-                            <th>logo</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="logo" name="Logo"></td>
-                        </tr>
-                        <tr>
-                            <th>店家名稱</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="name" name="name"></td>
-                        </tr>
-                        <tr>
-                            <th>帳號</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="account" name="account" ></td>
-                        </tr>
-                        <tr>
-                            <th>密碼</th>
-                            <td class="p-1"> <input type="password" value="" class="form-control p-2 m-0" placeholder="password" name="password" ></td>
-                        </tr>
-                        <tr>
-                            <th>信箱</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="email" name="email"></td>
-                        </tr>
-                        <tr>
-                            <th>手機號碼</th>
-                            <td>待新增</td>
-                        </tr>
-                           
-               
+                                <?php if ($rowUser['valid'] == 1) { ?>
+                                    <!-- <p class="m-0 text-primary">啟用</p> -->
+                                    <a class="btn btn-outline-primary"  id="btn-open"  > 啟用</a>
+                                    <a class="btn btn-outline-danger d-none" id="btn-close"  > 停用</a>
+                                    <input type="hidden" name="valid" id="validswich"value="">
 
+                                <?php } else if ($rowUser['valid'] == 0) { ?>
+                                    <a class="btn btn-outline-danger" id="btn-close"  > 停用</a>
+                                    <a class="btn btn-outline-primary d-none"  id="btn-open"> 啟用</a>
+                                    <input type="hidden" name="valid" id="validswich"value="">    
+                                <?php }; ?>
+                            </td>
+                        </tr> -->
 
+                
                     </table>
+                    <!-- <?= $_SESSION['update_msg']?> -->
                     <input type="hidden" name="id" value="<?= $rowUser['id'] ?>">
                     <button type="submit" class="btn btn-outline-dark w-100">送出</button>
                 </form>
 
- 
+       
         </div>
     </main>
 

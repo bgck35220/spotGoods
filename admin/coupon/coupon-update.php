@@ -85,7 +85,7 @@ try {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                      <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./login.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -163,7 +163,9 @@ try {
 
                 
                     </table>
-                    <?= $_SESSION['update_msg']?>
+                    <?php if(!empty($_SESSION['update_msg'])){
+                        echo $_SESSION['update_msg'];}?>
+      
                     <input type="hidden" name="id" value="<?= $rowUser['id'] ?>">
                     <button type="submit" class="btn btn-outline-dark w-100">送出</button>
                 </form>
