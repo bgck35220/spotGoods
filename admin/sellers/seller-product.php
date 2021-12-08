@@ -10,7 +10,14 @@ if(isset($_GET['id'])){
     header("location:seller-product-list.php");
 }
 
-$sqlProduct = "SELECT * FROM products WHERE id = ?";
+$sqlProduct = "SELECT a.* ,
+b.id as seller_id,
+b.name as seller_name,
+b.valid as seller_valid,
+b.created_at as seller_created_at
+FROM products AS a
+JOIN sellers as b on a.sellers_id = b.id
+WHERE a.id =?";
 $stmtProduct = $db_host->prepare($sqlProduct);
 
 try {
@@ -22,22 +29,22 @@ try {
     echo $e->getMessage();
 }
 
-$sqlSellers="SELECT * FROM sellers ";
-$stmtSellers= $db_host->prepare($sqlSellers);
-try{
-    $stmtSellers->execute();
+// $sqlSellers="SELECT * FROM sellers ";
+// $stmtSellers= $db_host->prepare($sqlSellers);
+// try{
+//     $stmtSellers->execute();
   
-    $userExist=$stmtSellers->rowCount();
-    $selleraname="";
-    while(  $rowSellers = $stmtSellers->fetch()){
-        if($rowSellers['id']===$_GET['id']){
-            $selleraname=$rowSellers['name'];
-        }
-    }
+//     $userExist=$stmtSellers->rowCount();
+//     $selleraname="";
+//     while(  $rowSellers = $stmtSellers->fetch()){
+//         if($rowSellers['id']===$_GET['id']){
+//             $selleraname=$rowSellers['name'];
+//         }
+//     }
 
-}catch(PDOException $e){
-    echo $e->getMessage();
-}
+// }catch(PDOException $e){
+//     echo $e->getMessage();
+// }
 ?>
 
 <!doctype html>
@@ -139,7 +146,7 @@ try{
                         </a>
                     </div>
                     <div>
-                    <a href="./sellers.php" class="btn btn-light" type="submit">
+                    <a href="seller-product-list.php?userid=<?=$rowUser['seller_id']?>" class="btn btn-light" type="submit">
                         回店家商品
                     </a>
                     </div>
@@ -154,7 +161,7 @@ try{
                 </tr>
                 <tr>
                     <th>上架商家</th>
-                    <td><?=$selleraname?></td>
+                    <td><?=$rowUser['seller_name']?></td>
                 </tr>
                 <tr>
                     <th>商品名稱</th>

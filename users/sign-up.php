@@ -241,8 +241,9 @@ try{
 
     //
 
-    let users=<?=json_encode($userRows)?>;
-    console.log(users);
+    //let users=<?//=json_encode($userRows)?>//;
+    //// console.log(users.account);
+    //console.log(users[0].account);
 
 
 </script>

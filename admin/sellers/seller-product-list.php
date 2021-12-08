@@ -4,41 +4,13 @@ if (!isset($_SESSION["user"])) {
     header("location:admin-Login.php");
 };
 
-$userid=$_GET['userid'];
-$sqlSellers="SELECT * FROM sellers WHERE id = $userid ";
-$stmtSellers= $db_host->prepare($sqlSellers);
-try{
-    $stmtSellers->execute();
 
-
-    $sellersname="";
-    while(  $rowSellers = $stmtSellers->fetch()){
-        if($rowSellers['id']===$_GET['userid']){
-            $selleraname=$rowSellers['name'];
-            $sellerid=$rowSellers['id'];
-            $userExist=$stmtSellers->rowCount();
-            
-        }
-    }
-
-}catch(PDOException $e){
-    echo $e->getMessage();
+if(isset($_GET['userid'])){
+    $userid=$_GET['userid'];
+}else{
+    die("資料錯誤");
 }
 
-
-//總筆數
-$sqlTotal = "SELECT * FROM products WHERE sellers_id=?";
-$stmtTotal = $db_host->prepare($sqlTotal);
-try {
-    $stmtTotal->execute([$sellerid]);
-    $totalUsersCount = $stmtTotal->rowCount();
-
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
-
-
-//店家資料彈跳式窗
 if (isset($_GET['sellertable'])) {
     $id = $_GET['sellertable'];
     $sqlUsreTable = "SELECT * FROM sellers WHERE id = ?";
@@ -52,26 +24,70 @@ if (isset($_GET['sellertable'])) {
         echo $e->getMessage();
     }
 };
+//總筆數
+$sqlTotal = 
+"SELECT a.* ,
+b.id as seller_id,
+b.name as seller_name,
+b.valid as seller_valid,
+b.created_at as seller_created_at
+FROM products AS a
+JOIN sellers as b on a.sellers_id = b.id
+WHERE b.id =?";
+
+$stmtTotal = $db_host->prepare($sqlTotal);
+try {
+    $stmtTotal->execute([$userid]);
+    $totalUsersCounta = $stmtTotal->rowCount();
+} catch (PDOException $e) {
+    echo $e->getMessage();
+}
+
+
+//店家資料彈跳式窗
+if (isset($_GET['sellertable'])) {
+    $id = $_GET['sellertable'];
+    $sqlUsreTable = "SELECT a.* ,
+    b.id as seller_id,
+    b.name as seller_name,
+    b.valid as seller_valid,
+    b.created_at as seller_created_at
+    FROM products AS a
+    JOIN sellers as b on a.sellers_id = b.id
+    WHERE a.id =?";
+    $stmtUserTable = $db_host->prepare($sqlUsreTable);
+
+    try {
+        $stmtUserTable->execute([$id]);
+        $rowUserUserTable = $stmtUserTable->fetch();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+};
 
 
 if (isset($_GET['search'])) {
-    //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $userid=$_GET['userid'];
-
-    $sqlProducts="SELECT * FROM products WHERE id like '%$search%' OR name like '%$search%'";
+    $sqlProducts=
+    "SELECT a.* ,
+    b.id as seller_id,
+    b.name as seller_name,
+    b.valid as seller_valid,
+    b.created_at as seller_created_at
+    FROM products AS a
+    JOIN sellers as b on a.sellers_id = b.id
+    WHERE a.id like '%$search%' OR b.name like '%$search%'";
 } else {
-    //分頁功能
+
     if (isset($_GET['p'])) {
         $p = $_GET['p'];
     } else {
         $p = 1;
     }
-
     $pageItems = 10; 
     $startItem = ($p - 1) * $pageItems; 
-    $pageConet = $totalUsersCount / $pageItems; 
-    $pageR = $totalUsersCount % $pageItems; 
+    $pageConet = $totalUsersCounta / $pageItems; 
+    $pageR = $totalUsersCounta % $pageItems; 
     $starNo = ($p) * $pageItems - 9;
     $starEnd = $pageItems * ($p);
     if ($pageR !== 0) {
@@ -81,25 +97,26 @@ if (isset($_GET['search'])) {
             $starEnd = $starEnd - ($pageItems - $pageR);
         }
     }
-    $sqlProducts = "SELECT * FROM products  ORDER BY id LIMIT $startItem,$pageItems";
+ 
+    $sqlProducts="SELECT a.* ,
+        b.id as seller_id,
+        b.name as seller_name,
+        b.valid as seller_valid,
+        b.created_at as seller_created_at
+        FROM products AS a
+        JOIN sellers as b on a.sellers_id = b.id
+        WHERE b.id = $userid
+        ORDER BY id LIMIT $startItem,$pageItems " ;
 
   
 }
-
-
-
 $stmtProducts= $db_host->prepare($sqlProducts);
 try{
     $stmtProducts->execute();
-    $totalUsersCount = $stmtTotal->rowCount();
+    $totalUsersCount = $stmtProducts->rowCount();
 }catch(PDOException $e){
     echo $e->getMessage();
 }
-
-    
-
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -201,7 +218,7 @@ try{
                         <h2 class="fs-3">店家上架商品總覽</h2>
                     </div>
                     <?php if (isset($p)) : ?>
-                        <div class="py-2">共<?= $totalUsersCount ?>樣訂單 
+                        <div class="py-2">共<?= $totalUsersCounta ?>樣訂單 
                         <br>
                         <br>
                         此頁顯示第<?= $starNo ?>~<?= $starEnd ?>筆</div>
@@ -219,9 +236,9 @@ try{
                         <th>上架時間</th>
                         <th>商品狀態</th>
                         <th>
-                            <form action="./seller-product-list.php?userid=<?=$sellerid?>" method="GET">
+                            <form action="./seller-product-list.php?userid=<?=$userid?>" method="GET">
                                 <div class="input-group  search-user">
-                                <input type="hidden" name="userid" value="<?=$sellerid?>">
+                                <input type="hidden" name="userid" value="<?=$userid?>">
                                     <input type="search" class="form-control" placeholder="搜尋商品名稱、編號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
@@ -235,8 +252,15 @@ try{
                     if($rowProducts['sellers_id'] === $_GET['userid']):?>
               
                         <tr class="table-text-all">
-                            <td><?= $rowProducts['id'] ?></td>
-                            <td><?=$selleraname?></td>
+                            <td>
+                                <a class="text-decoration-none text-dark d-flex" href="./seller-product-list.php?userid=<?=$rowProducts['seller_id']?>&sellertable=<?= $rowProducts['id'] ?><?php
+                                    if (isset($p)) echo "&p=$p";
+                                    if (isset($search)) echo "&search=$search";
+                                    ?>" type="submit">    
+                                <?= $rowProducts['id'] ?>
+                                <img class="magnifier-img" src="../img/search-solid.svg" alt="">
+                            </td>
+                            <td><?=$rowProducts['seller_name']?></td>
                             <td class="">
                    
                                 <?= $rowProducts['name'] ?>
@@ -261,22 +285,22 @@ try{
                                     $validone += 1;
                                 ?>
                                     <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']; ?>&search=<?= $search ?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
+                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']; ?>&search=<?= $search ?>" id="user-close"> 下架</a>
                                         
                                     <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-danger" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&p=<?= $p ?>&userid=<?=$sellerid?>">下架</a>
+                                        <a class="btn btn-outline-danger" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&p=<?= $p ?>">下架</a>
                                     <?php else : ?>
-                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>&userid=<?=$sellerid?>" id="user-close"> 下架</a>
+                                        <a class="btn btn-outline-danger" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid=<?= $rowProducts['valid']?>" id="user-close"> 下架</a>
                                     <?php endif; ?>
 
                                 <?php elseif (($rowProducts['valid'] == 0)) : ?>
 
                                     <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?= $rowProducts['valid']; ?>&search=<?= $search ?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?= $rowProducts['valid']; ?>">上架</a>
                                     <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&p=<?= $p?>&userid=<?=$sellerid?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&p=<?= $p?>">上架</a>
                                     <?php else : ?>
-                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?=$rowProducts['valid']?>&userid=<?=$sellerid?>">上架</a>
+                                        <a class="btn btn-outline-primary" id="user-open" href="seller-product-list.php?userid=<?=$userid?>&id=<?= $rowProducts['id'] ?>&valid<?=$rowProducts['valid']?>>上架</a>
                                     <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -295,14 +319,14 @@ try{
         <div class="full-screen full-close " id="user-switch-close">
             <div class="close">
                 <div class="d-flex justify-content-end">
-                    <a class=" btn closeX" id="closeX" href="seller-product-list.php?userid=<?=$sellerid?><?php if (isset($p)) echo "&p=$p";
+                    <a class=" btn closeX" id="closeX" href="seller-product-list.php?userid=<?=$userid?><?php if (isset($p)) echo "&p=$p";
                     if (isset($search)) echo "&search=$search";
                    ?>">X
                     </a>
                 </div>
                 <div class="closeText ">確定要下架商品嗎?</div>
                 <div class="d-flex justify-content-center">
-                    <a type="submit" href="sellerProductDelete.php?userid=<?=$sellerid?>&id=<?= $_GET['id'] ?><?php if (isset($p)) {echo "&p=$p";} else if (isset($search)) {echo "&search=$search";
+                    <a type="submit" href="sellerProductDelete.php?userid=<?=$userid?>&id=<?= $_GET['id'] ?><?php if (isset($p)) {echo "&p=$p";} else if (isset($search)) {echo "&search=$search";
                     };
                     ?>" class="btn btn-danger closeCheck">確定</a>
                 </div>
@@ -316,11 +340,11 @@ try{
         <div class="full-screen openFullScreen" id="user-switch-open">
             <div class="close">
                 <div class="d-flex justify-content-end ">
-                    <a class=" btn closeX" id="closeX" href="seller-product-list.php?userid=<?=$sellerid?><?php if (isset($search)) echo "&search=$search"; if (isset($p)) echo "&p=$p"; ?>">X</a>
+                    <a class=" btn closeX" id="closeX" href="seller-product-list.php?userid=<?=$userid?><?php if (isset($search)) echo "&search=$search"; if (isset($p)) echo "&p=$p"; ?>">X</a>
                 </div>
                 <div class="closeText">確定要上架商品嗎?</div>
                 <div class="d-flex justify-content-center">
-                    <a href="sellerProductOpen.php?userid=<?=$sellerid?>&id=<?= $_GET['id'] ?>
+                    <a href="sellerProductOpen.php?userid=<?=$userid?>&id=<?= $_GET['id'] ?>
                     <?php
                         if (isset($p)) {echo "&p=$p";
                             }else if (isset($search)) {   
@@ -346,7 +370,7 @@ try{
             <ul class="pagination  justify-content-center">
                 <?php for ($i = 1; $i <= $pageConet; $i++) : ?>
                     <li class="page-item page-nav <?php if ($p == $i) echo 'active' ?>">
-                        <a class="page-link" href="http://localhost/spotGoods/admin/sellers/seller-product-list.php?userid=<?=$sellerid?>&p=<?= $i ?>"><?= $i ?>
+                        <a class="page-link" href="http://localhost/spotGoods/admin/sellers/seller-product-list.php?userid=<?=$userid?>&p=<?= $i ?>"><?= $i ?>
                         </a>
                     </li>
                 <?php endfor; ?>
@@ -362,7 +386,7 @@ try{
                 <tr>
                     <th>id</th>
                     <td><?= $rowUserUserTable['id'] ?>
-                        <a class="user-table-btn-close" href="./sellers.php?<?php
+                        <a class="user-table-btn-close" href="./seller-product-list.php?userid=<?=$rowUserUserTable['seller_id']?><?php
                         if (isset($p)) echo "&p=$p";
                         if (isset($search)) echo "&search=$search";
                         ?>">X
@@ -370,16 +394,16 @@ try{
                     </td>
                 </tr>
                 <tr>
-                    <th>姓名</th>
+                    <th>上架商家</th>
+                    <td><?= $rowUserUserTable['seller_name'] ?></td>
+                </tr>
+                <tr>
+                    <th>商品名稱</th>
                     <td><?= $rowUserUserTable['name'] ?></td>
                 </tr>
                 <tr>
-                    <th>帳號</th>
-                    <td><?= $rowUserUserTable['account'] ?></td>
-                </tr>
-                <tr>
-                    <th>信箱</th>
-                    <td><?= $rowUserUserTable['email'] ?></td>
+                    <th>商品價格</th>
+                    <td><?= $rowUserUserTable['price'] ?></td>
                 </tr>
   
                 <tr>
@@ -387,15 +411,15 @@ try{
                     <td>還沒新增</td>
                 </tr>
                 <tr>
-                    <th>註冊時間</th>
+                    <th>上架時間</th>
                     <td><?= $rowUserUserTable['created_at'] ?></td>
                 </tr>
                 <tr>
-                    <th>帳號狀態</th>
+                    <th>商品狀態</th>
                     <td><?php if ($rowUserUserTable['valid'] == 1) {
-                            echo "啟用";
+                            echo "上架中";
                         } else {
-                            echo "停用";
+                            echo "已下架";
                         }
 
                         ?></td>
