@@ -26,6 +26,7 @@ if (isset($_GET['usertable'])) {
         $userExistUserTable = $stmtUserTable->rowCount();
     } catch (PDOException $e) {
         echo $e->getMessage();
+        echo "測試";
     }
 };
 
