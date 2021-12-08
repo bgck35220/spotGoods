@@ -19,7 +19,7 @@ if (isset($_GET['usertable'])) {
     $id = $_GET['usertable'];
     $sqlUsreTable = "SELECT * FROM users WHERE id = ?";
     $stmtUserTable = $db_host->prepare($sqlUsreTable);
-
+    
     try {
         $stmtUserTable->execute([$id]);
         $rowUserUserTable = $stmtUserTable->fetch();
