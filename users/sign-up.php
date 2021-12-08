@@ -1,7 +1,7 @@
 <?php
 require_once("pdo-connect.php");
 
-//檢查使用者帳號是已存在
+//檢查使用者帳號是否已存在
 $sqlCheck = "SELECT account FROM users";
 $checkResult = $db_host->prepare($sqlCheck);
 try{
@@ -36,6 +36,17 @@ try{
             font-size: 14px;
             color: #777;
         }
+        /*input:-webkit-autofill,*/
+        /*input:-webkit-autofill:hover,*/
+        /*input:-webkit-autofill:focus,*/
+        /*textarea:-webkit-autofill,*/
+        /*textarea:-webkit-autofill:hover,*/
+        /*textarea:-webkit-autofill:focus,*/
+        /*select:-webkit-autofill,*/
+        /*select:-webkit-autofill:hover,*/
+        /*select:-webkit-autofill:focus {*/
+        /*    -webkit-box-shadow: 0 0 0px 1000px white inset;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -58,26 +69,30 @@ try{
                     <h1 class="loginTitle mb-3 mt-3 fs-5 fw-normal text-muted">會員註冊</h1>
                     <div class="mb-3">
                         <label for="name">姓名</label>
-                        <input id="name" type="text" name="name" required class="form-control" placeholder="中文 / 英文姓名" value="<?php if(isset($_GET['name'])) echo $_GET['name']?>">
+                        <input id="name" type="text" name="name" required class="form-control" placeholder="中文 / 英文姓名">
+<!--                        value="--><?php //if(isset($_GET['name'])) echo $_GET['name']?><!--"-->
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="email">電子信箱</label>
                         <input id="email" type="email" name="email" required class="form-control"
-                               placeholder="name@example.com"value="<?php if(isset($_GET['name'])) echo $_GET['name']?>">
+                               placeholder="name@example.com">
+<!--                        value="--><?php //if(isset($_GET['email'])) echo $_GET['email']?><!--"-->
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="account">帳號</label>
-                        <input id="account" type="text" name="account" required class="form-control" placeholder="數字/英文/底線，5-16個字，以英文開頭，大小寫不限" value="<?php if(isset($_GET['account'])) echo $_GET['account']?>">
+                        <input id="account" type="text" name="account" required class="form-control" placeholder="數字/英文/底線，5-16個字，以英文開頭，大小寫不限">
+<!--                        value="--><?php //if(isset($_GET['account'])) echo $_GET['account']?><!--"-->
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="password">密碼</label>
-                        <input id="password" type="password" name="password" required class="form-control" placeholder="至少5個字，需包含大小寫字母和數字，可以有特殊符號" value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">
+                        <input id="password" type="password" name="password" required class="form-control" placeholder="至少5個字，需包含大小寫字母和數字，可以有特殊符號">
+<!--                        value="--><?php //if(isset($_GET['password'])) echo $_GET['password']?><!--"-->
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center p-1">
-                                <input type="checkbox" id="showPassword"><span class="show-password ms-2"value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">顯示密碼</span>
+                                <input type="checkbox" id="showPassword"><span class="show-password ms-2">顯示密碼</span>
                             </div>
                             <div id="passwordError" class="error text-danger text-end d-float"></div>
                         </div>
@@ -95,17 +110,18 @@ try{
 <!--                    </div>-->
                     <div class="mb-3">
                         <label for="phone">手機號碼</label>
-                        <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx"value="<?php if(isset($_GET['phone'])) echo $_GET['phone']?>">
+                        <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx">
+<!--                        value="--><?php //if(isset($_GET['phone'])) echo $_GET['phone']?><!--"-->
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="address">地址</label>
-                        <input id="address" type="text" name="address" required class="form-control"value="<?php if(isset($_GET['address'])) echo $_GET['address']?>">
+                        <input id="address" type="text" name="address" required class="form-control" value="<?php if(isset($_GET['address'])) echo $_GET['address']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
-                    <?php if(isset($_GET['error'])=="1"):?>
-                    <p>帳號已被註冊</p>
-                    <?php endif;?>
+<!--                    --><?php //if(isset($_GET['error'])=="1"):?>
+<!--                    <p>帳號已被註冊</p>-->
+<!--                    --><?php //endif;?>
                     <button class="btn btn-secondary" type="submit">註冊</button>
                 </form>
             </div>
@@ -241,12 +257,27 @@ try{
     // }
 
 
-    //
 
-    //let users=<?//=json_encode($userRows)?>//;
-    //// console.log(users.account);
-    //console.log(users[0].account);
+    //檢查使用者帳號是否已存在
+    //PHP 透過 json_encode 把資料轉換成 json 讓前端使用
+    //($userRows已在上面資料庫查詢取得)
+    let users=<?=json_encode($userRows)?>;
+    // console.log(users);
+    // console.log(users[1].account);
+    $("#account").blur(function () {
+        for(let i=0; i<users.length; i++){
+            if(users[i].account==$("#account").val()){
+                $("#account").next(".error").text("此帳號已被使用");
+                $("#account").addClass("border-danger");
+            }
+        }
+    });
+    //另外方法 送出資料後 header回來 用網址回傳值到value
+<!--    --><?php //if(isset($_GET['error'])=="1"): ?>
+//    alert("此帳號已被使用");
+//    <?php //endif; ?>
 
+    //或可以用session
 
 </script>
 </body>

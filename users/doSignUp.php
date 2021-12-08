@@ -26,7 +26,9 @@ $checkResult->execute([$account]);
 $userExist = $checkResult->rowCount();
 //echo $userExist."<br>";
 if ($userExist > 0) {
-    header("location: sign-up.php?error=1&name=$name&account=$account&email=$email&password=$password&phone=$phone&$address=$address");
+    echo "帳號已存在";
+    header("location: sign-up.php?error=1&name=$name&account=$account&email=$email&password=$password&phone=$phone&address=$address");
+    //前端post到後端檢查後 傳值回網址帶到前端 使表單存有原本的value
     exit();
 //$userExist=$checkResult->fetch(PDO::FETCH_ASSOC);
 //print_r($checkResult); echo '<br>';
