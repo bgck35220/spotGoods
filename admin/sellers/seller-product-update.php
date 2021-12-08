@@ -8,7 +8,14 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 }
 
-$sqlProduct = "SELECT * FROM products WHERE id = ?";
+$sqlProduct = "SELECT a.* ,
+b.id as seller_id,
+b.name as seller_name,
+b.valid as seller_valid,
+b.created_at as seller_created_at
+FROM products AS a
+JOIN sellers as b on a.sellers_id = b.id
+WHERE a.id =?";
 $stmProduct = $db_host->prepare($sqlProduct);
 
 try {
@@ -21,22 +28,22 @@ try {
 
 
 
-$sqlSellers="SELECT * FROM sellers ";
-$stmtSellers= $db_host->prepare($sqlSellers);
-try{
-    $stmtSellers->execute();
+// $sqlSellers="SELECT * FROM sellers ";
+// $stmtSellers= $db_host->prepare($sqlSellers);
+// try{
+//     $stmtSellers->execute();
   
-    $userExist=$stmtSellers->rowCount();
-    $sellersname="";
-    while(  $rowSellers = $stmtSellers->fetch()){
-        if($rowSellers['id']===$_GET['id']){
-            $selleraname=$rowSellers['name'];
-        }
-    }
+//     $userExist=$stmtSellers->rowCount();
+//     $sellersname="";
+//     while(  $rowSellers = $stmtSellers->fetch()){
+//         if($rowSellers['id']===$_GET['id']){
+//             $selleraname=$rowSellers['name'];
+//         }
+//     }
 
-}catch(PDOException $e){
-    echo $e->getMessage();
-}
+// }catch(PDOException $e){
+//     echo $e->getMessage();
+// }
 ?>
 <!doctype html>
 <html lang="en">
@@ -141,7 +148,7 @@ try{
                         </a>
                     </div>
                     <div>
-                        <a href="seller-product-list.php?id=<?=$id?>" class="btn btn-light" type="submit">
+                        <a href="seller-product-list.php?userid=<?=$rowUser['seller_id']?>" class="btn btn-light" type="submit">
                             回店家商品
                         </a>
                     </div>
@@ -157,7 +164,7 @@ try{
                         </tr>
                         <tr>
                             <th class="">上架商家</th>
-                            <td class="p-1 "> <input type="text" value="<?= $selleraname ?>" class="form-control p-2 m-0" placeholder="name" name="sellername" disabled></td>
+                            <td class="p-1 "> <input type="text" value="<?= $rowUser['seller_name'] ?>" class="form-control p-2 m-0" placeholder="name" name="sellername" disabled></td>
                         </tr>
                         <tr>
                             <th>商品名稱</th>
