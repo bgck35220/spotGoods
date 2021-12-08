@@ -13,9 +13,6 @@ try{
 }
 ?>
 
-=======
-<?php require_once("./pdo-connect.php")?>
->>>>>>> 5e87875c620ef32e66b936739ed673e052ed13e2
 <!doctype html>
 <html lang="en">
 <head>
@@ -72,21 +69,12 @@ try{
                     </div>
                     <div class="mb-3">
                         <label for="account">帳號</label>
-<<<<<<< HEAD
-                        <input id="account" type="text" name="account" required class="form-control" placeholder="數字/英文/底線，5-16個字，以英文開頭，大小寫不限">
-=======
-                        <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號"value="<?php if(isset($_GET['account'])) echo $_GET['account']?>">
->>>>>>> 5e87875c620ef32e66b936739ed673e052ed13e2
+                        <input id="account" type="text" name="account" required class="form-control" placeholder="數字/英文/底線，5-16個字，以英文開頭，大小寫不限" value="<?php if(isset($_GET['account'])) echo $_GET['account']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="password">密碼</label>
-                        <input id="password" type="password" name="password" required class="form-control"
-<<<<<<< HEAD
-                               placeholder="至少5個字，需包含大小寫字母和數字，可以有特殊符號">
-=======
-                               placeholder="設定您的密碼"value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">
->>>>>>> 5e87875c620ef32e66b936739ed673e052ed13e2
+                        <input id="password" type="password" name="password" required class="form-control" placeholder="至少5個字，需包含大小寫字母和數字，可以有特殊符號" value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center p-1">
                                 <input type="checkbox" id="showPassword"><span class="show-password ms-2"value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">顯示密碼</span>
