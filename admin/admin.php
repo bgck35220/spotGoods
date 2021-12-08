@@ -19,14 +19,13 @@ if (isset($_GET['usertable'])) {
     $id = $_GET['usertable'];
     $sqlUsreTable = "SELECT * FROM users WHERE id = ?";
     $stmtUserTable = $db_host->prepare($sqlUsreTable);
-
+    
     try {
         $stmtUserTable->execute([$id]);
         $rowUserUserTable = $stmtUserTable->fetch();
         $userExistUserTable = $stmtUserTable->rowCount();
     } catch (PDOException $e) {
         echo $e->getMessage();
-        echo "測試";
     }
 };
 
