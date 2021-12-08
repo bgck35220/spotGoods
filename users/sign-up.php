@@ -1,3 +1,4 @@
+<?php require_once("./pdo-connect.php")?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -43,27 +44,27 @@
                     <h1 class="loginTitle mb-3 mt-3 fs-5 fw-normal text-muted">會員註冊</h1>
                     <div class="mb-3">
                         <label for="name">姓名</label>
-                        <input id="name" type="text" name="name" required class="form-control" placeholder="中文 / 英文姓名">
+                        <input id="name" type="text" name="name" required class="form-control" placeholder="中文 / 英文姓名" value="<?php if(isset($_GET['name'])) echo $_GET['name']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="email">電子信箱</label>
                         <input id="email" type="email" name="email" required class="form-control"
-                               placeholder="name@example.com">
+                               placeholder="name@example.com"value="<?php if(isset($_GET['name'])) echo $_GET['name']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="account">帳號</label>
-                        <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號">
+                        <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號"value="<?php if(isset($_GET['account'])) echo $_GET['account']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="password">密碼</label>
                         <input id="password" type="password" name="password" required class="form-control"
-                               placeholder="設定您的密碼">
+                               placeholder="設定您的密碼"value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center p-1">
-                                <input type="checkbox" id="showPassword"><span class="show-password ms-2">顯示密碼</span>
+                                <input type="checkbox" id="showPassword"><span class="show-password ms-2"value="<?php if(isset($_GET['password'])) echo $_GET['password']?>">顯示密碼</span>
                             </div>
                             <div id="passwordError" class="error text-danger text-end d-float"></div>
                         </div>
@@ -82,14 +83,17 @@
 <!--                    </div>-->
                     <div class="mb-3">
                         <label for="phone">手機號碼</label>
-                        <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx">
+                        <input id="phone" type="text" name="phone" required class="form-control" placeholder="09xxxxxxxx"value="<?php if(isset($_GET['phone'])) echo $_GET['phone']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="address">地址</label>
-                        <input id="address" type="text" name="address" required class="form-control">
+                        <input id="address" type="text" name="address" required class="form-control"value="<?php if(isset($_GET['address'])) echo $_GET['address']?>">
                         <div class="error text-danger text-end"></div>
                     </div>
+                    <?php if(isset($_GET['error'])=="1"):?>
+                    <p>帳號已被註冊</p>
+                    <?php endif;?>
                     <button class="btn btn-secondary" type="submit">註冊</button>
                 </form>
             </div>

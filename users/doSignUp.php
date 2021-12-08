@@ -24,7 +24,7 @@ $checkResult->execute([$account]);
 $userExist = $checkResult->rowCount();
 //echo $userExist."<br>";
 if ($userExist > 0) {
-    echo "帳號已存在";
+    header("location: sign-up.php?error=1&name=$name&account=$account&email=$email&password=$password&phone=$phone&$address=$address");
     exit();
 //$userExist=$checkResult->fetch(PDO::FETCH_ASSOC);
 //print_r($checkResult); echo '<br>';
