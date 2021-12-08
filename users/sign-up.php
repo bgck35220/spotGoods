@@ -116,7 +116,8 @@ try{
                     </div>
                     <div class="mb-3">
                         <label for="address">地址</label>
-                        <input id="address" type="text" name="address" required class="form-control" value="<?php if(isset($_GET['address'])) echo $_GET['address']?>">
+                        <input id="address" type="text" name="address" required class="form-control">
+<!--                        value="--><?php //if(isset($_GET['address'])) echo $_GET['address']?><!--"-->
                         <div class="error text-danger text-end"></div>
                     </div>
 <!--                    --><?php //if(isset($_GET['error'])=="1"):?>
@@ -278,6 +279,20 @@ try{
 //    <?php //endif; ?>
 
     //或可以用session
+
+
+    //資料輸入格式有誤，不能送出註冊
+    $("button[type='submit']").click(function () {
+        if ($("#name").hasClass("border-danger") || $("#account").hasClass("border-danger") || $("#email").hasClass("border-danger") || $("#password").hasClass("border-danger") || $("#phone").hasClass("border-danger")) {
+            alert("資料輸入有誤，無法註冊");
+            return false;
+        }else{
+            alert("註冊成功，請登入會員");
+        }
+
+        // console.log("click");
+        // console.log($("#name").hasClass("border-danger") || $("#account").hasClass("border-danger") || $("#email").hasClass("border-danger") || $("#password").hasClass("border-danger") || $("#phone").hasClass("border-danger"));
+    });
 
 </script>
 </body>
