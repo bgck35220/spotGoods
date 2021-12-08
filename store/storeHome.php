@@ -1,5 +1,4 @@
 <?php
-echo "哈囉哈囉";
 require_once("../db-connect.php");
 $sqlTotal = "SELECT * FROM store WHERE valid=1";
 $resultTotal = $conn->query($sqlTotal);
