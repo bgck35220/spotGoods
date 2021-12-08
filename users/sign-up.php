@@ -1,3 +1,18 @@
+<?php
+require_once("pdo-connect.php");
+
+//檢查使用者帳號是已存在
+$sqlCheck = "SELECT account FROM users";
+$checkResult = $db_host->prepare($sqlCheck);
+try{
+    $checkResult->execute();
+    $userRows = $checkResult->fetchAll(PDO::FETCH_ASSOC);
+}catch (PDOException $e){
+    echo $e->getMessage();
+    $db_host = NULL;
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -54,20 +69,19 @@
                     </div>
                     <div class="mb-3">
                         <label for="account">帳號</label>
-                        <input id="account" type="text" name="account" required class="form-control" placeholder="設定您的帳號">
+                        <input id="account" type="text" name="account" required class="form-control" placeholder="數字/英文/底線，5-16個字，以英文開頭，大小寫不限">
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
                         <label for="password">密碼</label>
                         <input id="password" type="password" name="password" required class="form-control"
-                               placeholder="設定您的密碼">
+                               placeholder="至少5個字，需包含大小寫字母和數字，可以有特殊符號">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center p-1">
                                 <input type="checkbox" id="showPassword"><span class="show-password ms-2">顯示密碼</span>
                             </div>
                             <div id="passwordError" class="error text-danger text-end d-float"></div>
                         </div>
-
                     </div>
 <!--                    <div class="mb-3">-->
 <!--                        <label for="repassword">確認密碼</label>-->
@@ -102,8 +116,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-<script>
 
+<script>
     // 顯示密碼
     // $("#showPassword").mousedown(function(){
     //     $("#password").attr("type", "text");
@@ -147,15 +161,31 @@
     });
 
 
+    //帳號檢查
+    //字母開頭，允許5-16位元組，允許字母數字下劃線
+    const reAccount = /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/;
+    $("#account").blur(function () {
+        if (reAccount.test($("#account").val())) {
+            $(this).next(".error").text("");
+            $(this).removeClass("border-danger");
+        } else {
+            $(this).next(".error").text("輸入格式有誤");
+            $(this).addClass("border-danger");
+        }
+    });
+
+
     //密碼檢查
-    // const rePassword=/^[a-zA-Z]\w{5,}$/;  // 字母開頭，允許6-14位元組，允許字母數字下劃線
+    // const rePassword=/^[a-zA-Z]\w{5,}$/;
+    // 字母開頭，允許6-14位元組，允許字母數字下劃線
     // const rePassword=/^(?=.*[^a-zA-Z0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
     // 高強度密碼，6位數以上，並且至少包含 大寫字母、小寫字母、數字、符號 各一
-    const rePassword=/^(?=.*[^a-zA-Z0-9])(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
-
     // const rePassword=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,10}$/;
-    // 包含大小寫字母和數字的組合，不能使用特殊字元，長度在6-10之間
+    // 包含大小寫字母和數字的組合，不能使用特殊字元，長度在6-18之間
+    // const rePassword=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/;
 
+    // 5位數以上，並且至少包含 大寫字母、小寫字母、數字 各一，可以有特殊符號
+    const rePassword=/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{5,}$/;
     $("#password").blur(function () {
         if (rePassword.test($("#password").val())) {
             $("#passwordError").text("");
@@ -192,7 +222,7 @@
         }
     });
 
-    //尚未註冊完成，離開頁面提醒
+    // 尚未註冊完成，離開頁面提醒
     $(".navbar-brand").click(function () {
         let result = confirm("尚未註冊完成，確定要離開此頁面?");
         if (result) {
@@ -201,7 +231,20 @@
             return false;
         }
     });
-</script>
 
+    //離開網頁提醒
+    // window.onbeforeunload=function(e){
+    //     var e=window.event||e;
+    //     e.returnValue=("確定離開當前頁面嗎？");
+    // }
+
+
+    //
+
+    let users=<?=json_encode($userRows)?>;
+    console.log(users);
+
+
+</script>
 </body>
 </html>
