@@ -1,2 +1,3 @@
 # 忽略 pdo-connect.php 檔案
 pdo-connect.php
+db-connect.php
