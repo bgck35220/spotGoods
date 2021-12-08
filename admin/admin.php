@@ -138,7 +138,7 @@ try {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="../admin/coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./admin/coupon/coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="./coupon/coupon-add.php">新增兌換券</a></li>
                                 </ul>
                               
                             </li>

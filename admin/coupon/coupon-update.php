@@ -163,7 +163,9 @@ try {
 
                 
                     </table>
-                    <?= $_SESSION['update_msg']?>
+                    <?php if(!empty($_SESSION['update_msg'])){
+                        echo $_SESSION['update_msg'];}?>
+      
                     <input type="hidden" name="id" value="<?= $rowUser['id'] ?>">
                     <button type="submit" class="btn btn-outline-dark w-100">送出</button>
                 </form>
