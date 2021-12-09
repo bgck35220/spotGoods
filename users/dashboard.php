@@ -89,7 +89,7 @@ try {
 
 </head>
 <body>
-
+<!--header-->
 <header class="bg-light">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -113,10 +113,11 @@ try {
         </nav>
     </div>
 </header>
-
+<!--header-->
 
 <div class="container px-4 mt-4">
     <div class="row g-3 menu">
+        <!--左邊選單-->
         <div class="col-md-3">
             <div class="p-5 bg-light menu">
                 <figure class="d-flex align-items-center">
@@ -137,6 +138,8 @@ try {
                 </ul>
             </div>
         </div>
+        <!--左邊選單-->
+        <!--右邊內容欄位-->
         <div class="col-md-9">
             <div class="p-5 bg-light menu">
                 修改個人資訊
@@ -200,6 +203,7 @@ try {
                 <?php endif; ?>
             </div>
         </div>
+        <!--右邊內容欄位-->
     </div>
 </div>
 

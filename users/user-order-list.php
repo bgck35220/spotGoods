@@ -32,6 +32,7 @@ try {
 </head>
 <body>
 
+<!--header-->
 <header class="bg-light">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -55,10 +56,12 @@ try {
         </nav>
     </div>
 </header>
+<!--header-->
 
 
 <div class="container px-4 mt-4">
     <div class="row g-3 menu">
+        <!--左邊選單-->
         <div class="col-md-3">
             <div class="p-5 bg-light menu">
                 <figure class="d-flex align-items-center">
@@ -79,6 +82,8 @@ try {
                 </ul>
             </div>
         </div>
+        <!--左邊選單-->
+        <!--右邊內容欄位-->
         <div class="col-md-9">
             <div class="bg-light status d-flex justify-content-between">
                 <a href="user-order-list.php?status=1" class="active">全部</a>
@@ -87,7 +92,20 @@ try {
                 <a href="">完成</a>
                 <a href="">已取消</a>
             </div>
-        </div>
+            <!--搜尋-->
+            <div class="my-3">
+                <form action="user-order-list.php" method="get">
+                    <div class="d-flex align-items-center">
+                        <input type="search" class="form-control me-2" placeholder="您可以透過...進行搜尋" name="s" value="<?php if (isset($search))echo $search; ?>">
+                        <button type="submit" class="btn btn-outline-secondary text-nowrap">搜尋</button>
+                    </div>
+                </form>
+            </div><!--搜尋-->
+            <div class="card my-3">
+                <div>賣家名稱</div>
+
+            </div>
+        </div><!--右邊內容欄位-->
     </div>
 </div>
 
