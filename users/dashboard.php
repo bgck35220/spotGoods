@@ -105,7 +105,8 @@ try {
                                      alt="<?= $_SESSION["user"]["headshots"] ?>">
                             <?php endif; ?>
                         </a>
-                        <?= $_SESSION["user"]["account"] ?> <a href="logOut.php" class="btn btn-info text-white ms-4">登出</a>
+                        <a class="mb-0 text-secondary text-decoration-none" href="dashboard.php"><?= $_SESSION["user"]["account"] ?></a>
+                        <a href="logOut.php" class="btn btn-info text-white ms-4">登出</a>
                     </div>
                 </div>
             </div>
@@ -131,7 +132,7 @@ try {
                 </figure>
                 <ul class="p-0 mt-4">
                     <li class="myList"><a href="dashboard.php">修改個人資訊</a></li>
-                    <li class="myList"><a href="">我的訂單</a></li>
+                    <li class="myList"><a href="user-order-list.php">我的訂單</a></li>
                     <li class="myList"><a href="">兌換券</a></li>
                 </ul>
             </div>
