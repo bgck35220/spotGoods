@@ -10,7 +10,7 @@
     object-fit: cover;
 }
 .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #aaa;
+    color: #bbb;
     font-size: 14px;
     opacity: 1; /* Firefox */
     letter-spacing: .7px;
@@ -76,4 +76,38 @@
 .status a.active{
     color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
+}
+
+.btn-outline-success{
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.card .sellerName{
+    font-size: 15px;
+    color: var(--dark);
+}
+.card .orderStatus{
+    font-size: 15px;
+    color: var(--primary-color);
+}
+.card .storePhoto{
+    width: 120px;
+    height: 100px;
+    border: 1px solid var(--light);
+    border-radius: 5px;
+    display: inline-block;
+}
+.card .buyNum{
+    width: 80px;
+    color: var(--primary-color);
+}
+.card .buyNumPrice{
+    width: 80px;
+    color: var(--primary-color);
 }
