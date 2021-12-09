@@ -30,6 +30,9 @@
                         <li class="nav-item">
                             <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">我的最愛</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="./coupon-receive.php" tabindex="-1" aria-disabled="true">優惠券領取</a></a>
+                        </li>
                     </ul>
                     <form class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

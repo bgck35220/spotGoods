@@ -95,7 +95,10 @@ try {
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
+                    <div>
                     <a class="navbar-brand" href="index.php">team01</a>
+                    <a class="navbar-brand" href="coupon-receive.php">優惠券領取</a>
+                    </div>
                     <div class="d-flex justify-content-end align-items-center">
                         <a class="headshot-sm me-2" href="dashboard.php">
                             <?php if($_SESSION["user"]["headshots"]==NULL):?>
