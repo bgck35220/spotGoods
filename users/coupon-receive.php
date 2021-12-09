@@ -1,7 +1,7 @@
 <?php
 
 require_once("../pdo-connect.php");
-
+echo "yoyoyo";
 if (!isset($_SESSION["user"])) { 
     header("location: sign-in.php");
 }
