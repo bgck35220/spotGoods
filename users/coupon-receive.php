@@ -150,10 +150,13 @@ try {
                     </div>
                     <form action="./couponUserAdd.php" method="POST">
                     <div class="card-body text-center  py-3">
-                      <h5 class="card-title text-start coupon-main-center" name="amount">NT$<?=$couponCount['amount']?>優惠券</h5>
+                      <h5 class="card-title text-start coupon-main-center" name="amount" 
+                      value="<?php echo$couponCount['amount']?>">
+                      NT$<?=$couponCount['amount']?>優惠券</h5>
                       <p class="card-text text-start coupon-main-center"><?=$couponCount['text']?></p>
-                      <p class="card-text text-start coupon-main-center" name="quantity">剩餘數量:<?=$couponCount['quantity']?></p>
-                      <input type="hidden" name="couponid" value=<?php $couponCount['id'] ?>>
+                      <p class="card-text text-start coupon-main-center" name="quantity" 
+                      value="<?php echo $couponCount['quantity']?>">剩餘數量:<?=$couponCount['quantity']?></p>
+                      <input type="hidden" name="couponid" value=<?php echo $couponCount['id'] ?>>
                       <?php if(empty($usersCount['coupon_id'])):?>
                       <button  type="submit" class="btn btn-primary text-center px-5 coupon-BTN">領取</ㄖ>
                       <?php else: ?>
@@ -163,9 +166,10 @@ try {
                     </form>
                   </div>
             </div>
+      
             <?php endwhile ?>
 
-          
+        
 
         
     </div>
