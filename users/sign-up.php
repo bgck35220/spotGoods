@@ -286,6 +286,9 @@ try{
         if ($("#name").hasClass("border-danger") || $("#account").hasClass("border-danger") || $("#email").hasClass("border-danger") || $("#password").hasClass("border-danger") || $("#phone").hasClass("border-danger")) {
             alert("資料輸入有誤，無法註冊");
             return false;
+        }else if ($("#name").val()=="" || $("#account").val()=="" || $("#email").val()=="" || $("#password").val()=="" || $("#phone").val()=="" ){
+            alert("資料輸入不完整，無法註冊");
+            return false;
         }else{
             alert("註冊成功，請登入會員");
         }

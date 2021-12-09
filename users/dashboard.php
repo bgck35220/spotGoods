@@ -152,7 +152,7 @@ try {
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="account" class="me-4 col-sm-2">使用者帳號</label>
                                     <input id="account" type="text" name="account" class="form-control-plaintext"
-                                           value="<?= $row["account"] ?>" readonly>
+                                           value="   <?= $row["account"] ?>" readonly>
                                     <!--只讀取不能更動-->
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
@@ -169,6 +169,16 @@ try {
                                     <label for="phone" class="me-4 col-sm-2">手機號碼</label>
                                     <input id="phone" type="text" name="phone" class="form-control"
                                            value="0<?= $row["phone"] ?>">
+                                </div>
+                                <div class="mb-3 d-flex align-items-center text-nowrap">
+                                    <label for="password" class="me-4 col-sm-2">密碼</label>
+                                    <input id="password" type="password" name="password" class="form-control"
+                                           value="<?= $_SESSION["user"]["password"] ?>">
+                                </div>
+                                <div class="mb-3 d-flex align-items-center text-nowrap">
+                                    <label for="address" class="me-4 col-sm-2">地址</label>
+                                    <input id="address" type="text" name="address" class="form-control"
+                                           value="<?= $row["address"] ?>">
                                 </div>
                                 <button class="btn btn-secondary" type="submit">儲存</button>
                             </div>

@@ -27,7 +27,9 @@ try{
             "account"=>$row["account"],
             "name"=>$row["name"],
             "email"=>$row["email"],
-            "headshots"=>$row["headshots"]
+            "headshots"=>$row["headshots"],
+            "password"=>$_POST["password"],
+            "address"=>$row["address"]
         ];
         //$_SESSION["cart"];  //定義新的key存session 較好管理要使用的資料 比如購物車
         $_SESSION["user"]=$user;
