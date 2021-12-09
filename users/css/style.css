@@ -1,6 +1,7 @@
 :root{
     --primary-color: #3fb4a7;
     --dark: #555;
+    --dark-lighter: #999;
     --light: #ccc;
     --light-darker: #cdcdcd;
 }
@@ -87,7 +88,9 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
-
+.fa-store{
+    color: var(--dark-lighter);
+}
 .card .sellerName{
     font-size: 15px;
     color: var(--dark);
@@ -97,17 +100,37 @@
     color: var(--primary-color);
 }
 .card .storePhoto{
-    width: 120px;
-    height: 100px;
+    width: 100px;
+    height: 80px;
     border: 1px solid var(--light);
     border-radius: 5px;
     display: inline-block;
 }
+.card .storeName{
+    font-size: 18px;
+    color: var(--dark);
+}
+.card .storePrice{
+    font-size: 16px;
+    color: var(--dark);
+}
 .card .buyNum{
     width: 80px;
-    color: var(--primary-color);
+    color: var(--dark);
 }
 .card .buyNumPrice{
     width: 80px;
+    color: var(--dark);
+}
+.card .orderTime{
+    font-size: 14px;
+    color: var(--dark-lighter);
+}
+.card .orderPrice{
+    color: var(--dark);
+    font-size: 14px;
+}
+.card .orderPriceNum{
     color: var(--primary-color);
+    font-weight: 500;
 }

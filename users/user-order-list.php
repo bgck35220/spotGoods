@@ -25,6 +25,7 @@ try {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/b8bae5c029.js" crossorigin="anonymous"></script>
 
     <!--將css獨立用php連結-->
     <?php require_once("css.php") ?>
@@ -101,19 +102,36 @@ try {
                     </div>
                 </form>
             </div><!--搜尋-->
+            <!--訂單內容-->
             <div class="card my-3 p-3 bg-light border-light">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a class="text-decoration-none sellerName" href="">賣家名稱</a>
+                    <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i>賣家名稱</a>
                     <span class="orderStatus">訂單狀態</span>
                 </div>
+                <!--購買商品資訊-->
                 <a href="" class="py-3 border-top text-decoration-none">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="storePhoto" href="">
                             <img class="cover-fit" src="upload/7.png" alt="">
                         </div>
                         <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="fs-5 flex-fill pb-2">商品名稱</div>
-                            <div class="">$ 100</div>
+                            <div class="flex-fill pb-2 storeName">商品名稱</div>
+                            <div class="storePrice">$ 100</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="buyNum">x 3</span>
+                            <span class="buyNumPrice text-end">$555</span>
+                        </div>
+                    </div>
+                </a><!--購買商品資訊-->
+                <a href="" class="py-3 border-top text-decoration-none">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="storePhoto" href="">
+                            <img class="cover-fit" src="upload/7.png" alt="">
+                        </div>
+                        <div class="d-flex flex-fill flex-column ps-3">
+                            <div class="flex-fill pb-2 storeName">商品名稱</div>
+                            <span class="storePrice">$ 100</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="buyNum">x 3</span>
@@ -121,22 +139,14 @@ try {
                         </div>
                     </div>
                 </a>
-                <a href="" class="py-3 border-top text-decoration-none">
+                <div class="border-top d-flex justify-content-between align-items-center pt-3">
+                    <span class="orderTime">訂單時間: 2021/11/22 12:22:33</span>
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="storePhoto" href="">
-                            <img class="cover-fit" src="upload/7.png" alt="">
-                        </div>
-                        <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="fs-5 flex-fill pb-2">商品名稱</div>
-                            <div class="">$ 100</div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="buyNum">x 366</span>
-                            <span class="buyNumPrice text-end">$55555</span>
-                        </div>
+                        <span class="orderPrice me-2">訂單金額:</span>
+                        <span class="orderPriceNum text-end fs-4 text-nowrap">$ 10000000000</span>
                     </div>
-                </a>
-            </div>
+                </div>
+            </div><!--訂單內容-->
         </div><!--右邊內容欄位-->
     </div>
 </div>
