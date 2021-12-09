@@ -69,6 +69,7 @@ try {
 
         .myList a {
             text-decoration: none;
+            letter-spacing: .5px;
             color: var(--dark);
         }
 

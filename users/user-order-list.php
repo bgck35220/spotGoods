@@ -97,13 +97,45 @@ try {
                 <form action="user-order-list.php" method="get">
                     <div class="d-flex align-items-center">
                         <input type="search" class="form-control me-2" placeholder="您可以透過...進行搜尋" name="s" value="<?php if (isset($search))echo $search; ?>">
-                        <button type="submit" class="btn btn-outline-secondary text-nowrap">搜尋</button>
+                        <button type="submit" class="btn btn-outline-success text-nowrap">搜尋</button>
                     </div>
                 </form>
             </div><!--搜尋-->
-            <div class="card my-3">
-                <div>賣家名稱</div>
-
+            <div class="card my-3 p-3 bg-light border-light">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a class="text-decoration-none sellerName" href="">賣家名稱</a>
+                    <span class="orderStatus">訂單狀態</span>
+                </div>
+                <a href="" class="py-3 border-top text-decoration-none">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="storePhoto" href="">
+                            <img class="cover-fit" src="upload/7.png" alt="">
+                        </div>
+                        <div class="d-flex flex-fill flex-column ps-3">
+                            <div class="fs-5 flex-fill pb-2">商品名稱</div>
+                            <div class="">$ 100</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="buyNum">x 3</span>
+                            <span class="buyNumPrice text-end">$555</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="" class="py-3 border-top text-decoration-none">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="storePhoto" href="">
+                            <img class="cover-fit" src="upload/7.png" alt="">
+                        </div>
+                        <div class="d-flex flex-fill flex-column ps-3">
+                            <div class="fs-5 flex-fill pb-2">商品名稱</div>
+                            <div class="">$ 100</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="buyNum">x 366</span>
+                            <span class="buyNumPrice text-end">$55555</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div><!--右邊內容欄位-->
     </div>
@@ -123,8 +155,7 @@ try {
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 <script>
-    //預覽上傳的圖片
-    // $('input[type="file"]').prop('myFile',e.originalEvent.dataTransfer.files);
+
 </script>
 
 
