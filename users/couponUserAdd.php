@@ -9,6 +9,7 @@ if(isset($_POST['amount'])
     $amount=$_POST['amount'];
     $quantity=$_POST['quantity'];
     $couponid=$_POST['couponid'];
+    $now = date("Y-m-d H:i:s");
     // $quantity=$_POST['quantity'];
     // $now =date("Y-m-d H:i:s");
     // $valid=1;
@@ -30,21 +31,20 @@ if(isset($_POST['amount'])
 
 $sqlcoupon = "UPDATE coupon SET quantity=$quantity-1 WHERE id=?";
 
-$stmtcoupon= $db_host->prepare($sql);
+$stmtcoupon= $db_host->prepare($sqlcoupon);
 try{
     $stmtcoupon->execute([$couponid]);
     $userExist=$stmtcoupon->rowCount();
-   
+    print_r($quantity);
 }catch(PDOException $e){
     echo $e->getMessage();
 }
 
-
-$sql = "UPDATE users SET coupon_id=$couponid WHERE id=?";
-
+$input = array(':couponid' => $couponid,':couponTakeTime' => $now ,':id' => $_SESSION["user"]["id"]);
+$sql = "UPDATE users SET coupon_id = :couponid, coupon_taketime = :couponTakeTime WHERE id = :id";
 $stmt= $db_host->prepare($sql);
 try{
-    $stmt->execute([$_SESSION["user"]["id"]]);
+    $stmt->execute($input);
     $userExist=$stmt->rowCount();
    
     header("location: coupon-receive.php");

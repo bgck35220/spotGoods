@@ -23,7 +23,7 @@ try {
     $stmt->execute([$_SESSION["user"]["id"]]);
     $usersCount=$stmt->fetch();
     $userExist = $stmt->rowCount();
-    var_dump($usersCount);
+   
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
@@ -150,25 +150,28 @@ try {
                     </div>
                     <form action="./couponUserAdd.php" method="POST">
                     <div class="card-body text-center  py-3">
-                      <h5 class="card-title text-start coupon-main-center" name="amount" 
-                      value="<?php echo$couponCount['amount']?>">
-                      NT$<?=$couponCount['amount']?>優惠券</h5>
+                      <h5 class="card-title text-start coupon-main-center"  >NT$<?=$couponCount['amount']?>優惠券</h5>
                       <p class="card-text text-start coupon-main-center"><?=$couponCount['text']?></p>
-                      <p class="card-text text-start coupon-main-center" name="quantity" 
-                      value="<?php echo $couponCount['quantity']?>">剩餘數量:<?=$couponCount['quantity']?></p>
+                      <p class="card-text text-start coupon-main-center" >剩餘數量:<?=$couponCount['quantity']?></p>
+
                       <input type="hidden" name="couponid" value=<?php echo $couponCount['id'] ?>>
-                      <?php if(empty($usersCount['coupon_id'])):?>
-                      <button  type="submit" class="btn btn-primary text-center px-5 coupon-BTN">領取</ㄖ>
+                      <input type="hidden" name="amount" value=<?php echo $couponCount['amount'] ?>>
+                      <input type="hidden" name="quantity" value=<?php echo $couponCount['quantity'] ?>>
+                      
+                     
+                      <?php if( $couponCount['quantity'] <=0):?>
+                      <p  class="btn  text-center px-5 coupon-BTN-close">已兌換完畢</p>
+                      <?php elseif(empty($usersCount['coupon_id'])):?>
+                        <button  type="submit" class="btn btn-primary text-center px-5 coupon-BTN">領取</button>
                       <?php else: ?>
-                        <p  class="btn  text-center px-5 coupon-BTN-close">領取過囉~</ㄣ>
+                        <p  class="btn  text-center px-5 coupon-BTN-close">只能領取一張呦</p>
                       <?php endif ;?>
                     </div>
                     </form>
                   </div>
             </div>
-      
             <?php endwhile ?>
-
+    
         
 
         
