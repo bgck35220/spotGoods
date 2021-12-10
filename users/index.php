@@ -43,7 +43,7 @@
                                 <a class="nav-link" href="#"></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " aria-current="page" href="#">店家申請</a>
+                                <a class="nav-link " aria-current="page" href="../sellers/sellersApply.php">店家申請</a>
                             </li>
                         </ul>
                     </form>
