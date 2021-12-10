@@ -21,7 +21,7 @@ try {
 if (isset($_GET['search'])) {
     //搜尋會員帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM coupon WHERE id like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
+    $sqlUser = "SELECT * FROM coupon WHERE id like '%$search%' OR  amount LIKE '%$search%'  ";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -175,7 +175,7 @@ try {
                         <th>發佈時間</th>
                         <th>兌換券狀態</th>
                         <th>
-                            <form action="./admin.php" method="GET">
+                            <form action="./coupon.php" method="GET">
                                 <div class="input-group  search-user">
                                     <input type="search" class="form-control" placeholder="搜尋兌換券編號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>

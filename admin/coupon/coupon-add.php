@@ -119,7 +119,7 @@ if (!isset($_SESSION["user"])) {
                             <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="id" name="id" disabled></td>
                         </tr>
                         <tr>
-                            <th>折扣項目</th>
+                            <th>折扣內容</th>
                             <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="" name="text"></td>
                         </tr>
                         <tr>
