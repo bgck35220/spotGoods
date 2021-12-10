@@ -18,7 +18,7 @@ if (!isset($_SESSION["user"])) {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style1.css">
 </head>
 <style>
 
@@ -101,7 +101,7 @@ if (!isset($_SESSION["user"])) {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">新增店家資料</h2>
+                    <h2 class="subtitle">新增店家資料</h2>
                 </div>
                 <div class="d-flex ">
                     <!-- <div class="me-2">

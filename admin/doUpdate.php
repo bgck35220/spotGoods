@@ -10,6 +10,7 @@ if(isset($_POST['id'])
 ){
     $name=$_POST['name'];
     $email=$_POST['email'];
+    $phone=$_POST['phone'];
     $address=$_POST['address'];
     $id=$_POST['id'];
     $valid=$_POST['valid'];
@@ -19,10 +20,10 @@ if(isset($_POST['id'])
 
 echo $id;
 echo $valid;
-$sql = "UPDATE users SET name=?, email=?, address=? ,valid=? WHERE id=?";
+$sql = "UPDATE users SET name=?, email=?, phone=?,address=? ,valid=? WHERE id=?";
 $stmt= $db_host->prepare($sql);
 try{
-    $stmt->execute([$name, $email, $address, $valid, $id ]);
+    $stmt->execute([$name, $email, $phone, $address, $valid, $id ]);
     $userExist=$stmt->rowCount();
     $_SESSION['update_msg']="編輯資料成功";
     header("location: user.php?id=$id");

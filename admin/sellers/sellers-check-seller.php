@@ -34,7 +34,7 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style1.css">
 </head>
 <body>
 
@@ -114,7 +114,7 @@ try {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">店家申請資料</h2>
+                    <h2 class="subtitle">店家申請資料</h2>
                 </div>
                 <div class="d-flex ">
                     <!-- <div class="me-2">
@@ -124,7 +124,7 @@ try {
                     </div> -->
                     <div>
                     <a href="./sellers-check.php" class="btn btn-light" type="submit">
-                        上一頁
+                        回店家申請
                     </a>
                     </div>
                 </div>

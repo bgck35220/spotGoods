@@ -34,7 +34,7 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style1.css">
 </head>
 <body>
 
@@ -113,12 +113,12 @@ try {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">店家詳細資料</h2>
+                    <h2 class="subtitle">店家詳細資料</h2>
                 </div>
                 <div class="d-flex ">
                     <div class="me-2">
-                    <a class="btn btn-secondary" href="./seller-product-list.php?userid=<?=$rowUser['id']?>">上架商品查看</a>
-                        <a href="./seller-update.php?id=<?=$rowUser['id']?>" class="btn btn btn-secondary" type="submit">
+                    <a class="btn btn-light" href="./seller-product-list.php?userid=<?=$rowUser['id']?>">上架商品查看</a>
+                        <a href="./seller-update.php?id=<?=$rowUser['id']?>" class="btn btn-light" type="submit">
                             編輯資訊
                         </a>
                     </div>

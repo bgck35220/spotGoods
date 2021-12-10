@@ -8,7 +8,7 @@ if(isset($_POST['account'])||isset($_POST['password'])){
    
   
 }else{
-    header("location:adminLogin.php");
+    header("location:admin-Login.php");
     exit();
 }
 
@@ -51,7 +51,7 @@ try{
         }else{
             $_SESSION["error_times"]=1;
         }
-        header("location: adminLogin.php");
+        header("location: admin-Login.php");
     }
 
 }catch(PDOException $e){

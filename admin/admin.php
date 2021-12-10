@@ -83,12 +83,13 @@ try {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" type="text/css"  href="./css/style1.css?id=1">
 </head>
+<style>
 
+</style>
 <body>
 
 
@@ -165,9 +166,9 @@ try {
     <main>
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
-<div>
-    <h2 class="fs-3">會員管理</h2>
-</div>
+            <div >
+                <h2 class="subtitle">會員管理</h2>
+            </div>
      <?php if (isset($p)) : ?>
                         <div class="py-2">共<?= $totalUsersCount ?>位會員
                         <br>
@@ -190,7 +191,7 @@ try {
                         <th>
                             <form action="./admin.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋會員帳號、信箱、ID" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋會員帳號、信箱、姓名" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
@@ -362,13 +363,14 @@ try {
                     <td><?= $rowUserUserTable['email'] ?></td>
                 </tr>
                 <tr>
+                    <th>手機號碼</th>
+                    <td><?= $rowUserUserTable['phone'] ?></td>
+                </tr>
+                <tr>
                     <th>地址</th>
                     <td><?= $rowUserUserTable['address'] ?></td>
                 </tr>
-                <tr>
-                    <th>手機號碼</th>
-                    <td>還沒新增</td>
-                </tr>
+             
                 <tr>
                     <th>註冊時間</th>
                     <td><?= $rowUserUserTable['created_at'] ?></td>

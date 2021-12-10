@@ -3,6 +3,7 @@
   --lightgreen: #7baa81;
   --yellow: #ffc107;
 }
+
 .header-nav{
   z-index: 1;
   
@@ -36,10 +37,10 @@
   color: white;
 }
 
-/* .dropdown-item:focus {
-  background-color: #66806A;
-  color: white;
-} */
+.dropdown-item:focus {
+  background-color: #fff;
+  color: rgb(29, 29, 29);
+}
 .dropdown-item {
   font-size: .9rem;
 }
@@ -70,6 +71,10 @@ align-items: center;
 .td-account{
   text-decoration: none;
 }
+
+  
+
+
 
     /* user-close */
   
@@ -218,3 +223,14 @@ border-bottom: none;
   padding: 7px;
   margin: 4px 5px;
 }
+.subtitle{
+  font-size: 1.55rem;
+  color: rgb(255, 255, 255);
+  font-weight: 580;
+  background:var(--lightgreen);
+  width: fit-content;
+  padding: .75rem;
+  border-radius: .7rem;
+  opacity: .9;
+}
+
