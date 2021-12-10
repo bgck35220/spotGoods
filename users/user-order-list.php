@@ -5,15 +5,47 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
     header("location: sign-in.php");
 }
 
-$sql = "SELECT * FROM users WHERE id=? AND valid=1";
+//$sql = "SELECT * FROM user_order WHERE user_id=?";
+
+//$sql="SELECT user_order.*, order_status.status FROM user_order
+//JOIN order_status ON user_order.status_id = order_status.id
+//WHERE user_order.user_id=? ORDER BY user_order.id DESC
+//";
+
+//$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
+//FROM user_order
+//JOIN order_status ON user_order.status_id = order_status.id
+//JOIN user_order_detail ON user_order.id = user_order_detail.order_id
+//GROUP BY user_order_detail.order_id
+//ORDER BY user_order.id DESC
+//";
+
+$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
+FROM user_order
+JOIN order_status ON user_order.status_id = order_status.id
+JOIN user_order_detail ON user_order.id = user_order_detail.order_id
+GROUP BY user_order_detail.order_id
+ORDER BY user_order.id DESC
+";
+//JOIN products ON user_order_detail.product_id = products.id
+//, products.name, products.img, products.price, products.store_id, products.valid
 $stmt = $db_host->prepare($sql);
 try {
-    $stmt->execute([$_SESSION["user"]["id"]]);
-    $userExist = $stmt->rowCount();
-//    echo $userExist."<br>";
+    $stmt->execute();
+//    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $userOrderNum=$stmt->rowCount();
+//    while ($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
+//        print_r($rows);
+//        echo "<br>";
+////        print_r($rows["status_id"]);
+//        echo "<br>";
+//    }
 //    exit();
 } catch (PDOException $e) {
-    echo $e->getMessage();
+    echo "預處理陳述式執行失敗<br>";
+    echo "Error: " . $e->getMessage() . "<br>";
+    $db_host = NULL;
+    exit;
 }
 
 ?>

@@ -176,7 +176,7 @@ try {
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="phone" class="me-4 col-sm-2">手機號碼</label>
                                     <input id="phone" type="text" name="phone" class="form-control"
-                                           value="0<?= $row["phone"] ?>">
+                                           value="<?= $row["phone"] ?>">
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="password" class="me-4 col-sm-2">密碼</label>
