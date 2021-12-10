@@ -138,24 +138,28 @@ try {
                             <td class="p-1"> <input type="text" value="<?= $rowUser['id'] ?>" class="form-control p-2 m-0" placeholder="id" name="id" disabled></td>
                         </tr>
                         <tr>
-                            <th>logo</th>
-                            <td class="p-1"> <input type="text" value="<?= $rowUser['Logo'] ?>" class="form-control p-2 m-0" placeholder="name" name="Logo"></td>
+                            <th>店家聯絡人</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['bossname'] ?>" class="form-control p-2 m-0" placeholder="店家聯絡人名稱" name="bossname"></td>
                         </tr>
                         <tr>
                             <th>店家名稱</th>
                             <td class="p-1"> <input type="text" value="<?= $rowUser['name'] ?>" class="form-control p-2 m-0" placeholder="name" name="name"></td>
                         </tr>
                         <tr>
-                            <th>帳號</th>
-                            <td class="p-1"> <input type="text" value="<?= $rowUser['account'] ?>" class="form-control p-2 m-0" placeholder="account" name="account" disabled></td>
-                        </tr>
-                        <tr>
                             <th>信箱</th>
                             <td class="p-1"> <input type="text" value="<?= $rowUser['email'] ?>" class="form-control p-2 m-0" placeholder="email" name="email"></td>
                         </tr>
                         <tr>
+                            <th>帳號</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['account'] ?>" class="form-control p-2 m-0" placeholder="account" name="account" disabled></td>
+                        </tr>
+                        <tr>
                             <th>手機號碼</th>
-                            <td>待新增</td>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['phone'] ?>" class="form-control p-2 m-0" placeholder="手機號碼" name="phone" ></td>
+                        </tr>
+                        <tr>
+                            <th>地址</th>
+                            <td class="p-1"> <input type="text" value="<?= $rowUser['address'] ?>" class="form-control p-2 m-0" placeholder="address" name="address" ></td>
                         </tr>
                         <tr>
                             <th>註冊時間</th>

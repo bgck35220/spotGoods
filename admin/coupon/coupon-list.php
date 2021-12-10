@@ -92,7 +92,7 @@ try {
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style1.css">
 </head>
 
 <body>
@@ -172,7 +172,7 @@ try {
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
 <div>
-    <h2 class="fs-3">兌換券管理</h2>
+    <h2 class="fs-3">優惠券管理</h2>
 </div>
      <?php if (isset($p)) : ?>
                         <div class="py-2">共<?= $totalUsersCount ?>張
@@ -233,7 +233,7 @@ try {
                                 <?php endif; ?>
                             </td>
                             <td class="">
-                                <?php if ($rowUser['valid'] == 1) :
+                                <!-- <?php if ($rowUser['valid'] == 1) :
                                     $validone += 1;
                                 ?>
                                     <?php if (isset($search)) : ?>
@@ -253,7 +253,7 @@ try {
                                     <?php else : ?>
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
                                     <?php endif; ?>
-        </div>
+        </div> -->
     <?php endif; ?>
     </td>
     </tr>

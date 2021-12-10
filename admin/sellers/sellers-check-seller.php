@@ -137,28 +137,37 @@ try {
                     <td><?=$rowUser['id']?></td>
                 </tr>
                 <tr>
-                    <th>Logo</th>
-                    <td><?=$rowUser['Logo']?></td>
+                    <th>店家聯絡人</th>
+                    <td><?=$rowUser['bossname']?></td>
                 </tr>
                 <tr>
                     <th>店家名稱</th>
                     <td><?=$rowUser['name']?></td>
                 </tr>
                 <tr>
-                    <th>帳號</th>
-                    <td><?=$rowUser['account']?></td>
-                </tr>
-                <tr>
                     <th>信箱</th>
                     <td><?=$rowUser['email']?></td>
                 </tr>
+                <tr>
+                    <th>帳號</th>
+                    <td><?=$rowUser['account']?></td>
+                </tr>
+           
        
                 <tr>
                     <th>手機號碼</th>
-                    <td>還沒新增</td>
+                    <td><?=$rowUser['phone']?></td>
                 </tr>
                 <tr>
-                    <th>註冊時間</th>
+                    <th>地址</th>
+                    <td><?=$rowUser['address']?></td>
+                </tr>
+                <tr>
+                    <th>營業登記證</th>
+                    <td><a class="text-decoration-none"href="../../sellers/sellersimg/sellersimg<?=$rowUser['certification_imgname']?>">營業登記證</td>
+                </tr>
+                <tr>
+                    <th>申請時間</th>
                     <td><?=$rowUser['created_at']?></td>
                 </tr>
                 <tr>
