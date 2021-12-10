@@ -140,11 +140,11 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                    優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
+                                <li><a class="dropdown-item" href="./coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">新增優惠券</a></li>
 
                                 </ul>
                             </li>
@@ -172,7 +172,7 @@ try {
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
 <div>
-    <h2 class="fs-3">優惠券管理</h2>
+    <h2 class="subtitle">優惠券管理</h2>
 </div>
      <?php if (isset($p)) : ?>
                         <div class="py-2">共<?= $totalUsersCount ?>張
@@ -192,11 +192,11 @@ try {
                         <th>折扣內容</th>
                         <th>折扣金額</th>
                         <th>領取時間</th>
-                        <th>兌換券狀態</th>
+                        <th>優惠券狀態</th>
                         <th>
                             <form action="./coupon-list.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋兌換券編號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋會員名稱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
@@ -253,8 +253,8 @@ try {
                                     <?php else : ?>
                                         <a class="btn btn-outline-primary" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid<?= $rowUser['valid']; ?>">啟用</a>
                                     <?php endif; ?>
-        </div> -->
-    <?php endif; ?>
+        </div>
+    <?php endif; ?> -->
     </td>
     </tr>
 
