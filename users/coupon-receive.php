@@ -135,7 +135,7 @@ try {
     <div class="container pt-5">
         <div class="row">
             <?php while($couponCount=$stmtcoupon->fetch()):?>
-            <div class="col-12 col-md-6 col-lg-3 mx-auto">
+            <div class="col-12 col-md-6 col-lg-3 mx-auto pt-5">
                 <div class="card  coupon-card" >
                     <div class="coupon m-0 ">
                         <p class="coupon-top-text m-0 pt-4">OFF COUPON</p>

@@ -13,7 +13,8 @@ if(isset($_GET['id'])){
 $sqlTotal = 
 "SELECT a.*,
 b.name AS user_name,
-b.valid AS user_valid
+b.valid AS user_valid,
+b.coupon_taketime AS couponTakeTime
 FROM coupon AS a
 JOIN users AS b ON a.id = b.coupon_id
 WHERE a.id = ?";
@@ -55,7 +56,8 @@ if (isset($_GET['search'])) {
     }
     $sqlUser = "SELECT a.*,
     b.name AS user_name,
-    b.valid AS user_valid
+    b.valid AS user_valid,
+    b.coupon_taketime AS couponTakeTime
     FROM coupon AS a
     JOIN users AS b ON a.id = b.coupon_id
     WHERE a.id = ?  ORDER BY id LIMIT $startItem,$pageItems";
@@ -101,7 +103,7 @@ try {
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand fs-5 text-light ms-3 me-5" href="./admin.php">TEAM 1 管理員後台</a>
+                    <a class="navbar-brand fs-5 text-light ms-3 me-5" href="../admin.php">TEAM 1 管理員後台</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -112,7 +114,7 @@ try {
                                     會員管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item " href="./admin.php">會員總覽</a></li>
+                                    <li><a class="dropdown-item " href="../admin.php">會員總覽</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
@@ -120,9 +122,9 @@ try {
                                     店家管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./sellers/sellers-check.php">店家申請</a></li>
-                                    <li><a class="dropdown-item" href="./sellers/sellers.php">店家總覽</a></li>
-                                    <li><a class="dropdown-item" href="./sellers/seller-add.php">新增店家資料</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/sellers-check.php">店家申請</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/sellers.php">店家總覽</a></li>
+                                    <li><a class="dropdown-item" href="../sellers/seller-add.php">新增店家資料</a></li>
 
                                 </ul>
                             </li>
@@ -131,7 +133,7 @@ try {
                                     訂單管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./order/orders-list.php">訂單總覽</a></li>
+                                    <li><a class="dropdown-item" href="../order/orders-list.php">訂單總覽</a></li>
 
                                 </ul>
                             </li>
@@ -155,7 +157,7 @@ try {
                     <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center">
                             <p class="nav-link m-0 me-4 text-light d-block" aria-current="page" href="#">管理員:<?= $_SESSION['user']['name'] ?></p>
-                            <a href="logOut.php" type="button" class="btn btn-warning">登出</a>
+                            <a href="../logOut.php" type="button" class="btn btn-warning">登出</a>
                         </li>
                     </ul>
                 </div>
@@ -192,7 +194,7 @@ try {
                         <th>領取時間</th>
                         <th>兌換券狀態</th>
                         <th>
-                            <form action="./admin.php" method="GET">
+                            <form action="./coupon-list.php" method="GET">
                                 <div class="input-group  search-user">
                                     <input type="search" class="form-control" placeholder="搜尋兌換券編號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
@@ -221,7 +223,7 @@ try {
                                    
                             </td>
                             <td>$<?= $rowUser['amount'] ?></td>
-                            <td><?= $rowUser['coupon_time'] ?></td>
+                            <td><?= $rowUser['couponTakeTime'] ?></td>
                             <td>
                                 <?php if ($rowUser['valid'] == 1) : ?>
                                     <p class="m-0 text-primary">未使用</p>
@@ -231,19 +233,15 @@ try {
                                 <?php endif; ?>
                             </td>
                             <td class="">
-                                <a href="user.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary" type="submit">詳細資訊</a>
-                                <a href="./user-update.php?id=<?= $rowUser['id'] ?>" class="btn btn-outline-secondary">編輯</a>
-
-
                                 <?php if ($rowUser['valid'] == 1) :
                                     $validone += 1;
                                 ?>
                                     <?php if (isset($search)) : ?>
-                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&search=<?= $search ?>" id="user-close"> 未使用</a>
+                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&search=<?= $search ?>" id="user-close"> 停用</a>
                                     <?php elseif (isset($p)) : ?>
-                                        <a class="btn btn-outline-danger" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p ?>">未使用</a>
+                                        <a class="btn btn-outline-danger" id="user-open" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>&p=<?= $p ?>">停用</a>
                                     <?php else : ?>
-                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 未使用</a>
+                                        <a class="btn btn-outline-danger" href="admin.php?id=<?= $rowUser['id'] ?>&valid=<?= $rowUser['valid']; ?>" id="user-close"> 停用</a>
                                     <?php endif; ?>
 
                                 <?php elseif (($rowUser['valid'] == 0)) : ?>
