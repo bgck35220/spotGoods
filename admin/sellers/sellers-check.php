@@ -160,7 +160,7 @@ try {
                     <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center">
                             <p class="nav-link m-0 me-4 text-light d-block" aria-current="page" href="#">管理員:<?= $_SESSION['user']['name'] ?></p>
-                            <a href="logOut.php" type="button" class="btn btn-warning">登出</a>
+                            <a href="../logOut.php" type="button" class="btn btn-warning">登出</a>
                         </li>
                     </ul>
                 </div>
