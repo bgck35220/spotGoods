@@ -150,7 +150,7 @@ if (!isset($_SESSION["user"])) {
                             <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="address" name="address" ></td>
                         </tr>
                         <tr>
-                            <th>證照</th>
+                            <th>營業登記證</th>
                             <td class="p-1">   <input type="file" required class="form-control" name="myFile"></td>
                         </tr>
                       

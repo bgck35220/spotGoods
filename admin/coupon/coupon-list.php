@@ -14,6 +14,8 @@ $sqlTotal =
 "SELECT a.*,
 b.name AS user_name,
 b.valid AS user_valid,
+b.id AS user_id,
+b.account AS user_account,
 b.coupon_taketime AS couponTakeTime
 FROM coupon AS a
 JOIN users AS b ON a.id = b.coupon_id
@@ -57,6 +59,8 @@ if (isset($_GET['search'])) {
     $sqlUser = "SELECT a.*,
     b.name AS user_name,
     b.valid AS user_valid,
+    b.id AS user_id,
+    b.account AS user_account,
     b.coupon_taketime AS couponTakeTime
     FROM coupon AS a
     JOIN users AS b ON a.id = b.coupon_id
@@ -189,6 +193,7 @@ try {
                     <tr class="">
                         <th>折扣券ID</th>
                         <th>持有會員</th>
+                        <th>會員帳號</th>
                         <th>折扣內容</th>
                         <th>折扣金額</th>
                         <th>領取時間</th>
@@ -216,7 +221,8 @@ try {
                                 <!-- <img class="magnifier-img" src="./img/search-solid.svg" alt="">
                                 </a> -->
                             </td>
-                            <td><?= $rowUser['user_name'] ?></td>
+                            <td><a class="text-decoration-none text-dark"href="../user.php?id=<?=$rowUser['user_id']?>"><?= $rowUser['user_name'] ?></a></td>
+                            <td><?= $rowUser['user_account'] ?></td>
                             <td class="">
                            
                                     <?= $rowUser['text'] ?>

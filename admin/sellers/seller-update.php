@@ -173,12 +173,12 @@ try {
                                     <!-- <p class="m-0 text-primary">啟用</p> -->
                                     <a class="btn btn-outline-primary"  id="btn-open"  > 啟用</a>
                                     <a class="btn btn-outline-danger d-none" id="btn-close"  > 停用</a>
-                                    <input type="hidden" name="valid" id="validswich"value="">
+                                    <input type="hidden" name="valid" id="validswich"value="1">
 
                                 <?php } else if ($rowUser['valid'] == 0) { ?>
                                     <a class="btn btn-outline-danger" id="btn-close"  > 停用</a>
                                     <a class="btn btn-outline-primary d-none"  id="btn-open"> 啟用</a>
-                                    <input type="hidden" name="valid" id="validswich"value="">    
+                                    <input type="hidden" name="valid" id="validswich"value="0">    
                                 <?php }; ?>
                             </td>
                         </tr>

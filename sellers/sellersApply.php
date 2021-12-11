@@ -145,7 +145,7 @@ try{
                         <div class="error text-danger text-end"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="myFile">證照</label>
+                        <label for="myFile">營業登記證</label>
                         <input id="account" type="file" name="myFile" required class="form-control" >
                         <div class="error text-danger text-end"></div>
                     </div>
