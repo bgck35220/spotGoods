@@ -138,7 +138,7 @@ try {
                 <ul class="p-0 mt-4">
                     <li class="myList"><a href="dashboard.php">修改個人資訊</a></li>
                     <li class="myList"><a href="user-order-list.php">我的訂單</a></li>
-                    <li class="myList"><a href="">兌換券</a></li>
+                    <li class="myList"><a href="">優惠券</a></li>
                 </ul>
             </div>
         </div>

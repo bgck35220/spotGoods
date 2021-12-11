@@ -7,10 +7,11 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 
 //$sql = "SELECT * FROM user_order WHERE user_id=?";
 
-//$sql="SELECT user_order.*, order_status.status FROM user_order
-//JOIN order_status ON user_order.status_id = order_status.id
-//WHERE user_order.user_id=? ORDER BY user_order.id DESC
-//";
+$sql="SELECT user_order.*, order_status.status
+FROM user_order
+JOIN order_status ON user_order.status_id = order_status.id
+WHERE user_order.user_id=? ORDER BY user_order.id DESC
+";
 
 //$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
 //FROM user_order
@@ -20,27 +21,37 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 //ORDER BY user_order.id DESC
 //";
 
-$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
-FROM user_order
-JOIN order_status ON user_order.status_id = order_status.id
-JOIN user_order_detail ON user_order.id = user_order_detail.order_id
-GROUP BY user_order_detail.order_id
-ORDER BY user_order.id DESC
-";
+//$sql="SELECT user_order.*, order_status.status, user_order_detail.order_id, user_order_detail.product_id, user_order_detail.amount, products.name AS product_name, products.img, products.price, products.store_id, stores.name AS store_name
+//FROM user_order
+//JOIN order_status ON user_order.status_id = order_status.id
+//JOIN user_order_detail ON user_order.id = user_order_detail.order_id
 //JOIN products ON user_order_detail.product_id = products.id
-//, products.name, products.img, products.price, products.store_id, products.valid
+//JOIN stores ON products.store_id = stores.id
+//WHERE user_order.user_id=?
+//ORDER BY user_order.id DESC
+//";
+
 $stmt = $db_host->prepare($sql);
 try {
-    $stmt->execute();
+    $stmt->execute([$_SESSION["user"]["id"]]);
+//    [$_SESSION["user"]["id"]]
 //    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $userOrderNum=$stmt->rowCount();
+
+//    fetch用while 等同 fetchAll用foreach
+
 //    while ($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
 //        print_r($rows);
 //        echo "<br>";
-////        print_r($rows["status_id"]);
 //        echo "<br>";
 //    }
-//    exit();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//    foreach ($rows as $row){
+//        print_r($row);
+//        echo "<br>";
+//        echo "<br>";
+//    }
+//    exit(); //測試
 } catch (PDOException $e) {
     echo "預處理陳述式執行失敗<br>";
     echo "Error: " . $e->getMessage() . "<br>";
@@ -48,12 +59,38 @@ try {
     exit;
 }
 
+
+$sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
+$stmtUserOrder = $db_host->prepare($sqlUserOrder);
+try{
+    $stmtUserOrder->execute([$_SESSION["user"]["id"]]);
+    $rowsUserOrder=$stmtUserOrder->fetchAll(PDO::FETCH_ASSOC);
+
+    for($i=0; $i<count($rowsUserOrder); $i++){
+//        $rows[$i]["product_id"]="product_id"; //要撈的是user_order_detail.product_id
+        $sqlOrderDetail = "SELECT * FROM user_order_detail WHERE order_id=?";
+        $stmtOrderDetail = $db_host->prepare($sqlOrderDetail);
+        $stmtOrderDetail->execute([$rows[$i]["id"]]);
+        //當 user_order_detail.order_id = user_order.user_id例如有8筆 的訂單號碼(id)
+        $rowsOrderDetail = $stmtOrderDetail->fetchAll(PDO::FETCH_ASSOC);
+        $rows[$i]["product_id"]=$rowsOrderDetail;
+    }
+
+} catch (PDOException $e) {
+    echo "預處理陳述式執行失敗<br>";
+    echo "Error: " . $e->getMessage() . "<br>";
+    $db_host = NULL;
+    exit;
+}
+
+
+
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
-    <title>user order</title>
+    <title>my order</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -66,7 +103,7 @@ try {
 <body>
 
 <!--header-->
-<header class="bg-light">
+<header class="bg-light sticky-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -111,7 +148,7 @@ try {
                 <ul class="p-0 mt-4">
                     <li class="myList"><a href="dashboard.php">修改個人資訊</a></li>
                     <li class="myList"><a href="user-order-list.php">我的訂單</a></li>
-                    <li class="myList"><a href="">兌換券</a></li>
+                    <li class="myList"><a href="">優惠券</a></li>
                 </ul>
             </div>
         </div>
@@ -120,8 +157,7 @@ try {
         <div class="col-md-9">
             <div class="bg-light status d-flex justify-content-between">
                 <a href="user-order-list.php?status=1" class="active">全部</a>
-                <a href="">待付款</a>
-                <a href="">待出貨</a>
+                <a href="">待領取</a>
                 <a href="">完成</a>
                 <a href="">已取消</a>
             </div>
@@ -135,10 +171,12 @@ try {
                 </form>
             </div><!--搜尋-->
             <!--訂單內容-->
-            <div class="card my-3 p-3 bg-light border-light">
+            <?php if($userOrderNum>0): ?>
+            <?php foreach($rows as $row): ?>
+            <div class="card my-3 p-3 bg-light border-light mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i>賣家名稱</a>
-                    <span class="orderStatus">訂單狀態</span>
+                    <span class="orderStatus"><?=$row["status"]?></span>
                 </div>
                 <!--購買商品資訊-->
                 <a href="" class="py-3 border-top text-decoration-none">
@@ -147,7 +185,7 @@ try {
                             <img class="cover-fit" src="upload/7.png" alt="">
                         </div>
                         <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="flex-fill pb-2 storeName">商品名稱</div>
+                            <div class="flex-fill pb-2 storeName"><?= var_dump($row["product_id"]); ?></div>
                             <div class="storePrice">$ 100</div>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -156,29 +194,33 @@ try {
                         </div>
                     </div>
                 </a><!--購買商品資訊-->
-                <a href="" class="py-3 border-top text-decoration-none">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="storePhoto" href="">
-                            <img class="cover-fit" src="upload/7.png" alt="">
-                        </div>
-                        <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="flex-fill pb-2 storeName">商品名稱</div>
-                            <span class="storePrice">$ 100</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="buyNum">x 3</span>
-                            <span class="buyNumPrice text-end">$555</span>
-                        </div>
-                    </div>
-                </a>
+<!--                <a href="" class="py-3 border-top text-decoration-none">-->
+<!--                    <div class="d-flex justify-content-between align-items-center">-->
+<!--                        <div class="storePhoto" href="">-->
+<!--                            <img class="cover-fit" src="upload/7.png" alt="">-->
+<!--                        </div>-->
+<!--                        <div class="d-flex flex-fill flex-column ps-3">-->
+<!--                            <div class="flex-fill pb-2 storeName">商品名稱</div>-->
+<!--                            <span class="storePrice">$ 100</span>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <span class="buyNum">x 3</span>-->
+<!--                            <span class="buyNumPrice text-end">$555</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </a>-->
                 <div class="border-top d-flex justify-content-between align-items-center pt-3">
-                    <span class="orderTime">訂單時間: 2021/11/22 12:22:33</span>
+                    <span class="orderTime">訂單時間: <?=$row["order_time"]?></span>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="orderPrice me-2">訂單金額:</span>
                         <span class="orderPriceNum text-end fs-4 text-nowrap">$ 10000000000</span>
                     </div>
                 </div>
             </div><!--訂單內容-->
+            <?php endforeach; ?>
+            <?php else: ?>
+                <div class="p-3 text-secondary">您尚未購買任何項目</div>
+            <?php endif; ?>
         </div><!--右邊內容欄位-->
     </div>
 </div>
