@@ -7,13 +7,14 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 
 //$sql = "SELECT * FROM user_order WHERE user_id=?";
 
+//要撈使用者全部訂單有幾筆 並把同層附加資訊JOIN在裡面一起呈現，此時只能列出我的訂單 數量 跟 訂單狀態
 $sql="SELECT user_order.*, order_status.status
 FROM user_order
 JOIN order_status ON user_order.status_id = order_status.id
 WHERE user_order.user_id=? ORDER BY user_order.id DESC
 ";
 
-//失敗的
+//失敗的，不是用 GROUP BY
 //$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
 //FROM user_order
 //JOIN order_status ON user_order.status_id = order_status.id
@@ -22,7 +23,7 @@ WHERE user_order.user_id=? ORDER BY user_order.id DESC
 //ORDER BY user_order.id DESC
 //";
 
-//失敗的
+//失敗的，這裡會將每筆買的數量一起列出 一筆訂單可能不只一項 這樣列出的數量不是要的資料
 //$sql="SELECT user_order.*, order_status.status, user_order_detail.order_id, user_order_detail.product_id, user_order_detail.amount, products.name AS product_name, products.img, products.price, products.store_id, stores.name AS store_name
 //FROM user_order
 //JOIN order_status ON user_order.status_id = order_status.id
@@ -41,7 +42,7 @@ try {
     $userOrderNum=$stmt->rowCount();
 
 //    fetch用while 等同 fetchAll用foreach
-
+//測試看資料
 //    while ($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
 //        print_r($rows);
 //        echo "<br>";
@@ -65,7 +66,9 @@ try {
 //$sqlProducts=
 
 
-//要撈每筆訂單的詳細內容: 商品名稱
+//要撈每筆訂單內的詳細內容(每筆訂單訂的數量不同 第1單2筆、第2單4筆...等): 商品名稱、價錢、購買數量
+//利用多層 query 資料組成關聯式陣列的應用
+//第一層，使用者有幾筆訂單
 $sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
 $stmtUserOrder = $db_host->prepare($sqlUserOrder);
 try{
@@ -74,19 +77,25 @@ try{
 
     for($i=0; $i<count($rowsUserOrder); $i++){
 //        $rows[$i]["product_id"]="product_id"; //要撈的是user_order_detail.product_id
+
+        //第二層，利用迴圈，第[i]單時撈出n筆購買項目，n= 當第[i]單，( order_id=[i] )的數量
 //        $sqlOrderDetail = "SELECT * FROM user_order_detail WHERE order_id=?";
         $sqlOrderDetail = "SELECT user_order_detail.*, products.name AS product_name, products.img, products.price
         FROM user_order_detail
         JOIN products ON user_order_detail.product_id = products.id
         WHERE order_id=?";
+        //將同層附加資訊JOIN在裡面一起呈現
         $stmtOrderDetail = $db_host->prepare($sqlOrderDetail);
-        $stmtOrderDetail->execute([$rows[$i]["id"]]);
+        $stmtOrderDetail->execute([$rows[$i]["id"]]);  //利用第一層撈到的 user_id 對應 order_id
         //當 user_order_detail.order_id = user_order.user_id例如有8筆 的訂單號碼(id)
         $rowsOrderDetail = $stmtOrderDetail->fetchAll(PDO::FETCH_ASSOC);
+        //將陣列簡化 剩下想要的陣列value值
         $orderProductName = array_column($rowsOrderDetail, "product_name");
         $orderProductNum = array_column($rowsOrderDetail, "amount");
         $orderProductPrice = array_column($rowsOrderDetail, "price");
         $orderProductImg = array_column($rowsOrderDetail, "img");
+        //將要的值塞進$rows陣列，自己給key值(命名 details/product_name/amount...)
+        //因為同一層有不同種類的東西要呈現，所以用成二維陣列(?)
         $rows[$i]["details"]["product_name"]=$orderProductName;
         $rows[$i]["details"]["amount"]=$orderProductNum;
         $rows[$i]["details"]["price"]=$orderProductPrice;
@@ -105,7 +114,7 @@ try{
 //        }
 //        echo "<br>";
 //    }
-//    exit();
+//    exit(); //測試
 
 } catch (PDOException $e) {
     echo "預處理陳述式執行失敗<br>";
