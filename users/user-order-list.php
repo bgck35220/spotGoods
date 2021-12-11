@@ -13,6 +13,7 @@ JOIN order_status ON user_order.status_id = order_status.id
 WHERE user_order.user_id=? ORDER BY user_order.id DESC
 ";
 
+//失敗的
 //$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
 //FROM user_order
 //JOIN order_status ON user_order.status_id = order_status.id
@@ -21,6 +22,7 @@ WHERE user_order.user_id=? ORDER BY user_order.id DESC
 //ORDER BY user_order.id DESC
 //";
 
+//失敗的
 //$sql="SELECT user_order.*, order_status.status, user_order_detail.order_id, user_order_detail.product_id, user_order_detail.amount, products.name AS product_name, products.img, products.price, products.store_id, stores.name AS store_name
 //FROM user_order
 //JOIN order_status ON user_order.status_id = order_status.id
@@ -59,6 +61,10 @@ try {
     exit;
 }
 
+
+//$sqlProducts=
+
+
 //要撈每筆訂單的詳細內容: 商品名稱
 $sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
 $stmtUserOrder = $db_host->prepare($sqlUserOrder);
@@ -77,8 +83,6 @@ try{
         $orderProductNum = array_column($rowsOrderDetail, "amount");
         $rows[$i]["details"]["product_id"]=$orderProductName;
         $rows[$i]["details"]["amount"]=$orderProductNum;
-//        $rows[$i]["details"]=[$rows[$i]["product_id"], $rows[$i]["amount"]];
-
     }
 
     //測試看資料
