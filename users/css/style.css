@@ -1,9 +1,12 @@
 :root{
     --primary-color: #3fb4a7;
+    --primary-color-darker: #3aa498;
     --dark: #555;
     --dark-lighter: #999;
     --light: #ccc;
     --light-darker: #cdcdcd;
+    --bg-light: #f8f9fa;
+    --bg-light-darker: #f3f4f5;
 }
 .cover-fit {
     width: 100%;
@@ -73,6 +76,8 @@
 }
 .status a:hover{
     color: var(--primary-color);
+    background: var(--bg-light-darker);
+    border-bottom: 2px solid var(--primary-color-darker);
 }
 .status a.active{
     color: var(--primary-color);

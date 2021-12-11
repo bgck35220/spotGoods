@@ -20,27 +20,38 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 //ORDER BY user_order.id DESC
 //";
 
-$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
+$sql="SELECT user_order.*, order_status.status, user_order_detail.order_id, user_order_detail.product_id, user_order_detail.amount, products.name AS product_name, products.img, products.price, products.store_id, stores.name AS store_name
 FROM user_order
 JOIN order_status ON user_order.status_id = order_status.id
 JOIN user_order_detail ON user_order.id = user_order_detail.order_id
-GROUP BY user_order_detail.order_id
+JOIN products ON user_order_detail.product_id = products.id
+JOIN stores ON products.store_id = stores.id
+WHERE user_order.user_id=?
 ORDER BY user_order.id DESC
 ";
 //JOIN products ON user_order_detail.product_id = products.id
 //, products.name, products.img, products.price, products.store_id, products.valid
 $stmt = $db_host->prepare($sql);
 try {
-    $stmt->execute();
+    $stmt->execute([$_SESSION["user"]["id"]]);
+//    [$_SESSION["user"]["id"]]
 //    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $userOrderNum=$stmt->rowCount();
 //    while ($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
 //        print_r($rows);
 //        echo "<br>";
-////        print_r($rows["status_id"]);
 //        echo "<br>";
 //    }
+//    fetch用while 等同 fetchAll用foreach
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $value){
+        print_r($value);
+        echo "<br>";
+        echo "<br>";
+    }
 //    exit();
+
+
 } catch (PDOException $e) {
     echo "預處理陳述式執行失敗<br>";
     echo "Error: " . $e->getMessage() . "<br>";
@@ -53,7 +64,7 @@ try {
 <!doctype html>
 <html lang="en">
 <head>
-    <title>user order</title>
+    <title>my order</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -120,8 +131,7 @@ try {
         <div class="col-md-9">
             <div class="bg-light status d-flex justify-content-between">
                 <a href="user-order-list.php?status=1" class="active">全部</a>
-                <a href="">待付款</a>
-                <a href="">待出貨</a>
+                <a href="">待領取</a>
                 <a href="">完成</a>
                 <a href="">已取消</a>
             </div>
@@ -136,6 +146,8 @@ try {
             </div><!--搜尋-->
             <!--訂單內容-->
             <div class="card my-3 p-3 bg-light border-light">
+                <?php if($userOrderNum>0): ?>
+<!--                --><?php //foreach(); ?>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i>賣家名稱</a>
                     <span class="orderStatus">訂單狀態</span>
@@ -178,6 +190,9 @@ try {
                         <span class="orderPriceNum text-end fs-4 text-nowrap">$ 10000000000</span>
                     </div>
                 </div>
+                <?php else: ?>
+                    <div class="p-3 text-secondary">您尚未購買任何項目</div>
+                <?php endif; ?>
             </div><!--訂單內容-->
         </div><!--右邊內容欄位-->
     </div>
