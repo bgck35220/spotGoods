@@ -59,7 +59,7 @@ try {
     exit;
 }
 
-
+//要撈每筆訂單的詳細內容: 商品名稱
 $sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
 $stmtUserOrder = $db_host->prepare($sqlUserOrder);
 try{
@@ -73,8 +73,27 @@ try{
         $stmtOrderDetail->execute([$rows[$i]["id"]]);
         //當 user_order_detail.order_id = user_order.user_id例如有8筆 的訂單號碼(id)
         $rowsOrderDetail = $stmtOrderDetail->fetchAll(PDO::FETCH_ASSOC);
-        $rows[$i]["product_id"]=$rowsOrderDetail;
+        $orderProductName = array_column($rowsOrderDetail, "product_id");
+        $orderProductNum = array_column($rowsOrderDetail, "amount");
+        $rows[$i]["details"]["product_id"]=$orderProductName;
+        $rows[$i]["details"]["amount"]=$orderProductNum;
+//        $rows[$i]["details"]=[$rows[$i]["product_id"], $rows[$i]["amount"]];
+
     }
+
+    //測試看資料
+//    foreach ($rows as $row){
+////        print_r($row["details"]);
+////        print_r($row["details"]["product_id"]);
+////        echo "<br>";
+//        for($j=0; $j<count($row["details"]["product_id"]); $j++){
+//            print_r($row["details"]["product_id"][$j]);
+//            print_r($row["details"]["amount"][$j]);
+//            echo "<br>";
+//        }
+//        echo "<br>";
+//    }
+//    exit();
 
 } catch (PDOException $e) {
     echo "預處理陳述式執行失敗<br>";
@@ -179,21 +198,23 @@ try{
                     <span class="orderStatus"><?=$row["status"]?></span>
                 </div>
                 <!--購買商品資訊-->
+                <?php for($j=0; $j<count($row["details"]["product_id"]); $j++): ?>
                 <a href="" class="py-3 border-top text-decoration-none">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="storePhoto" href="">
                             <img class="cover-fit" src="upload/7.png" alt="">
                         </div>
                         <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="flex-fill pb-2 storeName"><?= var_dump($row["product_id"]); ?></div>
+                            <div class="flex-fill pb-2 storeName"><?= $row["details"]["product_id"][$j] ?></div>
                             <div class="storePrice">$ 100</div>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span class="buyNum">x 3</span>
+                            <span class="buyNum">x <?= $row["details"]["amount"][$j] ?></span>
                             <span class="buyNumPrice text-end">$555</span>
                         </div>
                     </div>
                 </a><!--購買商品資訊-->
+                <?php endfor; ?>
 <!--                <a href="" class="py-3 border-top text-decoration-none">-->
 <!--                    <div class="d-flex justify-content-between align-items-center">-->
 <!--                        <div class="storePhoto" href="">-->
