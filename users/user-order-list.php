@@ -7,10 +7,11 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 
 //$sql = "SELECT * FROM user_order WHERE user_id=?";
 
-//要撈使用者全部訂單有幾筆 並把同層附加資訊JOIN在裡面一起呈現，此時只能列出我的訂單 數量 跟 訂單狀態
-$sql="SELECT user_order.*, order_status.status
+//要撈使用者全部訂單有幾筆 並把同層附加資訊JOIN在裡面一起呈現，此時只能列出 我的訂單、商店名稱、訂單狀態
+$sql="SELECT user_order.*, order_status.status, stores.name AS store_name
 FROM user_order
 JOIN order_status ON user_order.status_id = order_status.id
+JOIN stores ON user_order.store_id = stores.id
 WHERE user_order.user_id=? ORDER BY user_order.id DESC
 ";
 
@@ -100,16 +101,17 @@ try{
         $rows[$i]["details"]["amount"]=$orderProductNum;
         $rows[$i]["details"]["price"]=$orderProductPrice;
         $rows[$i]["details"]["img"]=$orderProductImg;
+
     }
 
     //測試看資料
 //    foreach ($rows as $row){
 ////        print_r($row["details"]);
-////        print_r($row["details"]["product_id"]);
+////        print_r($row["details"]["product_name"]);
 ////        echo "<br>";
-//        for($j=0; $j<count($row["details"]["product_id"]); $j++){
-//            print_r($row["details"]["product_id"][$j]);
-//            print_r($row["details"]["amount"][$j]);
+//        for($j=0; $j<count($row["details"]["product_name"]); $j++){
+//            print_r($row["details"]["product_name"][$j]);
+//            print_r($row["details"]["amount"][$j]);  //foreach會直接給index(?)
 //            echo "<br>";
 //        }
 //        echo "<br>";
@@ -213,9 +215,9 @@ try{
             <!--訂單內容-->
             <?php if($userOrderNum>0): ?>
             <?php foreach($rows as $row): ?>
-            <div class="card my-3 p-3 bg-light border-light mb-3">
+            <div class="card my-3 p-4 bg-light">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i>賣家名稱</a>
+                    <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i><?=$row["store_name"]?></a>
                     <span class="orderStatus"><?=$row["status"]?></span>
                 </div>
                 <!--購買商品資訊-->
@@ -240,7 +242,17 @@ try{
                     <span class="orderTime">訂單時間: <?=$row["order_time"]?></span>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="orderPrice me-2">訂單金額:</span>
-                        <span class="orderPriceNum text-end fs-4 text-nowrap">$ 10000000000</span>
+                        <span class="orderPriceNum text-end fs-4 text-nowrap">
+                            $
+                            <?php
+                            $Sum=0;
+                            for($k=0; $k<count($row["details"]["product_name"]); $k++){
+                                //上面有給變數$Sum
+                                $Sum=$row["details"]["price"][$k]*$row["details"]["amount"][$k]+$Sum;
+                            }?>
+                            <?=$Sum?> <!--訂單金額-->
+                            <?php $Sum=0; ?> <!--跑完一次就清0-->
+                        </span>
                     </div>
                 </div>
             </div><!--訂單內容-->
