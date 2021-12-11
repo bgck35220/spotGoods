@@ -122,11 +122,11 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="./coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">新增優惠券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -153,7 +153,7 @@ try {
         <?php $validone = 0; ?>
         <div class="container pt-5 ">
 <div>
-    <h2 class="subtitle">兌換券管理</h2>
+    <h2 class="subtitle">優惠券管理</h2>
 </div>
      <?php if (isset($p)) : ?>
                         <div class="py-2">共<?= $totalUsersCount ?>張

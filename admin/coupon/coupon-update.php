@@ -23,14 +23,14 @@ try {
 <html lang="en">
 
 <head>
-    <title>管理員後台-兌換券編輯</title>
+    <title>管理員後台-優惠券編輯</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style1.css">
 </head>
 <style>
 
@@ -81,11 +81,11 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                     <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
+                                     <li><a class="dropdown-item" href="./coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">新增優惠券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -113,12 +113,12 @@ try {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="fs-3">會員資料編輯</h2>
+                    <h2 class="subtitle">優惠券編輯</h2>
                 </div>
                 <div class="d-flex ">
                     <div>
                         <a href="./coupon.php" class="btn btn-light" type="submit">
-                            回兌換券清單
+                            回優惠券清單
                         </a>
                     </div>
                 </div>
@@ -144,7 +144,7 @@ try {
                             <td class="p-1"> <input type="text" value="<?= $rowUser['quantity'] ?>" class="form-control p-2 m-0" placeholder="email" name="quantity"></td>
                         </tr>
                         <tr>
-                            <th>兌換券狀態</th>
+                            <th>優惠券狀態</th>
                             <td class="user-switch">
 
                                 <?php if ($rowUser['valid'] == 1) { ?>

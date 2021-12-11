@@ -85,7 +85,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS v5.0.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css"  href="./css/style1.css?id=1">
+    <link rel="stylesheet" type="text/css"  href="./css/style1.css">
 </head>
 <style>
 
@@ -135,11 +135,11 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../admin/coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./coupon/coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="../admin/coupon/coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon/coupon-add.php">新增優惠券</a></li>
                                 </ul>
                               
                             </li>

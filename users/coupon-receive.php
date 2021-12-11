@@ -3,7 +3,7 @@
 require_once("../pdo-connect.php");
 
 if (!isset($_SESSION["user"])) { 
-    header("location: sign-in.php");
+    header("location: users-login.php");
 }
 //取優惠券內容
 $sqlcoupon = "SELECT * FROM coupon WHERE  valid=1 ";

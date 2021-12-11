@@ -69,11 +69,11 @@ if (!isset($_SESSION["user"])) {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增優惠券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -118,16 +118,19 @@ if (!isset($_SESSION["user"])) {
             </div>
 
           
-                <form action="addSeller.php" method="POST" class="updateForm">
-                    <table class="table table-bordered  updateTable ">
-
-                        <tr>
-                            <th>logo</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="logo" name="Logo"></td>
+                <form action="addSeller.php" method="POST" class="updateForm" enctype="multipart/form-data">
+                <table class="table table-bordered  updateTable ">
+                         <tr>
+                            <th>bossname</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="bossname" name="bossname"></td>
                         </tr>
                         <tr>
                             <th>店家名稱</th>
                             <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="name" name="name"></td>
+                        </tr>
+                        <tr>
+                            <th>信箱</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="email" name="email"></td>
                         </tr>
                         <tr>
                             <th>帳號</th>
@@ -137,16 +140,20 @@ if (!isset($_SESSION["user"])) {
                             <th>密碼</th>
                             <td class="p-1"> <input type="password" value="" class="form-control p-2 m-0" placeholder="password" name="password" ></td>
                         </tr>
-                        <tr>
-                            <th>信箱</th>
-                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="email" name="email"></td>
-                        </tr>
+               
                         <tr>
                             <th>手機號碼</th>
-                            <td>待新增</td>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="phone" name="phone" ></td>
                         </tr>
-                           
-               
+                        <tr>
+                            <th>地址</th>
+                            <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="address" name="address" ></td>
+                        </tr>
+                        <tr>
+                            <th>證照</th>
+                            <td class="p-1">   <input type="file" required class="form-control" name="myFile"></td>
+                        </tr>
+                      
 
 
                     </table>

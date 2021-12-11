@@ -10,7 +10,7 @@ if (!isset($_SESSION["user"])) {
 <html lang="en">
 
 <head>
-    <title>管理員後台-兌換券新增</title>
+    <title>管理員後台-優惠券新增</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -68,11 +68,11 @@ if (!isset($_SESSION["user"])) {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                     <li><a class="dropdown-item" href="./coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="./coupon-add.php">新增兌換券</a></li>
+                                     <li><a class="dropdown-item" href="./coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="./coupon-add.php">優惠券換券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -100,12 +100,12 @@ if (!isset($_SESSION["user"])) {
         <div class="container pt-5 col-4">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h2 class="subtitle">新增兌換券</h2>
+                    <h2 class="subtitle">新增優惠券</h2>
                 </div>
                 <div class="d-flex ">
                     <div>
                         <a href="./coupon.php" class="btn btn-light" type="submit">
-                            回兌換券清單
+                            回優惠券清單
                         </a>
                     </div>
                 </div>

@@ -81,11 +81,11 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增優惠券</a></li>
                                 </ul>  
                             </li>
                         </ul>
@@ -132,30 +132,39 @@ try {
 
             <?php if($userExist>0):?>
             <table class="table table-bordered ">
-                <tr>
-                    <th>id</th>
+            <tr>
+                    <th>申請編號</th>
                     <td><?=$rowUser['id']?></td>
                 </tr>
                 <tr>
-                    <th>Logo</th>
-                    <td><?=$rowUser['Logo']?></td>
+                    <th>店家聯絡人</th>
+                    <td><?=$rowUser['bossname']?></td>
                 </tr>
                 <tr>
                     <th>店家名稱</th>
                     <td><?=$rowUser['name']?></td>
                 </tr>
                 <tr>
-                    <th>帳號</th>
-                    <td><?=$rowUser['account']?></td>
-                </tr>
-                <tr>
                     <th>信箱</th>
                     <td><?=$rowUser['email']?></td>
                 </tr>
+                <tr>
+                    <th>帳號</th>
+                    <td><?=$rowUser['account']?></td>
+                </tr>
+           
        
                 <tr>
                     <th>手機號碼</th>
-                    <td>還沒新增</td>
+                    <td><?=$rowUser['phone']?></td>
+                </tr>
+                <tr>
+                    <th>地址</th>
+                    <td><?=$rowUser['address']?></td>
+                </tr>
+                <tr>
+                    <th>營業登記證</th>
+                    <td><a class="text-decoration-none" href="../../sellers/sellersimg/sellersimg<?=$rowUser['certification_imgname']?>">營業登記證</td>
                 </tr>
                 <tr>
                     <th>註冊時間</th>

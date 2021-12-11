@@ -33,7 +33,7 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE id like '%$search%' AND valid <= 1 OR account LIKE  ' %$search%' AND valid <= 1 OR  name LIKE '%$search%' AND valid <= 1";
+    $sqlUser = "SELECT * FROM sellers WHERE bossname like '%$search%' AND valid <= 1 OR account LIKE  ' %$search%' AND valid <= 1 OR  name LIKE '%$search%' AND valid <= 1";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -134,13 +134,13 @@ try {
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon.php">優惠券總覽</a></li>
                                 </ul>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="./login.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="./login.php">新增優惠券</a></li>
 
                                 </ul>
                             </li>
@@ -190,15 +190,15 @@ try {
 
                     <tr class="">
                         <th>id</th>
+                        <th>店家聯絡人</th>
                         <th>店家名稱</th>
-                        <th>帳號</th>
                         <th>信箱</th>
                         <th>註冊時間</th>
                         <th>帳號狀態</th>
                         <th>
                             <form action="./sellers.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋店家名稱、帳號、ID" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋店家聯絡人、店家名稱、帳號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
@@ -220,10 +220,10 @@ try {
                                 <img class="magnifier-img" src="../img/search-solid.svg" alt="">
                                 </a>
                             </td>
-                            <td><?= $rowUser['name'] ?></td>
+                            <td><?= $rowUser['bossname'] ?></td>
                             <td class="">
                                
-                                    <?= $rowUser['account'] ?>
+                                    <?= $rowUser['name'] ?>
                                    
                             </td>
                             <td><?= $rowUser['email'] ?></td>
@@ -357,22 +357,36 @@ try {
                     </td>
                 </tr>
                 <tr>
-                    <th>姓名</th>
-                    <td><?= $rowUserUserTable['name'] ?></td>
+                    <th>申請編號</th>
+                    <td><?=$rowUserUserTable['id']?></td>
                 </tr>
                 <tr>
-                    <th>帳號</th>
-                    <td><?= $rowUserUserTable['account'] ?></td>
+                    <th>店家聯絡人</th>
+                    <td><?= $rowUserUserTable['bossname'] ?></td>
                 </tr>
                 <tr>
                     <th>信箱</th>
-                    <td><?= $rowUserUserTable['email'] ?></td>
+                    <td><?=$rowUserUserTable['email']?></td>
                 </tr>
-  
+                <tr>
+                    <th>帳號</th>
+                    <td><?=$rowUserUserTable['account']?></td>
+                </tr>
+           
+       
                 <tr>
                     <th>手機號碼</th>
-                    <td>還沒新增</td>
+                    <td><?=$rowUserUserTable['phone']?></td>
                 </tr>
+                <tr>
+                    <th>地址</th>
+                    <td><?=$rowUserUserTable['address']?></td>
+                </tr>
+                <tr>
+                    <th>營業登記證</th>
+                    <td><a class="text-decoration-none"href="../../sellers/sellersimg/sellersimg<?=$rowUserUserTable['certification_imgname']?>">營業登記證</td>
+                </tr>
+              
                 <tr>
                     <th>註冊時間</th>
                     <td><?= $rowUserUserTable['created_at'] ?></td>

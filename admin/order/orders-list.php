@@ -14,6 +14,9 @@ b.address as user_address,
 b.created_at as user_created_at,
 b.valid as user_valid,
 c.id as seller_id,
+c.bossname as seller_bossname,
+c.address as seller_address,
+c.phone as seller_phone,
 c.account as seller_account,
 c.email as seller_email,
 c.name as seller_name,
@@ -45,6 +48,9 @@ if (isset($_GET['id'])) {
     b.created_at as user_created_at,
     b.valid as user_valid,
     c.id as seller_id,
+    c.bossname as seller_bossname,
+    c.address as seller_address,
+    c.phone as seller_phone,
     c.account as seller_account,
     c.email as seller_email,
     c.name as seller_name,
@@ -82,6 +88,9 @@ if (isset($_GET['search'])) {
     b.created_at as user_created_at,
     b.valid as user_valid,
     c.id as seller_id,
+    c.bossname as seller_bossname,
+    c.address as seller_address,
+    c.phone as seller_phone,
     c.account as seller_account,
     c.email as seller_email,
     c.name as seller_name,
@@ -225,11 +234,11 @@ try{
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-text text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    兌換券管理
+                                優惠券管理
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="../coupon/coupon.php">兌換券總覽</a></li>
-                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增兌換券</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon.php">優惠券總覽</a></li>
+                                    <li><a class="dropdown-item" href="../coupon/coupon-add.php">新增優惠券</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -365,16 +374,20 @@ try{
                 </tr>
                
                 <tr>
-                    <th>商家ID</th>
+                    <th>店家ID</th>
                     <td><?= $rowUserUserTable['seller_id'] ?></td>
                 </tr>
                 <tr>
-                    <th>商家</th>
+                    <th>商家聯絡人</th>
+                    <td><?= $rowUserUserTable['seller_bossname'] ?></td>
+                </tr>
+                <tr>
+                    <th>店家</th>
                     <td><?= $rowUserUserTable['seller_name'] ?></td>
                 </tr>
                 <tr>
                     <th>商家地址</th>
-                    <td><?= $rowUserUserTable['seller_name'] ?></td>
+                    <td><?= $rowUserUserTable['seller_address'] ?></td>
                 </tr>
                 <tr>
                     <th>商家信箱</th>
@@ -382,7 +395,7 @@ try{
                 </tr>
                 <tr>
                     <th>商家手機號碼</th>
-                    <td><?= $rowUserUserTable['seller_email'] ?></td>
+                    <td><?= $rowUserUserTable['seller_phone'] ?></td>
                 </tr>
                 <tr>
                     <th>訂單商品</th>

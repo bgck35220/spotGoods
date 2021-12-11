@@ -113,7 +113,7 @@ if(isset($_SESSION["user"])){
         <div class="container text-center  m-0 p-0  login-style">
           <div>
             <div class="title">LOGIN</div>
-            <h1 class="form-text">商家後台管理</h1>
+            <h1 class="form-text">管理員後台管理</h1>
             <form action="doLogin.php" method="POST">
               <div class="form-floating mb-3 form-input">
                 <input type="" class="form-control" id="floatingInput" placeholder="name@example.com"
