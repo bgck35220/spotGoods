@@ -40,7 +40,9 @@ try {
             height: 100%;
             object-fit: cover;
         }
-
+        .top{
+            box-shadow: 0rem 0.1rem 0.2rem #ddd;
+        }
         .menu {
             height: 580px;
         }
@@ -91,15 +93,29 @@ try {
 </head>
 <body>
 <!--header-->
-<header class="bg-light">
+<header class="bg-light top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
-                    <div>
                     <a class="navbar-brand" href="index.php">team01</a>
-                    <a class="navbar-brand" href="coupon-receive.php">優惠券領取</a>
-                    </div>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">關於網站</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./user-order-list.php">我的訂單</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">我的最愛</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="./coupon-receive.php" tabindex="-1" aria-disabled="true">優惠券領取</a>
+                        </li>
+                    </ul>
                     <div class="d-flex justify-content-end align-items-center">
                         <a class="headshot-sm me-2" href="dashboard.php">
                             <?php if($_SESSION["user"]["headshots"]==NULL):?>

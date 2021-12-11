@@ -37,7 +37,7 @@ try{
         unset($_SESSION["error_times"]); //登入成功，清除錯誤紀錄
         unset($_SESSION["error_msg"]);
 
-        header("location: dashboard.php");  //登入完後紀錄完session導到頁面
+        header("location: index.php");  //登入完後紀錄完session導到頁面
     }else{
         $_SESSION["error_msg"]="帳號或密碼輸入錯誤";
 

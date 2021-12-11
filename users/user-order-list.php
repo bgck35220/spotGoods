@@ -5,16 +5,6 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
     header("location: sign-in.php");
 }
 
-//$sql = "SELECT * FROM user_order WHERE user_id=?";
-
-//要撈使用者全部訂單有幾筆 並把同層附加資訊JOIN在裡面一起呈現，此時只能列出 我的訂單、商店名稱、訂單狀態
-$sql="SELECT user_order.*, order_status.status, stores.name AS store_name
-FROM user_order
-JOIN order_status ON user_order.status_id = order_status.id
-JOIN stores ON user_order.store_id = stores.id
-WHERE user_order.user_id=? ORDER BY user_order.id DESC
-";
-
 //失敗的，不是用 GROUP BY
 //$sql="SELECT user_order.*, order_status.status, COUNT(user_order_detail.order_id), user_order_detail.product_id, user_order_detail.amount
 //FROM user_order
@@ -35,27 +25,116 @@ WHERE user_order.user_id=? ORDER BY user_order.id DESC
 //ORDER BY user_order.id DESC
 //";
 
-$stmt = $db_host->prepare($sql);
-try {
-    $stmt->execute([$_SESSION["user"]["id"]]);
-//    [$_SESSION["user"]["id"]]
-//    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $userOrderNum=$stmt->rowCount();
+//PHP 組合不特定條件的 PDO 查詢語法   //失敗，不會用
+//$conditions = [];
+//$parameters = [];
+//if (!empty($_GET["status"])) {
+//    $conditions[] = "order_status.id=?";
+//    $parameters[] = $_SESSION["user"]["id"];
+//    $parameters[] = $_GET["status"];
+//}
+//// the main query
+//$sql = "SELECT user_order.*, order_status.*, stores.name AS store_name
+//    FROM user_order
+//    JOIN order_status ON user_order.status_id = order_status.id
+//    JOIN stores ON user_order.store_id = stores.id
+//    ORDER BY user_order.id DESC
+//    WHERE user_order.user_id=?";
+//// 把條件組合成 query 語法
+//if ($conditions) {
+//    $sql .= implode(" AND ", $conditions);
+//}
 
-//    fetch用while 等同 fetchAll用foreach
-//測試看資料
+if(isset($_GET["status"])){
+
+    //篩選訂單狀態
+    $sql="SELECT user_order.*, order_status.*, stores.name AS store_name
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    JOIN stores ON user_order.store_id = stores.id
+    WHERE user_order.user_id=? AND order_status.id=? ORDER BY user_order.id DESC
+    ";
+
+    //多層 query要用的
+    $sqlUserOrder = "SELECT user_order.*, order_status.*
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    WHERE user_order.user_id=? AND order_status.id=?
+    ";
+
+    //篩選條件的值，存入陣列，後面$stmt->execute用
+    $parameters = [$_SESSION["user"]["id"], $_GET["status"]];
+
+}else if($_GET["search"]){
+
+    $search=$_GET["search"];
+    //搜尋有符合的字串
+    $sql="SELECT user_order.*, order_status.status, stores.name AS store_name
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    JOIN stores ON user_order.store_id = stores.id
+    WHERE user_order.user_id=? AND stores.name LIKE ?;
+    ";
+
+    //多層 query要用的
+    $sqlUserOrder = "SELECT user_order.*, order_status.status, stores.name AS store_name
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    JOIN stores ON user_order.store_id = stores.id
+    WHERE user_order.user_id=? AND stores.name LIKE ?;
+    ";
+
+    //篩選條件的值，存入陣列，後面$stmt->execute用
+    $parameters = [$_SESSION["user"]["id"], '%'.$search.'%'];
+
+}else{
+
+    //預設
+    $sql="SELECT user_order.*, order_status.status, stores.name AS store_name
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    JOIN stores ON user_order.store_id = stores.id
+    WHERE user_order.user_id=? ORDER BY user_order.id DESC
+    ";
+
+    //多層 query要用的
+    $sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
+
+    //篩選條件的值，存入陣列，後面$stmt->execute用
+    $parameters = [$_SESSION["user"]["id"]];
+
+}
+
+
+
+//要撈使用者全部訂單有幾筆 並把同層附加資訊JOIN在裡面一起呈現，此時只能列出 我的訂單、商店名稱、訂單狀態
+//挪去上面if判斷篩選
+//$sql="SELECT user_order.*, order_status.status, stores.name AS store_name
+//    FROM user_order
+//    JOIN order_status ON user_order.status_id = order_status.id
+//    JOIN stores ON user_order.store_id = stores.id
+//    WHERE user_order.user_id=? ORDER BY user_order.id DESC
+//    ";
+$stmt = $db_host->prepare($sql);
+
+try {
+    $stmt->execute($parameters);
+    $userOrderNum = $stmt->rowCount();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+//    測試看資料  fetch用while 等同 fetchAll用foreach
+//        foreach ($rows as $row){
+//        print_r($row);
+//        echo "<br>";
+//        echo "<br>";
+//    }
 //    while ($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
 //        print_r($rows);
 //        echo "<br>";
 //        echo "<br>";
 //    }
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//    foreach ($rows as $row){
-//        print_r($row);
-//        echo "<br>";
-//        echo "<br>";
-//    }
 //    exit(); //測試
+
 } catch (PDOException $e) {
     echo "預處理陳述式執行失敗<br>";
     echo "Error: " . $e->getMessage() . "<br>";
@@ -64,19 +143,16 @@ try {
 }
 
 
-//$sqlProducts=
-
-
 //要撈每筆訂單內的詳細內容(每筆訂單訂的數量不同 第1單2筆、第2單4筆...等): 商品名稱、價錢、購買數量
 //利用多層 query 資料組成關聯式陣列的應用
 //第一層，使用者有幾筆訂單
-$sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";
+//$sqlUserOrder = "SELECT * FROM user_order WHERE user_id=?";  //挪去上面if判斷篩選
 $stmtUserOrder = $db_host->prepare($sqlUserOrder);
-try{
-    $stmtUserOrder->execute([$_SESSION["user"]["id"]]);
-    $rowsUserOrder=$stmtUserOrder->fetchAll(PDO::FETCH_ASSOC);
+try {
+    $stmtUserOrder->execute($parameters);
+    $rowsUserOrder = $stmtUserOrder->fetchAll(PDO::FETCH_ASSOC);
 
-    for($i=0; $i<count($rowsUserOrder); $i++){
+    for ($i = 0; $i < count($rowsUserOrder); $i++) {
 //        $rows[$i]["product_id"]="product_id"; //要撈的是user_order_detail.product_id
 
         //第二層，利用迴圈，第[i]單時撈出n筆購買項目，n= 當第[i]單，( order_id=[i] )的數量
@@ -97,11 +173,10 @@ try{
         $orderProductImg = array_column($rowsOrderDetail, "img");
         //將要的值塞進$rows陣列，自己給key值(命名 details/product_name/amount...)
         //因為同一層有不同種類的東西要呈現，所以用成二維陣列(?)
-        $rows[$i]["details"]["product_name"]=$orderProductName;
-        $rows[$i]["details"]["amount"]=$orderProductNum;
-        $rows[$i]["details"]["price"]=$orderProductPrice;
-        $rows[$i]["details"]["img"]=$orderProductImg;
-
+        $rows[$i]["details"]["product_name"] = $orderProductName;
+        $rows[$i]["details"]["amount"] = $orderProductNum;
+        $rows[$i]["details"]["price"] = $orderProductPrice;
+        $rows[$i]["details"]["img"] = $orderProductImg;
     }
 
     //測試看資料
@@ -126,7 +201,6 @@ try{
 }
 
 
-
 ?>
 
 <!doctype html>
@@ -145,22 +219,40 @@ try{
 <body>
 
 <!--header-->
-<header class="bg-light sticky-top">
+<header class="bg-light sticky-top top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
                     <a class="navbar-brand" href="index.php">team01</a>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">關於網站</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./user-order-list.php">我的訂單</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">我的最愛</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="./coupon-receive.php" tabindex="-1" aria-disabled="true">優惠券領取</a>
+                        </li>
+                    </ul>
                     <div class="d-flex justify-content-end align-items-center">
                         <a class="headshot-sm me-2" href="dashboard.php">
-                            <?php if($_SESSION["user"]["headshots"]==NULL):?>
+                            <?php if ($_SESSION["user"]["headshots"] == NULL): ?>
                                 <img class="cover-fit" src="./upload/user.png" alt="user.png">
-                            <?php else:?>
+                            <?php else: ?>
                                 <img class="cover-fit" src="./upload/<?= $_SESSION["user"]["headshots"] ?>"
                                      alt="<?= $_SESSION["user"]["headshots"] ?>">
                             <?php endif; ?>
                         </a>
-                        <a class="mb-0 text-secondary text-decoration-none" href="dashboard.php"><?= $_SESSION["user"]["account"] ?></a>
+                        <a class="mb-0 text-secondary text-decoration-none"
+                           href="dashboard.php"><?= $_SESSION["user"]["account"] ?></a>
                         <a href="logOut.php" class="btn btn-info text-white ms-4">登出</a>
                     </div>
                 </div>
@@ -178,9 +270,9 @@ try{
             <div class="p-5 bg-light menu">
                 <figure class="d-flex align-items-center">
                     <a class="headshot" href="dashboard.php">
-                        <?php if($_SESSION["user"]["headshots"]==NULL):?>
+                        <?php if ($_SESSION["user"]["headshots"] == NULL): ?>
                             <img class="cover-fit" src="./upload/user.png" alt="user.png">
-                        <?php else:?>
+                        <?php else: ?>
                             <img class="cover-fit" src="./upload/<?= $_SESSION["user"]["headshots"] ?>"
                                  alt="<?= $_SESSION["user"]["headshots"] ?>">
                         <?php endif; ?>
@@ -198,67 +290,73 @@ try{
         <!--右邊內容欄位-->
         <div class="col-md-9">
             <div class="bg-light status d-flex justify-content-between">
-                <a href="user-order-list.php?status=1" class="active">全部</a>
-                <a href="">待領取</a>
-                <a href="">完成</a>
-                <a href="">已取消</a>
+                <a href="user-order-list.php" class=<?php if(!isset($_GET["status"]))echo "active"?>>全部</a>
+                <a href="user-order-list.php?status=1" class=<?php if(isset($_GET["status"]) && $_GET["status"]==1)echo "active"?>>待領取</a>
+                <a href="user-order-list.php?status=2" class=<?php if(isset($_GET["status"]) && $_GET["status"]==2)echo "active"?>>完成</a>
+                <a href="user-order-list.php?status=3" class=<?php if(isset($_GET["status"]) && $_GET["status"]==3)echo "active"?>>已取消</a>
             </div>
             <!--搜尋-->
+            <?php if(!isset($_GET["status"])): ?>
             <div class="my-3">
                 <form action="user-order-list.php" method="get">
                     <div class="d-flex align-items-center">
-                        <input type="search" class="form-control me-2" placeholder="您可以透過...進行搜尋" name="s" value="<?php if (isset($search))echo $search; ?>">
+                        <input type="search" class="form-control me-2" placeholder="您可以透過 <店家名稱> 進行搜尋" name="search"
+                               value="<?php if (isset($search)) echo $search; ?>">
                         <button type="submit" class="btn btn-outline-success text-nowrap">搜尋</button>
                     </div>
                 </form>
             </div><!--搜尋-->
+            <?php endif; ?>
             <!--訂單內容-->
-            <?php if($userOrderNum>0): ?>
-            <?php foreach($rows as $row): ?>
-            <div class="card my-3 p-4 bg-light">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a class="text-decoration-none sellerName" href=""><i class="fas fa-store me-2"></i><?=$row["store_name"]?></a>
-                    <span class="orderStatus"><?=$row["status"]?></span>
-                </div>
-                <!--購買商品資訊-->
-                <?php for($j=0; $j<count($row["details"]["product_name"]); $j++): ?>
-                <a href="" class="py-3 border-top text-decoration-none">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="storePhoto" href="">
-                            <img class="cover-fit" src="images/<?= $row["details"]["img"][$j] ?>" alt="">
+            <?php if ($userOrderNum > 0): ?>
+                <?php foreach ($rows as $row): ?>
+                    <div class="card my-3 p-4 bg-light">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <a class="text-decoration-none sellerName" href=""><i
+                                        class="fas fa-store me-2"></i><?= $row["store_name"] ?></a>
+                            <span class="orderStatus"><?= $row["status"] ?></span>
                         </div>
-                        <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="flex-fill pb-2 storeName"><?= $row["details"]["product_name"][$j] ?></div>
-                            <div class="storePrice">$ <?= $row["details"]["price"][$j] ?></div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="buyNum">x <?= $row["details"]["amount"][$j] ?></span>
-                            <span class="buyNumPrice text-end">$ <?= $row["details"]["price"][$j]*$row["details"]["amount"][$j] ?></span>
-                        </div>
-                    </div>
-                </a><!--購買商品資訊-->
-                <?php endfor; ?>
-                <div class="border-top d-flex justify-content-between align-items-center pt-3">
-                    <span class="orderTime">訂單時間: <?=$row["order_time"]?></span>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="orderPrice me-2">訂單金額:</span>
-                        <span class="orderPriceNum text-end fs-4 text-nowrap">
+                        <!--購買商品資訊-->
+                        <?php for ($j = 0; $j < count($row["details"]["product_name"]); $j++): ?>
+                            <a href="" class="py-3 border-top text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="storePhoto" href="">
+                                        <img class="cover-fit" src="images/<?= $row["details"]["img"][$j] ?>" alt="">
+                                    </div>
+                                    <div class="d-flex flex-fill flex-column ps-3">
+                                        <div class="flex-fill pb-2 storeName"><?= $row["details"]["product_name"][$j] ?></div>
+                                        <div class="storePrice">$ <?= $row["details"]["price"][$j] ?></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="buyNum">x <?= $row["details"]["amount"][$j] ?></span>
+                                        <span class="buyNumPrice text-end">$ <?= $row["details"]["price"][$j] * $row["details"]["amount"][$j] ?></span>
+                                    </div>
+                                </div>
+                            </a><!--購買商品資訊-->
+                        <?php endfor; ?>
+                        <div class="border-top d-flex justify-content-between align-items-center pt-3">
+                            <span class="orderTime">訂單時間: <?= $row["order_time"] ?></span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="orderPrice me-2">訂單金額:</span>
+                                <span class="orderPriceNum text-end fs-4 text-nowrap">
                             $
                             <?php
-                            $Sum=0;
-                            for($k=0; $k<count($row["details"]["product_name"]); $k++){
-                                //上面有給變數$Sum
-                                $Sum=$row["details"]["price"][$k]*$row["details"]["amount"][$k]+$Sum;
-                            }?>
-                            <?=$Sum?> <!--訂單金額-->
-                            <?php $Sum=0; ?> <!--跑完一次就清0-->
+                            for ($k = 0; $k < count($row["details"]["product_name"]); $k++) {
+                                $Sum = $row["details"]["price"][$k] * $row["details"]["amount"][$k] + $Sum;
+                            } ?>
+                                    <?= $Sum ?> <!--訂單金額-->
+                            <?php $Sum = 0; ?> <!--跑完一次就清0-->
                         </span>
-                    </div>
-                </div>
-            </div><!--訂單內容-->
-            <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div><!--訂單內容-->
+                <?php endforeach; ?>
             <?php else: ?>
+                <?php if(isset($search)): ?>
+                <div class="p-3 text-secondary">沒有符合的搜尋條件</div>
+                <?php else: ?>
                 <div class="p-3 text-secondary">您尚未購買任何項目</div>
+                <?php endif; ?>
             <?php endif; ?>
         </div><!--右邊內容欄位-->
     </div>
@@ -275,7 +373,9 @@ try{
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 
 <script>
 

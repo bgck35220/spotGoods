@@ -29,6 +29,9 @@ try{
             font-size: 14px;
             opacity: 1; /* Firefox */
         }
+        .top{
+            box-shadow: 0rem 0.1rem 0.2rem #ddd;
+        }
         .error{
             font-size: 14px;
         }
@@ -50,7 +53,7 @@ try{
     </style>
 </head>
 <body>
-    <header class="bg-light">
+    <header class="bg-light top">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">

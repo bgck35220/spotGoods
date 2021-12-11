@@ -46,6 +46,9 @@ try {
   --lightgreen: #7baa81;
   --yellow: #ffc107;
 }
+    .top{
+        box-shadow: 0rem 0.1rem 0.2rem #ddd;
+    }
     .coupon-card{
         border-radius: 1.5rem;
     }
@@ -90,7 +93,7 @@ try {
     }
 </style>
 <body>
-<header class="bg-light">
+<header class="bg-light top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -98,13 +101,13 @@ try {
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                    <a class="navbar-brand" href="#">team01</a>
+                    <a class="navbar-brand" href="./index.php">team01</a>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">關於網站</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">我的訂單</a>
+                            <a class="nav-link" href="./user-order-list.php">我的訂單</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">我的最愛</a>

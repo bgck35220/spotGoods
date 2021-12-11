@@ -22,6 +22,9 @@ if(isset($_SESSION["user"])){
         /* body{
             /*background: #ddd;
         }*/
+        .top{
+            box-shadow: 0rem 0.1rem 0.2rem #ddd;
+        }
         .wrapper{
             /*background: #f8f9fa;*/
             width: 380px;
@@ -60,7 +63,7 @@ if(isset($_SESSION["user"])){
 
 </head>
 <body>
-<header class="bg-light">
+<header class="bg-light top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -95,15 +98,6 @@ if(isset($_SESSION["user"])){
                             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
                             <label for="floatingPassword">密碼 Password</label>
                         </div>
-                        <?php if(isset($_SESSION["error_msg"])): ?>
-                            <div class="alert alert-danger" role="alert"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
-                                $canError=$maxErrorTimes-$_SESSION["error_times"];
-                                echo $canError;
-                                ?> 次</div>
-                            <?php
-                            unset($_SESSION["error_msg"]);
-                        endif;
-                        ?>
                         <div class="d-grid gap-2 my-3">
                             <button class="btn btn-info text-white" type="submit">登入</button>
                         </div>
@@ -112,6 +106,15 @@ if(isset($_SESSION["user"])){
                 </div>
             </form>
         </div>
+        <?php if(isset($_SESSION["error_msg"])): ?>
+            <div class="alert alert-danger" role="alert"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
+                $canError=$maxErrorTimes-$_SESSION["error_times"];
+                echo $canError;
+                ?> 次</div>
+            <?php
+            unset($_SESSION["error_msg"]);
+        endif;
+        ?>
     </div>
 </div>
 
