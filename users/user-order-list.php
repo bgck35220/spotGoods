@@ -74,15 +74,23 @@ try{
 
     for($i=0; $i<count($rowsUserOrder); $i++){
 //        $rows[$i]["product_id"]="product_id"; //要撈的是user_order_detail.product_id
-        $sqlOrderDetail = "SELECT * FROM user_order_detail WHERE order_id=?";
+//        $sqlOrderDetail = "SELECT * FROM user_order_detail WHERE order_id=?";
+        $sqlOrderDetail = "SELECT user_order_detail.*, products.name AS product_name, products.img, products.price
+        FROM user_order_detail
+        JOIN products ON user_order_detail.product_id = products.id
+        WHERE order_id=?";
         $stmtOrderDetail = $db_host->prepare($sqlOrderDetail);
         $stmtOrderDetail->execute([$rows[$i]["id"]]);
         //當 user_order_detail.order_id = user_order.user_id例如有8筆 的訂單號碼(id)
         $rowsOrderDetail = $stmtOrderDetail->fetchAll(PDO::FETCH_ASSOC);
-        $orderProductName = array_column($rowsOrderDetail, "product_id");
+        $orderProductName = array_column($rowsOrderDetail, "product_name");
         $orderProductNum = array_column($rowsOrderDetail, "amount");
-        $rows[$i]["details"]["product_id"]=$orderProductName;
+        $orderProductPrice = array_column($rowsOrderDetail, "price");
+        $orderProductImg = array_column($rowsOrderDetail, "img");
+        $rows[$i]["details"]["product_name"]=$orderProductName;
         $rows[$i]["details"]["amount"]=$orderProductNum;
+        $rows[$i]["details"]["price"]=$orderProductPrice;
+        $rows[$i]["details"]["img"]=$orderProductImg;
     }
 
     //測試看資料
@@ -202,38 +210,23 @@ try{
                     <span class="orderStatus"><?=$row["status"]?></span>
                 </div>
                 <!--購買商品資訊-->
-                <?php for($j=0; $j<count($row["details"]["product_id"]); $j++): ?>
+                <?php for($j=0; $j<count($row["details"]["product_name"]); $j++): ?>
                 <a href="" class="py-3 border-top text-decoration-none">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="storePhoto" href="">
-                            <img class="cover-fit" src="upload/7.png" alt="">
+                            <img class="cover-fit" src="images/<?= $row["details"]["img"][$j] ?>" alt="">
                         </div>
                         <div class="d-flex flex-fill flex-column ps-3">
-                            <div class="flex-fill pb-2 storeName"><?= $row["details"]["product_id"][$j] ?></div>
-                            <div class="storePrice">$ 100</div>
+                            <div class="flex-fill pb-2 storeName"><?= $row["details"]["product_name"][$j] ?></div>
+                            <div class="storePrice">$ <?= $row["details"]["price"][$j] ?></div>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="buyNum">x <?= $row["details"]["amount"][$j] ?></span>
-                            <span class="buyNumPrice text-end">$555</span>
+                            <span class="buyNumPrice text-end">$ <?= $row["details"]["price"][$j]*$row["details"]["amount"][$j] ?></span>
                         </div>
                     </div>
                 </a><!--購買商品資訊-->
                 <?php endfor; ?>
-<!--                <a href="" class="py-3 border-top text-decoration-none">-->
-<!--                    <div class="d-flex justify-content-between align-items-center">-->
-<!--                        <div class="storePhoto" href="">-->
-<!--                            <img class="cover-fit" src="upload/7.png" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="d-flex flex-fill flex-column ps-3">-->
-<!--                            <div class="flex-fill pb-2 storeName">商品名稱</div>-->
-<!--                            <span class="storePrice">$ 100</span>-->
-<!--                        </div>-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <span class="buyNum">x 3</span>-->
-<!--                            <span class="buyNumPrice text-end">$555</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </a>-->
                 <div class="border-top d-flex justify-content-between align-items-center pt-3">
                     <span class="orderTime">訂單時間: <?=$row["order_time"]?></span>
                     <div class="d-flex justify-content-between align-items-center">
