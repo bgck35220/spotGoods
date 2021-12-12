@@ -10,6 +10,7 @@ $sqlTotal =
 b.account as user_account,
 b.name as user_name,
 b.email as user_email,
+b.phone as user_phone,
 b.address as user_address,
 b.created_at as user_created_at,
 b.valid as user_valid,
@@ -46,6 +47,7 @@ if (isset($_GET['id'])) {
     b.account as user_account,
     b.name as user_name,
     b.email as user_email,
+    b.phone as user_phone,
     b.address as user_address,
     b.created_at as user_created_at,
     b.valid as user_valid,
@@ -88,6 +90,7 @@ if (isset($_GET['search'])) {
     b.account as user_account,
     b.name as user_name,
     b.email as user_email,
+    b.phone as user_phone,
     b.address as user_address,
     b.created_at as user_created_at,
     b.valid as user_valid,
@@ -133,6 +136,7 @@ if ($pageR !== 0) {
         b.account as user_account,
         b.name as user_name,
         b.email as user_email,
+        b.phone as user_phone,
         b.address as user_address,
         b.created_at as user_created_at,
         b.valid as user_valid,
@@ -310,20 +314,14 @@ try{
                             <tr class="table-text-all">
                                 <td><?=$rowOrder['id']?></td>
                                 <td>
-                                <a class="text-decoration-none text-dark d-flex" href="../user.php?id=<?=$rowOrder['users_id']?>
-                                <?php
-                                if (isset($p)) echo "&p=$p";
-                                if (isset($search)) echo "&search=$search" ?>
+                                <a class="text-decoration-none text-dark d-flex" href="../user.php?id=<?=$rowOrder['users_id']?><?php if (isset($p)) echo "&p=$p";if (isset($search)) echo "&search=$search" ?>
                                 "type="submit">
                                      <?=$rowOrder['user_name']?>
                                     <img class="magnifier-img" src="../img/search-solid.svg" alt="">
                                 </a>
                                 </td>
                                 <td>
-                                <a class="text-decoration-none text-dark d-flex" href="../sellers/seller.php?id=<?= $rowOrder['seller_id']?>
-                                <?php
-                                if (isset($p)) echo "&p=$p";
-                                if (isset($search)) echo "&search=$search" ?>" type="submit">
+                                <a class="text-decoration-none text-dark d-flex" href="../sellers/seller.php?id=<?= $rowOrder['seller_id']?><?php if (isset($p)) echo "&p=$p"; if (isset($search)) echo "&search=$search" ?>" type="submit">
                                   <?=$rowOrder['seller_name']?>
                                     <img class="magnifier-img" src="../img/search-solid.svg" alt="">
                                 </a>
@@ -380,7 +378,7 @@ try{
                 </tr>
                 <tr>
                     <th>會員手機號碼</th>
-                    <td><?= $rowUserUserTable['user_email'] ?></td>
+                    <td><?= $rowUserUserTable['user_phone'] ?></td>
                 </tr>
                
                 <tr>

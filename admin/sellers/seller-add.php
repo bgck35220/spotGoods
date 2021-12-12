@@ -121,7 +121,7 @@ if (!isset($_SESSION["user"])) {
                 <form action="addSeller.php" method="POST" class="updateForm" enctype="multipart/form-data">
                 <table class="table table-bordered  updateTable ">
                          <tr>
-                            <th>bossname</th>
+                            <th>店家聯絡人</th>
                             <td class="p-1"> <input type="text" value="" class="form-control p-2 m-0" placeholder="bossname" name="bossname"></td>
                         </tr>
                         <tr>

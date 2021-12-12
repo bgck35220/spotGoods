@@ -33,7 +33,10 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE bossname like '%$search%' AND valid <= 1 OR account LIKE  ' %$search%' AND valid <= 1 OR  name LIKE '%$search%' AND valid <= 1";
+    $sqlUser = "SELECT * FROM 
+    sellers WHERE bossname like '%$search%' AND valid <= 1 
+    OR account LIKE ' %$search%' AND valid <= 1 
+    OR  name LIKE '%$search%' AND valid <= 1";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -356,10 +359,7 @@ try {
                         </a>
                     </td>
                 </tr>
-                <tr>
-                    <th>申請編號</th>
-                    <td><?=$rowUserUserTable['id']?></td>
-                </tr>
+
                 <tr>
                     <th>店家聯絡人</th>
                     <td><?= $rowUserUserTable['bossname'] ?></td>
