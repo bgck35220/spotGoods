@@ -201,6 +201,32 @@ try {
 }
 
 
+
+
+
+
+//待領取顯示幾筆未領
+$sqlStatus="SELECT user_order.*, order_status.id AS order_status_id, order_status.status
+    FROM user_order
+    JOIN order_status ON user_order.status_id = order_status.id
+    WHERE user_order.user_id=? AND order_status.id=1
+    ";
+
+$stmtStatus = $db_host->prepare($sqlStatus);
+
+try {
+    $stmtStatus->execute([$_SESSION["user"]["id"]]);
+    $statusNum = $stmtStatus->rowCount();
+//    echo $statusNum;
+//    exit;
+} catch (PDOException $e) {
+    echo "預處理陳述式執行失敗<br>";
+    echo "Error: " . $e->getMessage() . "<br>";
+    $db_host = NULL;
+    exit;
+}
+
+
 ?>
 
 <!doctype html>
@@ -291,7 +317,8 @@ try {
         <div class="col-md-9">
             <div class="bg-light status d-flex justify-content-between">
                 <a href="user-order-list.php" class=<?php if(!isset($_GET["status"]))echo "active"?>>全部</a>
-                <a href="user-order-list.php?status=1" class=<?php if(isset($_GET["status"]) && $_GET["status"]==1)echo "active"?>>待領取</a>
+                <a href="user-order-list.php?status=1" class="d-flex justify-content-center align-items-center <?php if(isset($_GET["status"]) && $_GET["status"]==1)echo 'active' ?>">待領取
+                    <div class="badge rounded-pill bg-warning ms-2"><?= $statusNum ?></div></a>
                 <a href="user-order-list.php?status=2" class=<?php if(isset($_GET["status"]) && $_GET["status"]==2)echo "active"?>>完成</a>
                 <a href="user-order-list.php?status=3" class=<?php if(isset($_GET["status"]) && $_GET["status"]==3)echo "active"?>>已取消</a>
             </div>
