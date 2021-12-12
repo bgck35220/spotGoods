@@ -63,7 +63,7 @@ if(isset($_SESSION["user"])){
 
 </head>
 <body>
-<header class="bg-light top">
+<header class="bg-light top position-relative">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -103,18 +103,18 @@ if(isset($_SESSION["user"])){
                         </div>
                         <div class="text-muted">還不是會員嗎? 請點此 <a href="sign-up.php" class="text-info">註冊</a></div>
                     <?php endif;?>
+                        <?php if(isset($_SESSION["error_msg"])): ?>
+                            <div class="alert alert-danger mt-3" role="alert"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
+                                $canError=$maxErrorTimes-$_SESSION["error_times"];
+                                echo $canError;
+                                ?> 次
+                            </div>
+                            <?php
+                            unset($_SESSION["error_msg"]);
+                        endif; ?>
                 </div>
             </form>
         </div>
-        <?php if(isset($_SESSION["error_msg"])): ?>
-            <div class="alert alert-danger" role="alert"><?=$_SESSION["error_msg"]?><br>您還可以嘗試登入 <?php
-                $canError=$maxErrorTimes-$_SESSION["error_times"];
-                echo $canError;
-                ?> 次</div>
-            <?php
-            unset($_SESSION["error_msg"]);
-        endif;
-        ?>
     </div>
 </div>
 

@@ -48,7 +48,7 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
 if(isset($_GET["status"])){
 
     //篩選訂單狀態
-    $sql="SELECT user_order.*, order_status.*, stores.name AS store_name
+    $sql="SELECT user_order.*, order_status.id AS order_status_id, order_status.status, stores.name AS store_name
     FROM user_order
     JOIN order_status ON user_order.status_id = order_status.id
     JOIN stores ON user_order.store_id = stores.id
@@ -69,7 +69,7 @@ if(isset($_GET["status"])){
 
     $search=$_GET["search"];
     //搜尋有符合的字串
-    $sql="SELECT user_order.*, order_status.status, stores.name AS store_name
+    $sql="SELECT user_order.*, order_status.id AS order_status_id, order_status.status, stores.name AS store_name
     FROM user_order
     JOIN order_status ON user_order.status_id = order_status.id
     JOIN stores ON user_order.store_id = stores.id
@@ -90,7 +90,7 @@ if(isset($_GET["status"])){
 }else{
 
     //預設
-    $sql="SELECT user_order.*, order_status.status, stores.name AS store_name
+    $sql="SELECT user_order.*, order_status.id AS order_status_id, order_status.status, stores.name AS store_name
     FROM user_order
     JOIN order_status ON user_order.status_id = order_status.id
     JOIN stores ON user_order.store_id = stores.id
@@ -264,7 +264,7 @@ try {
 
 
 <div class="container px-4 mt-4">
-    <div class="row g-3 menu">
+    <div class="row g-3">
         <!--左邊選單-->
         <div class="col-md-3">
             <div class="p-5 bg-light menu">
@@ -314,7 +314,16 @@ try {
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <a class="text-decoration-none sellerName" href=""><i
                                         class="fas fa-store me-2"></i><?= $row["store_name"] ?></a>
-                            <span class="orderStatus"><?= $row["status"] ?></span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="orderStatus"><?= $row["status"] ?></span>
+                                <?php if($row["status_id"]==1): ?>
+                                <form action="doUserOrderStatus.php" method="post">
+                                    <input type="hidden" name="status" value="3">
+                                    <input type="hidden" name="userOrderId" value="<?= $row["id"] ?>">
+                                    <button type="submit" class="btn btn-sm btn-success text-nowrap ms-3">取消訂單</button>
+                                </form>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <!--購買商品資訊-->
                         <?php for ($j = 0; $j < count($row["details"]["product_name"]); $j++): ?>
@@ -354,6 +363,8 @@ try {
             <?php else: ?>
                 <?php if(isset($search)): ?>
                 <div class="p-3 text-secondary">沒有符合的搜尋條件</div>
+                <?php elseif(isset($_GET["status"])): ?>
+                <div class="p-3 text-secondary">沒有符合的訂單</div>
                 <?php else: ?>
                 <div class="p-3 text-secondary">您尚未購買任何項目</div>
                 <?php endif; ?>
@@ -378,7 +389,15 @@ try {
         crossorigin="anonymous"></script>
 
 <script>
-
+    // 取消訂單提醒
+    $(".btn-success").click(function () {
+        let result = confirm("確認取消此訂單?");
+        if (result) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 </script>
 
 
