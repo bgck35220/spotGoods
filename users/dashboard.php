@@ -196,8 +196,8 @@ try {
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="password" class="me-4 col-sm-2">密碼</label>
-                                    <input id="password" type="password" name="password" class="form-control"
-                                           value="<?= $_SESSION["user"]["password"] ?>">
+                                    <input id="password" type="password" name="password" class="form-control ps-3"
+                                           value="<?= $_SESSION["user"]["password"] ?>" readonly>
                                 </div>
                                 <div class="mb-3 d-flex align-items-center text-nowrap">
                                     <label for="address" class="me-4 col-sm-2">地址</label>
@@ -243,6 +243,20 @@ try {
 <script>
     //預覽上傳的圖片
     // $('input[type="file"]').prop('myFile',e.originalEvent.dataTransfer.files);
+
+
+    // var reader = new FileReader();
+    // reader.readAsDataURL(fileData);
+    //
+    // $("#upload").change(function(e){
+    //     var fileData = e.target.files[0]
+    //     //讀取檔案內容
+    //     var reader = new FileReader();
+    //     reader.readAsDataURL(fileData);
+    //     reader.addEventListener("load",function(event){
+    //         $("#show").append(`<img class="thumb" src="${event.target.result}">`);
+    //     });
+    // });
 </script>
 
 

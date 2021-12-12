@@ -5,6 +5,7 @@ if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
     header("location: users-login.php");
 }
 
+
 $sql = "SELECT * FROM users WHERE id=? AND valid=1";
 $stmt = $db_host->prepare($sql);
 try {
@@ -13,8 +14,29 @@ try {
 //    echo $userExist."<br>";
 //    exit();
 } catch (PDOException $e) {
-    echo $e->getMessage();
+    echo "預處理陳述式執行失敗<br>";
+    echo "Error: " . $e->getMessage() . "<br>";
+    $db_host = NULL;
+    exit;
 }
+
+
+$sqlCoupon = "SELECT coupon.*, users.id AS users_id
+FROM coupon
+JOIN users ON users.id = coupon.user_id
+WHERE coupon.user_id=? AND coupon.valid=1";
+$stmtCoupon = $db_host->prepare($sqlCoupon);
+try{
+    $stmtCoupon->execute([$_SESSION["user"]["id"]]);
+
+
+} catch (PDOException $e) {
+    echo "預處理陳述式執行失敗<br>";
+    echo "Error: " . $e->getMessage() . "<br>";
+    $db_host = NULL;
+    exit;
+}
+
 
 ?>
 
@@ -33,6 +55,9 @@ try {
         :root {
             --dark: #555;
             --light: #ccc;
+            --green: #66806A;
+            --lightgreen: #7baa81;
+            --yellow: #ffc107;
         }
 
         .cover-fit {
@@ -87,6 +112,29 @@ try {
 
         .border-left {
             border-left: 1px solid var(--light);
+        }
+        .couponCard{
+            width: 50%;
+        }
+        .coupon-card{
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0rem 0.1rem 0.2rem #ddd;
+        }
+        .coupon{
+            background-color:var(--lightgreen);
+            text-align: center;
+            width: 50%;
+        }
+        .coupon-top-text{
+            color: white;
+        }
+        .coupon-title{
+            color: white;
+            font-weight: 900;
+            font-size: 3rem;
+
         }
     </style>
 
@@ -162,65 +210,26 @@ try {
         <!--右邊內容欄位-->
         <div class="col-md-9">
             <div class="p-5 bg-light menu">
-                修改個人資訊
+                我的優惠券
                 <hr>
-                <?php if ($userExist === 0): ?>
-                    使用者不存在
-                <?php else:
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    ?>
-                    <form action="doUpdate.php" method="post" class="mt-3" enctype="multipart/form-data">
-                        <div class="row gt-3">
-                            <div class="col-lg-7 pe-5 mt-3">
-                                <input type="hidden" name="id" value="<?= $row["id"] ?>"> <!--隱藏-->
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="account" class="me-4 col-sm-2">使用者帳號</label>
-                                    <input id="account" type="text" name="account" class="form-control-plaintext"
-                                           value="   <?= $row["account"] ?>" readonly>
-                                    <!--只讀取不能更動-->
+                <div class="container">
+                    <div class="row">
+                        <?php while($couponCount=$stmtCoupon->fetch()):?>
+                            <div class="col-3 couponCard mt-3">
+                                <div class="coupon-card d-flex">
+                                    <div class="coupon m-0 py-4 px-3">
+                                        <p class="coupon-title m-0">$<?=$couponCount['amount']?></p>
+                                        <p class="coupon-top-text m-0">OFF COUPON</p>
+                                    </div>
+                                    <div class="py-4 px-3">
+                                        <h5 class="card-title text-start">NT$ <?=$couponCount['amount']?> 優惠券</h5>
+                                        <p class="card-text text-start text-secondary"><?=$couponCount['text']?></p>
+                                    </div>
                                 </div>
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="name" class="me-4 col-sm-2">姓名</label>
-                                    <input id="name" type="text" name="name" class="form-control"
-                                           value="<?= $row["name"] ?>">
-                                </div>
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="email" class="me-4 col-sm-2">Email</label>
-                                    <input id="email" type="text" name="email" class="form-control"
-                                           value="<?= $row["email"] ?>">
-                                </div>
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="phone" class="me-4 col-sm-2">手機號碼</label>
-                                    <input id="phone" type="text" name="phone" class="form-control"
-                                           value="<?= $row["phone"] ?>">
-                                </div>
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="password" class="me-4 col-sm-2">密碼</label>
-                                    <input id="password" type="password" name="password" class="form-control"
-                                           value="<?= $_SESSION["user"]["password"] ?>">
-                                </div>
-                                <div class="mb-3 d-flex align-items-center text-nowrap">
-                                    <label for="address" class="me-4 col-sm-2">地址</label>
-                                    <input id="address" type="text" name="address" class="form-control"
-                                           value="<?= $row["address"] ?>">
-                                </div>
-                                <button class="btn btn-secondary" type="submit">儲存</button>
                             </div>
-                            <div class="col-lg-5 px-5 mt-4 border-left">
-                                <div class="headshot-big d-block">
-                                    <?php if($row["headshots"]==NULL):?>
-                                    <img class="cover-fit" src="./upload/user.png" alt="user.png">
-                                    <?php else: ?>
-                                    <img class="cover-fit" src="./upload/<?= $row["headshots"] ?>" alt="<?= $row["headshots"] ?>">
-                                    <?php endif; ?>
-                                </div>
-                                <input class="mt-3 form-control form-control-sm" type="file" name="myFile" accept=".jpg,.jpeg,.png">
-                                <div class="text-muted mt-3">檔案大小: 最大 1 MB</div>
-                                <div class="text-muted">檔案限制: .JPG .JPEG, .PNG</div>
-                            </div>
-                        </div>
-                    </form>
-                <?php endif; ?>
+                        <?php endwhile ?>
+                    </div>
+            </div>
             </div>
         </div>
         <!--右邊內容欄位-->
@@ -241,8 +250,7 @@ try {
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 <script>
-    //預覽上傳的圖片
-    // $('input[type="file"]').prop('myFile',e.originalEvent.dataTransfer.files);
+
 </script>
 
 
