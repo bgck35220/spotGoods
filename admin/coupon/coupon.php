@@ -177,7 +177,7 @@ try {
                         <th>
                             <form action="./coupon.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋兌換券編號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋兌換券編號、折扣金額" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>

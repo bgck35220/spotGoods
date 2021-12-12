@@ -35,8 +35,8 @@ if (isset($_GET['search'])) {
     $search = $_GET['search'];
     $sqlUser = "SELECT * FROM users 
     WHERE 
-    id LIKE '%$search%' OR 
-    email LIKE ' %$search%' OR  
+    account LIKE '%$search%' OR 
+    email LIKE '%$search%' OR  
     name LIKE '%$search%'  ";
 } else {
     //分頁功能

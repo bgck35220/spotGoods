@@ -33,7 +33,7 @@ if (isset($_GET['sellertable'])) {
 if (!empty($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM sellers WHERE bossname like '%$search%' AND valid >= 2 OR email LIKE  ' %$search%' AND valid >= 2 OR  name LIKE '%$search%' AND valid >= 2";
+    $sqlUser = "SELECT * FROM sellers WHERE bossname like '%$search%' AND valid >= 2 OR email LIKE  '%$search%' AND valid >= 2 OR  name LIKE '%$search%' AND valid >= 2";
 }else if (isset($_GET['order'])) {
     //審查 駁回 篩選
     $order = $_GET['order'];
