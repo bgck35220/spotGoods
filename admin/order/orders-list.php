@@ -23,6 +23,8 @@ c.name as seller_name,
 c.created_at as seller_created_at,
 d.name as products_name,
 d.valid as products_valid,
+d.price as products_price,
+    d.text as products_text,
 d.created_at as products_created_at
 FROM order_all AS a
 JOIN users as b on a.users_id = b.id
@@ -57,6 +59,8 @@ if (isset($_GET['id'])) {
     c.created_at as seller_created_at,
     d.name as products_name,
     d.valid as products_valid,
+    d.price as products_price,
+    d.text as products_text,
     d.created_at as products_created_at
     FROM order_all AS a
     JOIN users as b on a.users_id = b.id
@@ -97,6 +101,8 @@ if (isset($_GET['search'])) {
     c.created_at as seller_created_at,
     d.name as products_name,
     d.valid as products_valid,
+    d.price as products_price,
+    d.text as products_text,
     d.created_at as products_created_at
     FROM order_all AS a
     JOIN users as b on a.users_id = b.id
@@ -137,6 +143,8 @@ if ($pageR !== 0) {
         c.created_at as seller_created_at,
         d.name as products_name,
         d.valid as products_valid,
+        d.price as products_price,
+        d.text as products_text,
         d.created_at as products_created_at
         FROM order_all AS a
         JOIN users as b on a.users_id = b.id
@@ -284,7 +292,8 @@ try{
                                 <th>會員</th>
                                 <th>商家</th>
                                 <th>商品</th>
-                                <th>價錢</th>
+                                <th>數量</th>
+                                <th>訂單價錢</th>
                                 <th>成立時間</th>
                                 <th>訂單狀態</th>
                                 <th>
@@ -321,7 +330,8 @@ try{
                                 </td>
                                    
                                 <td><?=$rowOrder['products_name']?></td>
-                                <td>$<?=$rowOrder['order_price']?></td>
+                                <td class="ps-2"><?=$rowOrder['amount']?></td>
+                                <td>NT$<?php echo $rowOrder['amount']*$rowOrder['products_price']?></td>
                                 <td><?=$rowOrder['order_time']?></td>
                                 <td>
                                     <?php if ($rowOrder['status'] == 1):?> 
@@ -402,8 +412,16 @@ try{
                     <td><?= $rowUserUserTable['products_name'] ?></td>
                 </tr>
                 <tr>
+                    <th>商品介紹</th>
+                    <td><?= $rowUserUserTable['products_text'] ?></td>
+                </tr>
+                <tr>
+                    <th>數量</th>
+                    <td><?= $rowUserUserTable['amount'] ?></td>
+                </tr>
+                <tr>
                     <th>訂單價錢</th>
-                    <td>$<?= $rowUserUserTable['order_price'] ?></td>
+                    <td>NT$<?php echo $rowUserUserTable['amount']*$rowUserUserTable['products_price']?></td>
                 </tr>
                 <tr>
                     <th>訂單成立時間</th>

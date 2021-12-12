@@ -155,6 +155,10 @@ try {
                     <td>$<?=$rowUser['price']?></td>
                 </tr>
                 <tr>
+                    <th>商品描述</th>
+                    <td><?=$rowUser['text']?></td>
+                </tr>
+                <tr>
                     <th>上架時間</th>
                     <td><?=$rowUser['created_at']?></td>
                 </tr>

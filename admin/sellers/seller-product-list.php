@@ -43,6 +43,7 @@ $sqlTotal =
 "SELECT a.* ,
 b.id as seller_id,
 b.name as seller_name,
+b.phone as seller_phone,
 b.valid as seller_valid,
 b.created_at as seller_created_at
 FROM products AS a
@@ -64,6 +65,7 @@ if (isset($_GET['sellertable'])) {
     $sqlUsreTable = "SELECT a.* ,
     b.id as seller_id,
     b.name as seller_name,
+    b.phone as seller_phone,
     b.valid as seller_valid,
     b.created_at as seller_created_at
     FROM products AS a
@@ -86,6 +88,7 @@ if (isset($_GET['search'])) {
     "SELECT a.* ,
     b.id as seller_id,
     b.name as seller_name,
+    b.phone as seller_phone,
     b.valid as seller_valid,
     b.created_at as seller_created_at
     FROM products AS a
@@ -115,6 +118,7 @@ if (isset($_GET['search'])) {
     $sqlProducts="SELECT a.* ,
         b.id as seller_id,
         b.name as seller_name,
+        b.phone as seller_phone,
         b.valid as seller_valid,
         b.created_at as seller_created_at
         FROM products AS a
@@ -279,7 +283,7 @@ try{
                    
                                 <?= $rowProducts['name'] ?>
                             </td>
-                            <td>$<?= $rowProducts['price'] ?></td>
+                            <td>NT$<?= $rowProducts['price'] ?></td>
                             <td><?= $rowProducts['created_at'] ?></td>
                             <td>
                             
@@ -417,13 +421,13 @@ try{
                 </tr>
                 <tr>
                     <th>商品價格</th>
-                    <td><?= $rowUserUserTable['price'] ?></td>
+                    <td>NT$<?= $rowUserUserTable['price'] ?></td>
                 </tr>
-  
                 <tr>
-                    <th>手機號碼</th>
-                    <td>還沒新增</td>
+                    <th>商品描述</th>
+                    <td><?= $rowUserUserTable['text'] ?></td>
                 </tr>
+
                 <tr>
                     <th>上架時間</th>
                     <td><?= $rowUserUserTable['created_at'] ?></td>
