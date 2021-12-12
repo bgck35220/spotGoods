@@ -228,7 +228,7 @@ try {
                         <th>
                             <form action="./sellers-check.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋店家聯絡人、店家名稱、信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋聯絡人、店家名稱、信箱" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>

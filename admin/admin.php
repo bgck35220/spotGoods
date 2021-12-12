@@ -33,7 +33,11 @@ if (isset($_GET['usertable'])) {
 if (isset($_GET['search'])) {
     //搜尋會員帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM users WHERE id like '%$search%' OR account LIKE ' %$search%' OR  name LIKE '%$search%'  ";
+    $sqlUser = "SELECT * FROM users 
+    WHERE 
+    id LIKE '%$search%' OR 
+    email LIKE ' %$search%' OR  
+    name LIKE '%$search%'  ";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {

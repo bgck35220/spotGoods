@@ -199,9 +199,8 @@ try {
                             </td>
                             <td><?= $rowUser['text'] ?></td>
                             <td class="">
-                           
-                                    <?= $rowUser['amount'] ?>
-                                   
+                            NT$<?= $rowUser['amount'] ?>
+    
                             </td>
                             <td><?= $rowUser['quantity'] ?></td>
                             <td><?= $rowUser['coupon_time'] ?></td>
