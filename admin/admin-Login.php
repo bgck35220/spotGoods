@@ -130,7 +130,7 @@ if(isset($_SESSION["user"])){
                 
               </div>
               <div class="mb-4">
-                <a href="#" class="from-Lost">忘記密碼?</a>
+                <!-- <a href="#" class="from-Lost">忘記密碼?</a> -->
               </div>
           </form>
         </div>

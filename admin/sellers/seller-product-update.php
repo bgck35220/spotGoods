@@ -171,13 +171,12 @@ try {
                             <td class="p-1"> <input type="text" value="<?= $rowUser['name'] ?>" class="form-control p-2 m-0" placeholder="name" name="name"></td>
                         </tr>
                         <tr>
-                            <th>商品價格</th>
-                         
+                            <th>商品價格(NT$)</th>
                             <td class="p-1"><input type="text" value="<?= $rowUser['price'] ?>" class="form-control p-2 m-0" placeholder="price" name="price"></td>
                         </tr>
                         <tr>
                             <th>商品描述</th>
-                            <td class="p-1"> <input type="text"  class="form-control p-2 m-0" placeholder="text" value="還沒有東西"name=""></td>
+                            <td class="p-1"> <input type="text"  class="form-control p-2 m-0" placeholder="text" value="<?= $rowUser['text'] ?>"name="text"></td>
                         </tr>
                         <tr>
                       
