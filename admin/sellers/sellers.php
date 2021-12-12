@@ -33,10 +33,7 @@ if (isset($_GET['sellertable'])) {
 if (isset($_GET['search'])) {
     //搜尋店家帳號和電子信箱功能
     $search = $_GET['search'];
-    $sqlUser = "SELECT * FROM 
-    sellers WHERE bossname like '%$search%' AND valid <= 1 
-    OR account LIKE ' %$search%' AND valid <= 1 
-    OR  name LIKE '%$search%' AND valid <= 1";
+    $sqlUser = "SELECT * FROM sellers WHERE bossname like '%$search%' AND valid <= 1 OR account LIKE '%$search%' AND valid <= 1 OR  name LIKE '%$search%' AND valid <= 1";
 } else {
     //分頁功能
     if (isset($_GET['p'])) {
@@ -195,13 +192,13 @@ try {
                         <th>id</th>
                         <th>店家聯絡人</th>
                         <th>店家名稱</th>
-                        <th>信箱</th>
+                        <th>帳號</th>
                         <th>註冊時間</th>
                         <th>帳號狀態</th>
                         <th>
                             <form action="./sellers.php" method="GET">
                                 <div class="input-group  search-user">
-                                    <input type="search" class="form-control" placeholder="搜尋店家聯絡人、店家名稱、帳號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
+                                    <input type="search" class="form-control" placeholder="搜尋聯絡人、店家名稱、帳號" aria-label="Recipient's username" aria-describedby="button-addon2" name="search" value=<?php if (isset($search)) echo $search ?>>
                                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜尋</button>
                                 </div>
                             </form>
@@ -229,7 +226,7 @@ try {
                                     <?= $rowUser['name'] ?>
                                    
                             </td>
-                            <td><?= $rowUser['email'] ?></td>
+                            <td><?= $rowUser['account'] ?></td>
                             <td><?= $rowUser['created_at'] ?></td>
                             <td>
                                 <?php if ($rowUser['valid'] == 1) : ?>
