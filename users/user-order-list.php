@@ -2,7 +2,7 @@
 require_once("pdo-connect.php");
 //一定要使用者頁面登入才能用的話，加入此判斷有沒有權限，沒登入成功就無法使用功能
 if (!isset($_SESSION["user"])) {  //導進來頁面 先檢查存不存在
-    header("location: sign-in.php");
+    header("location: users-login.php");
 }
 
 //失敗的，不是用 GROUP BY
@@ -206,7 +206,7 @@ try {
 <!doctype html>
 <html lang="en">
 <head>
-    <title>my order</title>
+    <title>我的訂單</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -280,9 +280,9 @@ try {
                     <p class="mb-0 ms-3 text-secondary"><?= $_SESSION["user"]["account"] ?></p>
                 </figure>
                 <ul class="p-0 mt-4">
-                    <li class="myList"><a href="dashboard.php">修改個人資訊</a></li>
-                    <li class="myList"><a href="user-order-list.php">我的訂單</a></li>
-                    <li class="myList"><a href="">優惠券</a></li>
+                    <li class="myList"><a href="./dashboard.php">修改個人資訊</a></li>
+                    <li class="myList"><a href="./user-order-list.php">我的訂單</a></li>
+                    <li class="myList"><a href="./user-coupon-list.php">我的優惠券</a></li>
                 </ul>
             </div>
         </div>
