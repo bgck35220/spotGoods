@@ -65,7 +65,7 @@ if(isset($_GET["status"])){
     //篩選條件的值，存入陣列，後面$stmt->execute用
     $parameters = [$_SESSION["user"]["id"], $_GET["status"]];
 
-}else if($_GET["search"]){
+}else if(isset($_GET["search"])){
 
     $search=$_GET["search"];
     //搜尋有符合的字串
@@ -318,7 +318,7 @@ try {
             <div class="bg-light status d-flex justify-content-between">
                 <a href="user-order-list.php" class=<?php if(!isset($_GET["status"]))echo "active"?>>全部</a>
                 <a href="user-order-list.php?status=1" class="d-flex justify-content-center align-items-center <?php if(isset($_GET["status"]) && $_GET["status"]==1)echo 'active' ?>">待領取
-                    <div class="badge rounded-pill bg-warning ms-2"><?= $statusNum ?></div></a>
+                    <div class="badge rounded-pill bg-warning ms-2"><?php if(!$statusNum==0)echo $statusNum?></div></a>
                 <a href="user-order-list.php?status=2" class=<?php if(isset($_GET["status"]) && $_GET["status"]==2)echo "active"?>>完成</a>
                 <a href="user-order-list.php?status=3" class=<?php if(isset($_GET["status"]) && $_GET["status"]==3)echo "active"?>>已取消</a>
             </div>

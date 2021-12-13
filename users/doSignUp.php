@@ -9,7 +9,7 @@ $password = $_POST["password"];
 $phone=$_POST["phone"];
 $address=$_POST["address"];
 
-$_SESSION["accountErr"]=
+
 
 //if ($password !== $repassword) {  //檢查輸入密碼
 //    echo "密碼不一致";
