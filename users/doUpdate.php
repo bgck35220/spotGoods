@@ -6,7 +6,15 @@ $email=$_POST["email"];
 $id=$_POST["id"];
 $phone=$_POST["phone"];
 $address=$_POST["address"];
-$password=$_POST["password"];
+
+if($_POST["newPassword"]==""){
+    $password=$_POST["password"];
+    $_SESSION["user"]["password"]=$password;
+}else{
+    $password=$_POST["newPassword"];
+    $_SESSION["user"]["password"]=$password;
+}
+
 $crPassword = md5($password);  //密碼加密，加密完約32個字元大小
 
 //$file_name=$_POST["myFile"]; //用這個會是NULL
