@@ -163,7 +163,7 @@ try {
         WHERE order_id=?";
         //將同層附加資訊JOIN在裡面一起呈現
         $stmtOrderDetail = $db_host->prepare($sqlOrderDetail);
-        $stmtOrderDetail->execute([$rows[$i]["id"]]);  //利用第一層撈到的 user_id 對應 order_id
+        $stmtOrderDetail->execute([$rows[$i]["id"]]);  //利用第一層撈到的 user_id 筆數列出幾筆訂單，且 user_order.id 對應 order_id 每筆有買了幾項
         //當 user_order_detail.order_id = user_order.user_id例如有8筆 的訂單號碼(id)
         $rowsOrderDetail = $stmtOrderDetail->fetchAll(PDO::FETCH_ASSOC);
         //將陣列簡化 剩下想要的陣列value值
